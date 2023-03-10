@@ -6,6 +6,10 @@ body {
   font-size: 1.1rem;
 }
 
+.start {
+  color: white;
+}
+
 ::-moz-selection {
   background: #000;
   color: #fff;
@@ -309,10 +313,10 @@ a:hover {
 
 .site-navbar .site-navigation .site-menu > li > a {
   padding: 20px 10px;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: .05em;
   color: #fff;
-  font-size: 15px;
+  font-size: 20px;
   text-decoration: none !important;
 }
 
