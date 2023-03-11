@@ -423,7 +423,7 @@ mark {
 }
 .initialism {
   font-size: 90%;
-  text-transform: uppercase;
+  text-transform: none;
 }
 .blockquote {
   margin-bottom: 1rem;
