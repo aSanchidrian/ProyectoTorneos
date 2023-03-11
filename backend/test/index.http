@@ -1,16 +1,17 @@
+####Crear usuario
 POST http://localhost:3000/api/createUser HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
 
 {
-    "nombre": "Alex2",
-    "email": "alexfdeaszperera@hotmail.com",
+    "nombre": "Alex3",
+    "email": "alexfdeaszperera2@hotmail.com",
     "nickname":"alexfp22001",
     "deporte":"futbol",
     "horario":"13:00-14:00",
-    "password":"Alex1234"
+    "password":"Alex12234"
 }
-###
+### login usuario
 POST http://localhost:3000/api/login HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
@@ -18,4 +19,16 @@ api_key: Api-publica-123
 {
     "email": "alexfdeaszperera@hotmail.com",
     "password":"Alex1234"
+}
+
+
+### editar usuario
+POST http://localhost:3000/api/changeParams HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+
+{
+    "param":"nickname",
+    "valor":"alexfp2001",
+    "nickname":"alexfp22001"
 }
