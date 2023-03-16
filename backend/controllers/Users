@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt")
 const router=express.Router()
 const mysql = require("mysql")
 const conection=require("../connection")
+const { verifyToken } = require("../utils/handleJwt")
+const { tokenSign } = require("../utils/handleJwt")
 require("dotenv").config()
 db=conection
 
@@ -13,12 +15,11 @@ const createUser=(async (req,res) => {
     const nickname = req.body.nickname;
     const deporte=req.body.deporte;
     const horario=req.body.horario;
-    const tooken=req.body.tooken;
     const hashedPassword = await bcrypt.hash(req.body.password,10);
     db.getConnection( async (err, connection) => {
        if (err) throw (err)
-       const sqlSearch = "SELECT * FROM Usuario WHERE email = ?"
-       const search_query = mysql.format(sqlSearch,[email])
+       const sqlSearch = "SELECT * FROM Usuario WHERE email = ? or nickname = ?"
+       const search_query = mysql.format(sqlSearch,[email,nickname])
        const sqlInsert = "INSERT INTO `Usuario`(`nombre`, `email`, `nickname`, `deporte`, `horario_disponibilidad`, `permisos`, `PASSWORD`) VALUES (?,?,?,?,?,?,?)"
        const insert_query = mysql.format(sqlInsert,[nombre,email,nickname,deporte,horario,"0", hashedPassword])
        // ? will be replaced by values
@@ -33,12 +34,15 @@ const createUser=(async (req,res) => {
        res.sendStatus(409) 
       } 
       else {
-       await connection.query (insert_query, (err, result)=> {
+       await connection.query (insert_query, async (err, result)=> {
        connection.release()
        if (err) throw (err)
        console.log ("--------> Created new User")
+       const token = await tokenSign(nickname);
        console.log(result.insertId)
-       res.sendStatus(201)
+       
+       res.send(`token: ${token}`)
+      
       })
      }
     }) //end of connection.query()
@@ -53,8 +57,9 @@ const createUser=(async (req,res) => {
             db.getConnection ( async (err, connection)=> {
                 if (err) throw (err)
                 const sqlSearch = "Select password from Usuario where email = ?"
-                
+                const sqlSearch2 = "Select nickname from Usuario where email = ?"
                 const search_query = mysql.format(sqlSearch,[email])
+                const search_query2 = mysql.format(sqlSearch2,[email])
                 await connection.query (search_query, async (err, result) => {
                  connection.release()
                  
@@ -67,8 +72,13 @@ const createUser=(async (req,res) => {
                     const hashedPassword = result[0].password
                     //get the hashedPassword from result
                    if (await bcrypt.compare(password, hashedPassword)) {
-                   console.log("---------> Login Successful")
-                   res.send(`${email} is logged in!`)
+                     
+                      await connection.query (search_query2, async (err, results) => {
+                        const token = await tokenSign(results[0].nickname);
+                        console.log("---------> Login Successful")
+                      
+                        res.send(`${email} is logged in!, Sesion token: ${token}`)
+                      })
                    } 
                    else {
                    console.log("---------> Password Incorrect")
@@ -84,14 +94,17 @@ const createUser=(async (req,res) => {
        
         const param = req.body.param;
         const valor=req.body.valor;
-        const nickname=req.body.nickname;
+        const token = req.headers.authorization.split(' ').pop() 
+        console.log(token)
             db.getConnection ( async (err, connection)=> {
                 if (err) throw (err)
                 const sqlSearch = "SELECT * FROM Usuario WHERE nickname = ?"
+                const dataToken = await verifyToken(token)
+                const nickname=dataToken.nickname;
                 const sqlUpdate = "Update Usuario SET "+param+"=? WHERE nickname=?"
                 const search_query2 = mysql.format(sqlSearch,[valor])
                 const search_query = mysql.format(sqlUpdate,[valor,nickname])
-          
+                
                 await connection.query (search_query2, async (err, result) => {
                   if (err) throw (err)
                   console.log("------> Search Results")
@@ -99,6 +112,7 @@ const createUser=(async (req,res) => {
                   if (result.length != 0) {
                    connection.release()
                    console.log("------> User already exists")
+                   console.log(dataToken.nickname)
                    res.sendStatus(409) 
                   } 
                   else {
@@ -108,6 +122,7 @@ const createUser=(async (req,res) => {
                       if (err) throw (err)
                       if (result.length == 0) {
                         console.log("--------> No se puedo actualizar")
+                      
                         res.sendStatus(404)
                       } 
                       else {
