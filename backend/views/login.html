@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %} Login {% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Logueate en Torneos</h1>
+
+        <form action="/login" class="mt-4" method="post">
+            <label for="email"><i class="fas fa-user"></i></label>
+            <input type="text" name="email" placeholder="Usuario o Email" id="email" required><br><br>
+            <label for="password"><i class="fas fa-lock"></i></label>
+            <input type="password" name="password" placeholder="Contraseña" id="password" required><br><br>
+            <input type="submit" class="btn btn-primary btn-lg" value="Login">
+        </form>
+    </div>
+
+{% endblock %}

@@ -1,9 +1,14 @@
 const express = require("express")
-const router=express.Router()
+const router = express.Router()
 
-const {login}=require("../controllers/Users")
+const {login} = require("../controllers/Users")
 require("dotenv").config()
 
-router.post("/",login) 
+/* GET home page. */
+router.get('/', function(req, res, next) {
+    res.render('login.html');
+});
 
-    module.exports=router;
+router.post("/", login) 
+
+module.exports = router
