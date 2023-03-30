@@ -41,13 +41,5 @@ app.use('/auth', authRouter)
 // CONFIG DE VISTAS - END
 
 const port = process.env.PORT
-<<<<<<< HEAD
-app.listen(port,  
-()=> console.log(`Server Started on port ${port}...`))
 
-
-//module.exports={db}
-//middleware to read req.body.<params>
-=======
 app.listen(port, () => console.log(`Server Started on port ${port}...`))
->>>>>>> 5eb4c472729c6f25b0e1c165c726e3b22304eb06
