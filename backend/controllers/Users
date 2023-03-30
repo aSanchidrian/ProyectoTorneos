@@ -20,6 +20,9 @@ const createUser = (async (req, res) => {
     const password = req.body.password
     const conf_password = req.body.conf_password
 
+    if (!(email.includes("@u-tad.com") || email.includes("@live.u-tad.com")))
+        return res.send("Necesitas un correo corporativo de U-Tad")
+
     if (password != conf_password)
         return res.send("¡Las contraseñas no coinciden!")
 
@@ -40,14 +43,14 @@ const createUser = (async (req, res) => {
         }
     })
 
-    if (created) {
-        console.log("--------> Created new User")
-        const token = tokenSign(nickname)
-        res.send(`token: ${token}`)
-    } else {
+    if (!created) {
         console.log("--------> User already registered")
-        res.sendStatus(404)
+        return res.send("User already registered")
     }
+
+    console.log("--------> Created new User")
+    const token = tokenSign(nickname)
+    res.send(`token: ${token}`)
 })
 
 const login = (async (req, res) => {
@@ -63,19 +66,16 @@ const login = (async (req, res) => {
 
     if (user === null) {
         console.log("--------> User does not exist")
-        res.sendStatus(404)
-    } else {
-        const hashedPassword = user.password
-            
-        if (bcrypt.compare(password, hashedPassword)) {
-            const token = tokenSign(user.nickname);
-            console.log("---------> Login Successful")
-            res.send(`${username} is logged in!, Sesion token: ${token}`)
-        } else {
-            console.log("---------> Password Incorrect")
-            res.send("Password incorrect!")
-        }
+        return res.send("User or Password incorrect")
     }
+    const hashedPassword = user.password
+        
+    if (!(bcrypt.compare(password, hashedPassword)))
+        return res.send("User or Password incorrect")
+
+    const token = tokenSign(user.nickname);
+    console.log("---------> Login Successful")
+    res.send(`${username} is logged in!, Sesion token: ${token}`)
 })
 
 const changeParams = (async (req, res) => {
