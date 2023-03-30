@@ -12,13 +12,13 @@ require("dotenv").config()
 db = conection
 
 const createUser = (async (req, res) => {
-    const name = req.body.name
-    const email = req.body.email
-    const nickname = req.body.nickname
-    const sport = req.body.sport
-    const schedule = req.body.schedule
-    const password = req.body.password
-    const conf_password = req.body.conf_password
+    let name = req.body.name
+    let email = req.body.email
+    let nickname = req.body.nickname
+    let sport = req.body.sport
+    let schedule = req.body.schedule
+    let password = req.body.password
+    let conf_password = req.body.conf_password
 
     if (!(email.includes("@u-tad.com") || email.includes("@live.u-tad.com")))
         return res.send("Necesitas un correo corporativo de U-Tad")
@@ -26,7 +26,7 @@ const createUser = (async (req, res) => {
     if (password != conf_password)
         return res.send("¡Las contraseñas no coinciden!")
 
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    let hashedPassword = await bcrypt.hash(req.body.password, 10);
 
     const [user, created] = await User.findOrCreate({ 
         where: { 
@@ -51,10 +51,10 @@ const createUser = (async (req, res) => {
 })
 
 const login = (async (req, res) => {
-    const username = req.body.username
-    const password = req.body.password
+    let username = req.body.username
+    let password = req.body.password
 
-    var user = await User.findOne({ where: { 
+    const user = await User.findOne({ where: { 
         [Op.or]: [
             { email: username },
             { nickname: username }
@@ -64,7 +64,7 @@ const login = (async (req, res) => {
     if (user === null) 
         return res.send("User or Password incorrect")
     
-    const hashedPassword = user.password
+    let hashedPassword = user.password
         
     if (!(bcrypt.compare(password, hashedPassword)))
         return res.send("User or Password incorrect")
