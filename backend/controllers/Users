@@ -54,14 +54,14 @@ const login = (async (req, res) => {
     const username = req.body.username
     const password = req.body.password
 
-    var user = User.findOne({ where: { 
+    var user = await User.findOne({ where: { 
         [Op.or]: [
             { email: username },
             { nickname: username }
         ] 
     }})
 
-    if (user == {}) {
+    if (user === null) {
         console.log("--------> User does not exist")
         res.sendStatus(404)
     } else {
