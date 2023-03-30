@@ -1,22 +1,26 @@
 const express = require("express")
 const app = express()
 const path = require('path')
-const mysql = require("mysql")
 const conection=require("./connection")
 const nunjucks = require('nunjucks')
 const bodyParser = require('body-parser');
+const { User } = require("./models/models")
 
 require("dotenv").config()
 
 app.use(express.json())
 
 // CONEXIÓN BD - START
-db = conection
 
-db.getConnection( (err, connection)=> {
-   if (err) throw (err)
-   console.log ("DB connected successful: " + connection.threadId)
-})
+sequelize = conection
+
+try {
+   sequelize.authenticate();
+   console.log('Connection has been established successfully.');
+} catch (error) {
+   console.error('Unable to connect to the database:', error);
+}
+
 // CONEXIÓN BD - END
 
 app.use(bodyParser.urlencoded({ extended: false }));

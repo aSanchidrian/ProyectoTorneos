@@ -5,6 +5,8 @@ const mysql = require("mysql")
 const conection = require("../connection")
 const { verifyToken } = require("../utils/handleJwt")
 const { tokenSign } = require("../utils/handleJwt")
+const { User } = require("../models/models")
+const { Op } = require("sequelize");
 
 require("dotenv").config()
 db = conection
@@ -14,81 +16,66 @@ const createUser = (async (req, res) => {
     const email = req.body.email
     const nickname = req.body.nickname
     const sport = "furbo"
-    const timeTable = "adssdasdsd"
+    const schedule = "17:00 - 18:00"
     const password = req.body.password
     const conf_password = req.body.conf_password
-
-    console.log(req.body)
 
     if (password != conf_password)
         return res.send("¡Las contraseñas no coinciden!")
 
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-    db.getConnection(async (err, connection) => {
-        if (err) throw (err)
-
-        await connection.query('SELECT * FROM usuario WHERE email = ? or nickname = ?', [
-            email,
-            nickname
-        ], function(err, result, fields) {
-            if (err) throw (err)
-            
-            if (result.length != 0) {
-                console.log("--------> User already registered")
-                res.sendStatus(404)
-            } else {
-                connection.query('INSERT INTO `usuario` (`nombre`, `email`, `nickname`, `deporte`, `horario_disponibilidad`, `permisos`, `password`) VALUES (?,?,?,?,?,?,?)', [
-                    name, email, nickname,
-                    sport, timeTable,
-                    "0", hashedPassword
-                ], function(err, result, fields) {
-                    connection.release()
-                    if (err) throw (err)
-                    
-                    console.log("--------> Created new User")
-                    const token = tokenSign(nickname);
-                    console.log(result.insertId)
-
-                    res.send(`token: ${token}`)
-                })
-            }
-        })
+    const [user, created] = await User.findOrCreate({ 
+        where: { 
+            [Op.or]: [ { email: email }, { nickname: nickname } ] 
+        },
+        defaults: {
+            name: name,
+            email: email,
+            nickname: nickname,
+            sport: sport,
+            schedule: schedule,
+            role: 0,
+            password: hashedPassword
+        }
     })
+
+    if (created) {
+        console.log("--------> Created new User")
+        const token = tokenSign(nickname)
+        res.send(`token: ${token}`)
+    } else {
+        console.log("--------> User already registered")
+        res.sendStatus(404)
+    }
 })
 
 const login = (async (req, res) => {
-    const username = req.body.username;
-    const password = req.body.password;
+    const username = req.body.username
+    const password = req.body.password
 
-    console.log(username+" "+password)
+    var user = User.findOne({ where: { 
+        [Op.or]: [
+            { email: username },
+            { nickname: username }
+        ] 
+    }})
 
-    db.getConnection(async (err, connection) => {
-        if (err) throw (err)
-
-        await connection.query('SELECT nickname, password FROM usuario WHERE (nickname = ? OR email = ?)', [
-            username, 
-            username
-        ], function(err, result, fields) {
-            if (err) throw (err)
+    if (user == {}) {
+        console.log("--------> User does not exist")
+        res.sendStatus(404)
+    } else {
+        const hashedPassword = user.password
             
-            if (result.length == 0) {
-                console.log("--------> User does not exist")
-                res.sendStatus(404)
-            } else {
-                const hashedPassword = result[0].password
-            
-                if (bcrypt.compare(password, hashedPassword)) {
-                    const token = tokenSign(result[0].nickname);
-                    console.log("---------> Login Successful")
-                    res.send(`${username} is logged in!, Sesion token: ${token}`)
-                } else {
-                    console.log("---------> Password Incorrect")
-                    res.send("Password incorrect!")
-                }
-            }
-        })
-    })
+        if (bcrypt.compare(password, hashedPassword)) {
+            const token = tokenSign(user.nickname);
+            console.log("---------> Login Successful")
+            res.send(`${username} is logged in!, Sesion token: ${token}`)
+        } else {
+            console.log("---------> Password Incorrect")
+            res.send("Password incorrect!")
+        }
+    }
 })
 
 const changeParams = (async (req, res) => {
