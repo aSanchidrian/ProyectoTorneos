@@ -15,8 +15,8 @@ const createUser = (async (req, res) => {
     const name = req.body.name
     const email = req.body.email
     const nickname = req.body.nickname
-    const sport = "furbo"
-    const schedule = "17:00 - 18:00"
+    const sport = req.body.sport
+    const schedule = req.body.schedule
     const password = req.body.password
     const conf_password = req.body.conf_password
 
