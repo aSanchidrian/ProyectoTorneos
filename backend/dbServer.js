@@ -4,6 +4,7 @@ const path = require('path')
 const mysql = require("mysql")
 const conection=require("./connection")
 const nunjucks = require('nunjucks')
+const bodyParser = require('body-parser');
 
 require("dotenv").config()
 
@@ -18,6 +19,9 @@ db.getConnection( (err, connection)=> {
 })
 // CONEXIÓN BD - END
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 // CONFIG DE VISTAS - START
 app.set('views', path.join(__dirname, 'views'))
 
@@ -27,9 +31,9 @@ nunjucks.configure('views', {
 });
 
 var indexRouter = require('./routes/index')
-var loginRouter = require('./routes/login')
+var authRouter = require('./routes/auth')
 app.use('/', indexRouter)
-app.use('/login', loginRouter)
+app.use('/auth', authRouter)
 // CONFIG DE VISTAS - END
 
 const port = process.env.PORT

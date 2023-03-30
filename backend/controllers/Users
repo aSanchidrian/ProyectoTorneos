@@ -5,132 +5,134 @@ const mysql = require("mysql")
 const conection = require("../connection")
 const { verifyToken } = require("../utils/handleJwt")
 const { tokenSign } = require("../utils/handleJwt")
+
 require("dotenv").config()
 db = conection
 
 const createUser = (async (req, res) => {
-  //console.log(req)
-  const nombre = req.body.nombre;
-  const email = req.body.email;
-  const nickname = req.body.nickname;
-  const deporte = req.body.deporte;
-  const horario = req.body.horario;
-  const hashedPassword = await bcrypt.hash(req.body.password, 10);
-  db.getConnection(async (err, connection) => {
-    if (err) throw (err)
-    const sqlSearch = "SELECT * FROM Usuario WHERE email = ? or nickname = ?"
-    const search_query = mysql.format(sqlSearch, [email, nickname])
-    const sqlInsert = "INSERT INTO `Usuario`(`nombre`, `email`, `nickname`, `deporte`, `horario_disponibilidad`, `permisos`, `PASSWORD`) VALUES (?,?,?,?,?,?,?)"
-    const insert_query = mysql.format(sqlInsert, [nombre, email, nickname, deporte, horario, "0", hashedPassword])
-    // ? will be replaced by values
-    // ?? will be replaced by string
-    await connection.query(search_query, async (err, result) => {
-      if (err) throw (err)
-      console.log("------> Search Results")
-      console.log(result.length)
-      if (result.length != 0) {
-        connection.release()
-        console.log("------> User already exists")
-        res.sendStatus(409)
-      }
-      else {
-        await connection.query(insert_query, async (err, result) => {
-          connection.release()
-          if (err) throw (err)
-          console.log("--------> Created new User")
-          const token = await tokenSign(nickname);
-          console.log(result.insertId)
+    const name = req.body.name
+    const email = req.body.email
+    const nickname = req.body.nickname
+    const sport = "furbo"
+    const timeTable = "adssdasdsd"
+    const password = req.body.password
+    const conf_password = req.body.conf_password
 
-          res.send(`token: ${token}`)
+    console.log(req.body)
 
+    if (password != conf_password)
+        return res.send("¡Las contraseñas no coinciden!")
+
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+    db.getConnection(async (err, connection) => {
+        if (err) throw (err)
+
+        await connection.query('SELECT * FROM usuario WHERE email = ? or nickname = ?', [
+            email,
+            nickname
+        ], function(err, result, fields) {
+            if (err) throw (err)
+            
+            if (result.length != 0) {
+                console.log("--------> User already registered")
+                res.sendStatus(404)
+            } else {
+                connection.query('INSERT INTO `usuario` (`nombre`, `email`, `nickname`, `deporte`, `horario_disponibilidad`, `permisos`, `password`) VALUES (?,?,?,?,?,?,?)', [
+                    name, email, nickname,
+                    sport, timeTable,
+                    "0", hashedPassword
+                ], function(err, result, fields) {
+                    connection.release()
+                    if (err) throw (err)
+                    
+                    console.log("--------> Created new User")
+                    const token = tokenSign(nickname);
+                    console.log(result.insertId)
+
+                    res.send(`token: ${token}`)
+                })
+            }
         })
-      }
-    }) //end of connection.query()
-  }) //end of db.getConnection()
-}) //end of app.post()
+    })
+})
 
 const login = (async (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
+    const username = req.body.username;
+    const password = req.body.password;
 
-  console.log(req.body)
-  console.log(req.query)
+    console.log(username+" "+password)
 
-  db.getConnection(async (err, connection) => {
-    if (err) throw (err)
-    const sqlSearch = "SELECT nickname, password FROM usuario WHERE email = ? or nickname = ?"
-    const search_query = mysql.format(sqlSearch, [email, email])
-    
-    await connection.query(search_query, async (err, result) => {
-      connection.release()
+    db.getConnection(async (err, connection) => {
+        if (err) throw (err)
 
-      if (err) throw (err)
-      if (result.length == 0) {
-        console.log("--------> User does not exist")
-        res.sendStatus(404)
-      } else {
-        const hashedPassword = result[0].password
-        //get the hashedPassword from result
-        if (await bcrypt.compare(password, hashedPassword)) {
-            const token = await tokenSign(result[0].nickname);
-            console.log("---------> Login Successful")
-            res.send(`${email} is logged in!, Sesion token: ${token}`)
-        } else {
-          console.log("---------> Password Incorrect")
-          res.send("Password incorrect!")
-        }
-      }
+        await connection.query('SELECT nickname, password FROM usuario WHERE (nickname = ? OR email = ?)', [
+            username, 
+            username
+        ], function(err, result, fields) {
+            if (err) throw (err)
+            
+            if (result.length == 0) {
+                console.log("--------> User does not exist")
+                res.sendStatus(404)
+            } else {
+                const hashedPassword = result[0].password
+            
+                if (bcrypt.compare(password, hashedPassword)) {
+                    const token = tokenSign(result[0].nickname);
+                    console.log("---------> Login Successful")
+                    res.send(`${username} is logged in!, Sesion token: ${token}`)
+                } else {
+                    console.log("---------> Password Incorrect")
+                    res.send("Password incorrect!")
+                }
+            }
+        })
     })
-  })
 })
 
 const changeParams = (async (req, res) => {
-  //console.log(req)
+    const param = req.body.param;
+    const valor = req.body.valor;
+    const token = req.headers.authorization.split(' ').pop()
+    console.log(token)
+    
+    db.getConnection(async (err, connection) => {
+        if (err) throw (err)
+        const sqlSearch = "SELECT * FROM Usuario WHERE nickname = ?"
+        const dataToken = await verifyToken(token)
+        const nickname = dataToken.nickname;
+        const sqlUpdate = "Update Usuario SET " + param + "=? WHERE nickname=?"
+        const search_query2 = mysql.format(sqlSearch, [valor])
+        const search_query = mysql.format(sqlUpdate, [valor, nickname])
 
-  const param = req.body.param;
-  const valor = req.body.valor;
-  const token = req.headers.authorization.split(' ').pop()
-  console.log(token)
-  db.getConnection(async (err, connection) => {
-    if (err) throw (err)
-    const sqlSearch = "SELECT * FROM Usuario WHERE nickname = ?"
-    const dataToken = await verifyToken(token)
-    const nickname = dataToken.nickname;
-    const sqlUpdate = "Update Usuario SET " + param + "=? WHERE nickname=?"
-    const search_query2 = mysql.format(sqlSearch, [valor])
-    const search_query = mysql.format(sqlUpdate, [valor, nickname])
+        await connection.query(search_query2, async (err, result) => {
+            if (err) throw (err)
+            console.log("------> Search Results")
+            console.log(result.length)
 
-    await connection.query(search_query2, async (err, result) => {
-      if (err) throw (err)
-      console.log("------> Search Results")
-      console.log(result.length)
-      if (result.length != 0) {
-        connection.release()
-        console.log("------> User already exists")
-        console.log(dataToken.nickname)
-        res.sendStatus(409)
-      }
-      else {
-        await connection.query(search_query, async (err, result) => {
-          connection.release()
+            if (result.length != 0) {
+                connection.release()
+                console.log("------> User already exists")
+                console.log(dataToken.nickname)
+                res.sendStatus(409)
+            } else {
+                await connection.query(search_query, async (err, result) => {
+                    connection.release()
 
-          if (err) throw (err)
-          if (result.length == 0) {
-            console.log("--------> No se puedo actualizar")
+                    if (err) throw (err)
+                    if (result.length == 0) {
+                        console.log("--------> No se puedo actualizar")
 
-            res.sendStatus(404)
-          }
-          else {
-            console.log("---------> Tus datos se han actualizado")
-            res.send(` Actualizado!`)
-
-            //end of bcrypt.compare()
-          }//end of User exists i.e. results.length==0
+                        res.sendStatus(404)
+                    } else {
+                        console.log("---------> Tus datos se han actualizado")
+                        res.send(` Actualizado!`)
+                    }
+                })
+            }
         })
-      } //end of connection.query()
-    }) //end of db.connection()
-  })
-})//end of app.post()
-
+    })
+})
 
 module.exports = { createUser, login, changeParams }
