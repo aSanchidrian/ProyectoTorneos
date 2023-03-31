@@ -46,7 +46,7 @@ const createUser = (async (req, res) => {
     if (!created)
         return res.send("User already registered")
 
-    const token = tokenSign(nickname)
+    const token = await tokenSign(nickname)
     res.send(`¡User created! token: ${JSON.stringify(token)}`)
 })
 
@@ -69,7 +69,7 @@ const login = (async (req, res) => {
     if (!(bcrypt.compare(password, hashedPassword)))
         return res.send("User or Password incorrect")
 
-    const token = tokenSign(user.nickname);
+    const token = await tokenSign(user.nickname);
     res.send(`${username} is logged in!, Sesion token: ${token}`)
 })
 
