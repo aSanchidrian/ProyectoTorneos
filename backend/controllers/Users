@@ -74,19 +74,7 @@ const login = (async (req, res) => {
     res.send(`${username} is logged in!, Sesion token: ${token}`)
 })
 
-const updateUser = async (req, res) => {
-    try {
-        //const id = req.params.id 
-        //const {body} = matchedData(req) //Extrae el id y el resto lo asigna a la constante body
-        const {id, ...body} = matchedData(req) //Extrae el id y el resto lo asigna a la constante body
-        body.rol = "admin"
-        const data = await User.findByIdAndUpdate(id, body)
-        res.send(data)    
-    }catch(err){
-        console.log(err) 
-        handleHttpError(res, 'ERROR_UPDATE_USER')
-    }
-}
+
 
 const deleteUser = async (req, res) => {
     try {
