@@ -34,3 +34,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImFsZ
     "valor":"alexfp2001"
 }
 
+
+### todos usuario
+GET http://localhost:3000/auth/getUsers HTTP/1.1
+Content-Type: application/json
+
+######

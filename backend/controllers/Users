@@ -78,10 +78,10 @@ const login = (async (req, res) => {
 
 const deleteUser = async (req, res) => {
     try {
-        const {id} = matchedData(req)
+        const {nickname} = matchedData(req)
         var data = ""
         
-            data = await User.destroy({ where: { id: id } })
+            data = await User.destroy({ where: { nickname: nickname } })
         
         res.send(data)
     } catch(err){
@@ -103,4 +103,4 @@ const getUsers = async (req, res) => {
     }
 }
 
-module.exports = { createUser, login, updateUser }
+module.exports = { createUser, login, deleteUser, getUsers}
