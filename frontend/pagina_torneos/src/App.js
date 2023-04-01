@@ -15,33 +15,44 @@ import Welcome from "./Welcome";
 import Home from "./Home";
 
 function App() {
-
-  const [logued, setLogued] = useState(false);
+  const [logued, setLogued] = useState(true);
+  let test=true;
 
   const isLogued = () => {
     if (!logued) {
       return (
         <>
-          <Welcome state={logued}></Welcome>
+          <Welcome state={{logued, test}}></Welcome>
         </>
       );
-    }
-    else{
+    } else {
       return (
         <>
           <Home></Home>
         </>
-      )
+      );
     }
+  };
+
+  const gridStyle = {
+    display: "grid",
+    gridTemplateColumns: "repeat(2, 1fr)",
+    gridTemplateRows: "repeat(4, 1fr)",
+    gap: "1rem",
+    height: "100vh",
+  };
+
+  const sectionStyle = {
+    background: "#f2f2f2",
+    padding: "20px",
   };
 
   return (
     <div className="App">
       {/* Aqui va la mitad de la pagina: welcome, home... */}
-      <>
-        {isLogued()}
-      </>
+      <>{isLogued()}</>
       {/* parte de abajo */}
+      
       <footer className="d-flex justify-content-center">
         <hr />
       </footer>

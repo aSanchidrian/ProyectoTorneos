@@ -9,7 +9,12 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
-const welcome = () => {
+const welcome = (props) => {
+
+  const check = () => {
+    props.state.test = true;
+  }
+
   return (
     <>
       <Navbar>
@@ -87,6 +92,7 @@ const welcome = () => {
           <Button
             variant="primary"
             style={{ borderRadius: "20px", width: "150px" }}
+            onClick={check}
           >
             ¡Comienza!
           </Button>

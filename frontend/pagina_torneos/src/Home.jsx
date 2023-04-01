@@ -1,9 +1,8 @@
 import React from "react";
-import usports_logo from "./U-sports_logo.png";
+import bell_logo from "./bell_icon.png";
 import usports_logo_mini from "./mini_usports.png";
-import utad_logo from "./img.swapcard.png";
+import calendar_logo from "./calendar_icon.jpg";
 import web_icon from "./web-globe-icon-23.png";
-
 
 import "@fontsource/montserrat";
 import Button from "react-bootstrap/Button";
@@ -11,22 +10,35 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
-const welcome = ( props ) => {
+const welcome = (props) => {
   return (
     <>
       <Navbar>
         <img
-          className="mr-4 responsive-image"
+          className="mr-3 mt-3 responsive-image"
           src={usports_logo_mini}
-          style={{ maxWidth: "15%", maxHeight: "10%", marginLeft: "auto" }}
+          style={{ width: "15%", height: "10%", marginLeft: "auto" }}
         />
         <Container>
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
-            <Navbar.Text className="mr-3">
-              <Nav.Link href="#link" style={{ color: "#0066ef" }}>
-                Iniciar sesion
-              </Nav.Link>
+            <Navbar.Text
+              className="mr-4"
+              style={{ maxWidth: "3%", maxHeight: "3%" }}
+            >
+              <img
+                src={calendar_logo}
+                style={{ maxWidth: "100%", maxHeight: "100%" }}
+              ></img>
+            </Navbar.Text>
+            <Navbar.Text
+              className="mr-4"
+              style={{ maxWidth: "3%", maxHeight: "3%" }}
+            >
+              <img
+                src={bell_logo}
+                style={{ maxWidth: "100%", maxHeight: "100%" }}
+              ></img>
             </Navbar.Text>
             <Navbar.Text>
               <div className="collapse navbar-collapse" id="navbar-list-4">
@@ -53,10 +65,13 @@ const welcome = ( props ) => {
                       aria-labelledby="navbarDropdownMenuLink"
                     >
                       <a className="dropdown-item" href="#">
-                        Ingles
+                        Mi perfil
                       </a>
                       <a className="dropdown-item" href="#">
-                        Español
+                        Mis torneos
+                      </a>
+                      <a className="dropdown-item" href="#">
+                        Cerrar sesion
                       </a>
                     </div>
                   </li>
@@ -69,31 +84,48 @@ const welcome = ( props ) => {
       <div className="d-flex justify-content-center mb-5">
         <hr />
       </div>
-      <br></br>
-      <div className="row d-flex justify-content-center">
-        <div className="col-3 row">
-          <Button className="btn btn-primary rounded-blue-button">
-            TimeLine
+      <div
+        className="d-flex justify-content-center"
+        style={{ minHeight: "100hv", margin: "0 5%", height: "65%" }}
+      >
+        <div
+          style={{
+            width: "30%",
+          }}
+        >
+          <Button
+            className="rounded-blue-button btn btn-primary"
+            style={{ width: "80%", height: "10%" }}
+          >
+            <b>TIMELINE</b>
           </Button>
-          <Button className="btn btn-primary rounded-blue-button">
-            Equipos
+          <Button
+            className="rounded-blue-button btn btn-primary"
+            style={{ width: "80%", height: "10%" }}
+          >
+            <b>EQUIPOS</b>
           </Button>
-          <Button className="btn btn-primary rounded-blue-button">
-            Torneos
+          <Button
+            className="rounded-blue-button btn btn-primary"
+            style={{ width: "80%", height: "10%" }}
+          >
+            <b>TORNEOS</b>
           </Button>
-          <Button className="btn btn-primary rounded-blue-button-card">
-            Destacados
+          <Button
+            className="rounded-blue-button btn btn-primary"
+            style={{ width: "80%", height: "10%" }}
+          >
+            <b>ULTIMOS RESULTADOS</b>
           </Button>
-          <div className="card-destacados">
-            <h4>Noticia 1</h4>
-            <h4>Noticia 2</h4>
-            <h4>Noticia 3</h4>
-            <h4>Noticia 1</h4>
-            <h4>Noticia 2</h4>
-            <h4>Noticia 3</h4>
-          </div>
         </div>
-        <div className="col-8 d-flex justify-content-center info-grande"></div>
+        <div
+          style={{
+            width: "70%",
+            border: "1.5px solid #0066ef",
+            borderRadius: "30px",
+          }}
+        >
+        </div>
       </div>
     </>
   );
