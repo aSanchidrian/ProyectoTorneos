@@ -12,7 +12,7 @@ import Navbar from "react-bootstrap/Navbar";
 const welcome = (props) => {
 
   const check = () => {
-    props.state.test = true;
+    // setLogued(true);
   }
 
   return (

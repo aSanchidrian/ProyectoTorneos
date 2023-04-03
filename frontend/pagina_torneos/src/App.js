@@ -6,10 +6,7 @@ import web_icon from "./web-globe-icon-23.png";
 // import axios from "axios";
 import { useState, useEffect } from "react";
 import "@fontsource/montserrat";
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
+
 
 import Welcome from "./Welcome";
 import Home from "./Home";

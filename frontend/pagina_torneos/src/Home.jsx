@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { Accordion, Card } from 'react-bootstrap';
 import bell_logo from "./bell_icon.png";
 import usports_logo_mini from "./mini_usports.png";
 import calendar_logo from "./calendar_icon.jpg";
@@ -10,7 +11,36 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
-const welcome = (props) => {
+function Welcome () {
+
+  const [showContent, setShowContent] = useState(false);
+  const [open, setOpen] = useState(false);
+  
+  function handleButtonClick(buttonId) {
+    switch (buttonId) {
+      case "btn-1":
+        setShowContent(<h1>Contenido del botón 1</h1>);
+        break;
+      case "btn-2":
+        setShowContent(<div><h1>Equipos:</h1>
+          <ul>
+          <li>SSH</li>
+          <li>Security Data</li>
+          <li>U-tad Lions</li>
+          <li>Deportivo booleano</li>
+        </ul></div>);
+        break;
+      case "btn-3":
+        setShowContent(<div>Contenido del botón 3</div>);
+        break;
+      case "btn-4":
+        setShowContent(<span>Contenido del botón 4</span>);
+        break;
+      default:
+        setShowContent(null);
+    }
+  }
+
   return (
     <>
       <Navbar>
@@ -81,54 +111,65 @@ const welcome = (props) => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <div className="d-flex justify-content-center mb-5">
+      <div className="d-flex justify-content-center mb-2">
         <hr />
       </div>
       <div
-        className="d-flex justify-content-center"
-        style={{ minHeight: "100hv", margin: "0 5%", height: "65%" }}
+        className="d-flex justify-content-center containerPrincipal"
+        style={{ minHeight: "100hv", margin: "0 5% 0 5%",height: "79%" }}
       >
-        <div
+        <div className="mr-2"
           style={{
-            width: "30%",
+            width: "20%",
           }}
         >
           <Button
             className="rounded-blue-button btn btn-primary"
-            style={{ width: "80%", height: "10%" }}
+            id="btn-1"
+            onClick={() => handleButtonClick("btn-1")}
+            style={{ width: "100%", height: "10%" }}
           >
             <b>TIMELINE</b>
           </Button>
           <Button
             className="rounded-blue-button btn btn-primary"
-            style={{ width: "80%", height: "10%" }}
+            id="btn-2"
+            onClick={() => handleButtonClick("btn-2")}
+            style={{ width: "100%", height: "10%" }}
           >
             <b>EQUIPOS</b>
           </Button>
           <Button
             className="rounded-blue-button btn btn-primary"
-            style={{ width: "80%", height: "10%" }}
+            id="btn-3"
+            onClick={() => handleButtonClick("btn-3")}
+            style={{ width: "100%", height: "10%" }}
           >
             <b>TORNEOS</b>
           </Button>
           <Button
             className="rounded-blue-button btn btn-primary"
-            style={{ width: "80%", height: "10%" }}
+            id="btn-4"
+            onClick={() => handleButtonClick("btn-4")}
+            style={{ width: "100%", height: "10%" }}
           >
             <b>ULTIMOS RESULTADOS</b>
           </Button>
         </div>
-        <div
+        <div className="ml-2"
           style={{
-            width: "70%",
+            width: "80%",
             border: "1.5px solid #0066ef",
             borderRadius: "30px",
           }}
         >
+          {/* cosas a cargar en el cuadrado grande */}
+          {showContent}
+          
         </div>
       </div>
     </>
   );
 };
 
-export default welcome;
+export default Welcome;
