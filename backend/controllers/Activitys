@@ -1,0 +1,64 @@
+const express = require("express")
+const { matchedData } = require("express-validator")
+const router = express.Router()
+const mysql = require("mysql")
+const conection = require("../connection")
+const { Activity } = require("../models/models")
+const { Op } = require("sequelize");
+
+require("dotenv").config()
+db = conection
+
+const createActivity = (
+  
+    async (req, res) => {
+      try {
+        // Extract data from request body
+        const {
+          name,
+          description,
+          sport,
+          date,
+          privacity,
+          max_plazas,
+          status,
+          result,
+          place
+        } = req.body;
+  
+        // Create activity in database
+        const [activity, created] = await Activity.findOrCreate({
+          where: {
+            name,
+          },
+          defaults: {
+            description,
+            sport,
+            date,
+            privacity,
+            max_plazas,
+            status,
+            result,
+            place
+          },
+        });
+  
+        if (!created) {
+          return res.status(409).json({
+            message: "Activity already exists",
+          });
+        }
+  
+        // Send response with success message
+        res.status(201).json({
+          message: "Activity created successfully",
+        });
+      } catch (err) {
+        console.error(err);
+        res.status(500).json({
+          message: "Internal server error",
+        });
+      }
+    }
+  );
+  module.exports = {createActivity}

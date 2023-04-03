@@ -23,20 +23,26 @@ api_key: Api-publica-123
 }
 
 
-### editar usuario
-POST http://localhost:3000/api/changeParams HTTP/1.1
-Content-Type: application/json
-api_key: Api-publica-123
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImFsZXhmcDIwMDEiLCJpYXQiOjE2Nzg5ODQwNjIsImV4cCI6MTY3ODk5MTI2Mn0.wIDfhpU51_NOurYZL5VWY1fAcL0Dvq6WxpVENvtRyCg
 
-{
-    "param":"nickname",
-    "valor":"alexfp2001"
-}
 
 
 ### todos usuario
 GET http://localhost:3000/auth/getUsers HTTP/1.1
 Content-Type: application/json
 
-######
+######crear actividades
+POST http://localhost:3000/activity/createActivity HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+
+{
+  "name": "Nueva actividad",
+  "description": "Descripción de la nueva actividad",
+  "sport": "Fútbol",
+  "date": "2023-04-05T12:00:00Z",
+  "privacity": true,
+  "max_plazas": 20,
+  "status": true,
+  "result": "",
+  "place": "Parque central"
+}

@@ -34,11 +34,12 @@ nunjucks.configure('views', {
    express: app
 });
 
-var indexRouter = require('./routes/index')
-var authRouter = require('./routes/auth')
-app.use('/', indexRouter)
-app.use('/auth', authRouter)
+//var indexRouter = require('./routes/index')
+//var authRouter = require('./routes/auth')
+//app.use('/', indexRouter)
+//app.use('/auth', authRouter)
 // CONFIG DE VISTAS - END
+app.use("/", require("./routes"))
 
 const port = process.env.PORT
 
