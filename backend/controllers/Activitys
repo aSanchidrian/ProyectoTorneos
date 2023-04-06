@@ -61,4 +61,21 @@ const createActivity = (
       }
     }
   );
-  module.exports = {createActivity}
+
+  const getActivitys = async (req, res) => {
+    try {
+        var data = ""
+          data = await Activity.findAll()
+        
+        res.send(data)
+    } catch (err) {
+        console.log(err) //Opcional
+        //handleHttpError(res, 'ERROR_GET_ITEMS', 404)
+        handleHttpError(res, 'ERROR_GET_ACTIVITY') //Si nos sirve el de por defecto que hemos establecido, no es necesario pasar el 403
+    }
+}
+
+const suscribeActivity = async (req,res)=>{
+    
+}
+  module.exports = {createActivity,getActivitys,suscribeActivity}
