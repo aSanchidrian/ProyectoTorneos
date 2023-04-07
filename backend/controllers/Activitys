@@ -3,7 +3,7 @@ const { matchedData } = require("express-validator")
 const router = express.Router()
 const mysql = require("mysql")
 const conection = require("../connection")
-const { Activity } = require("../models/models")
+const { Activity,ActivityPlayer } = require("../models/models")
 const { Op } = require("sequelize");
 
 require("dotenv").config()
@@ -76,6 +76,25 @@ const createActivity = (
 }
 
 const suscribeActivity = async (req,res)=>{
+    let userId = req.body.userId
+    let activityId = req.body.activityId
+    let permission=req.body.permission;
     
+    const [activityPlayer, created] = await ActivityPlayer.findOrCreate({ 
+        where: { 
+            [Op.or]: [ { userId: userId }, { activityId: activityId },{ permission: permission } ] 
+        },
+        defaults: {
+            userId: userId,
+            activityId: activityId,
+            permission: permission
+        }
+    })
+
+    if (!created)
+        return res.send("Already susbscribe")
+
+    
+    res.send(`SUBSCRIBE TO THE ACTIVITY`)
 }
   module.exports = {createActivity,getActivitys,suscribeActivity}
