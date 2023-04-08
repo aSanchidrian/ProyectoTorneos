@@ -12,7 +12,7 @@ import Welcome from "./Welcome";
 import Home from "./Home";
 
 function App() {
-  const [logued, setLogued] = useState(true);
+  const [logued, setLogued] = useState(false);
   let test=true;
 
   const isLogued = () => {
