@@ -1,5 +1,7 @@
 const { handleHttpError } = require("../utils/handleError")
 const { verifyToken } = require("../utils/handleJwt")
+const {User}=require("../models/models")
+
 
 
 const authMiddleware = async (req, res, next) => {
@@ -18,8 +20,13 @@ const authMiddleware = async (req, res, next) => {
             return
         }
 
-        //const user = await userModel.findById(dataToken._id)
-        //req.user = user // Inyecto al user en la petición
+        
+        const user = await User.findOne({
+            where: {
+              nickname: dataToken.nickname
+            }
+          });
+        req.user = user 
 
         next()
 

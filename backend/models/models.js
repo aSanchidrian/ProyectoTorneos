@@ -104,4 +104,4 @@ User.belongsToMany(Tournament, { through: TournamentPlayers });
 Tournament.belongsToMany(User, { through: TournamentPlayers });
 TournamentPlayers.sync()
 
-module.exports = { User, Team, TeamMember, TournamentPlayers, Activity, Calendar, Tournament }
+module.exports = { User, Team, TeamMember, TournamentPlayers, Activity, Calendar, Tournament,ActivityPlayer }

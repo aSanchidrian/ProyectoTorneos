@@ -76,25 +76,67 @@ const createActivity = (
 }
 
 const suscribeActivity = async (req,res)=>{
-    let userId = req.body.userId
+    //let userId = req.body.userId
+    let userId=req.user.id
+    //console.log(req.user);
     let activityId = req.body.activityId
     let permission=req.body.permission;
-    
-    const [activityPlayer, created] = await ActivityPlayer.findOrCreate({ 
-        where: { 
-            [Op.or]: [ { userId: userId }, { activityId: activityId },{ permission: permission } ] 
-        },
-        defaults: {
+
+    const activityPlayer2 = await ActivityPlayer.findOne({
+        where: {
+          userId: userId,
+          activityId: activityId
+        }
+      });
+      
+      if (activityPlayer2) {
+        // El usuario ya está relacionado con esta actividad
+        res.send(`ALREADY SUSBCRIBE`)
+      } else {
+        // El usuario no está relacionado con esta actividad
+        const activityPlayer = await ActivityPlayer.create({ 
+        
             userId: userId,
             activityId: activityId,
             permission: permission
-        }
-    })
+        
+         })
+         res.send(`SUBSCRIBE TO THE ACTIVITY`)
+      }
+      
+   
 
-    if (!created)
-        return res.send("Already susbscribe")
+    //if (!created)
+        //return res.send("Already susbscribe")
 
     
-    res.send(`SUBSCRIBE TO THE ACTIVITY`)
+    
 }
-  module.exports = {createActivity,getActivitys,suscribeActivity}
+
+
+  const getMyActivitys = async (req, res) => {
+    try {
+        var data = ""
+          data = await ActivityPlayer.findAll({
+            where: {
+              UserId: req.user.id
+            }
+          });
+          const activityPlayerIds = [];
+          for (let i = 0; i < data.length; i++) {
+            activityPlayerIds.push(data[i].activityId);
+          }
+          const relatedRecords = await Activity.findAll({
+            where: {
+              id: activityPlayerIds
+            }
+          });
+        
+        res.send(relatedRecords)
+    } catch (err) {
+        console.log(err) 
+        
+        handleHttpError(res, 'ERROR_GET_ACTIVITY')
+    }
+}
+  module.exports = {createActivity,getActivitys,suscribeActivity,getMyActivitys}

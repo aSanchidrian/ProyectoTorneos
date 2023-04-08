@@ -29,14 +29,15 @@ api_key: Api-publica-123
 ### todos usuario
 GET http://localhost:3000/auth/getUsers HTTP/1.1
 Content-Type: application/json
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODA5NDQ4NTksImV4cCI6MTY4MDk1MjA1OX0.DvJPe8BscFTFWMWaVNUwrfehYRIquygyzqesNEnjoXQ
 ######crear actividades
 POST http://localhost:3000/activity/createActivity HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODA5NDk0NDUsImV4cCI6MTY4MDk1NjY0NX0.lVn8xhV3iwi9gEdoRMtcsMtb4eSz2mn7uUXoo6cPpmY
 
 {
-  "name": "DAta vs cyber",
+  "name": "DAtas vs cyber",
   "description": "Partido de furbol",
   "sport": "Fútbol",
   "date": "2023-04-05T12:00:00Z",
@@ -49,17 +50,23 @@ api_key: Api-publica-123
 ### todos las actividades
 GET http://localhost:3000/activity/getActivitys HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODA5NDU0MDksImV4cCI6MTY4MDk1MjYwOX0.mjD6YyQpP8dXlbkjcWHwI-OfRtVATwCNtFDhPVFOto4
 
 ### todos las actividades
 POST http://localhost:3000/activity/suscribeActivity HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODA5NTUxNjksImV4cCI6MTY4MDk2MjM2OX0.pIhIghomzvSg7wq7CSTNGzHXTj-Skoo2yDbLWcCwouU
 
 {
-  "userId": 1,
+  
   "activityId": 1,
-  "permission": 0
+  "permission": 1
 }
+### todos las actividades de un usuario
+GET http://localhost:3000/activity/getMyActivitys HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODA5NTMxNDEsImV4cCI6MTY4MDk2MDM0MX0.V1a_ZXVbw63i20imBJ-zshNTnc_M7Ho0MQ62PGrfWME
 
 
 
