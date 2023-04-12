@@ -222,7 +222,7 @@ function Welcome(props) {
           </MDBContainer>
         </Modal.Body>
       </Modal>
-      <div className="mt-5 justify-content-start">
+      <div className="mt-5 justify-content-start" style={{  minHeight: "65%" }}>
         <div className="display-4">
           <p
             className="mr-auto"

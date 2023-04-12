@@ -44,7 +44,7 @@ body {
 }
 
 hr {
-  width: 90%;
+  width: 100%;
   height: 0.25rem;
   background-color: #0066ef;
   opacity: 1;
@@ -64,7 +64,6 @@ hr {
     font-size: 0.55rem;
   }
 }
-
 
 @media (min-width: 600px) {
   .rounded-blue-button {
@@ -104,11 +103,24 @@ hr {
   /* align-items: center; */
 }
 
+#holder {
+  display: flex;
+  flex-direction: column;
+}
+
+.container-3 {
+  display: flex;
+  flex-direction: column;
+  /* align-content: space-between; */
+  /* margin: auto; */
+}
+
+.container-3>div {
+  width: 90%;
+}
+
 footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 50px;
+  margin-top: auto;
 }
 
 @keyframes App-logo-spin {

@@ -11,7 +11,9 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
-function Welcome () {
+import Teams from "./Teams";
+
+function Home () {
 
   const [showContent, setShowContent] = useState(false);
   const [open, setOpen] = useState(false);
@@ -22,13 +24,7 @@ function Welcome () {
         setShowContent(<h1>Contenido del botón 1</h1>);
         break;
       case "btn-2":
-        setShowContent(<div><h1>Equipos:</h1>
-          <ul>
-          <li>SSH</li>
-          <li>Security Data</li>
-          <li>U-tad Lions</li>
-          <li>Deportivo booleano</li>
-        </ul></div>);
+        setShowContent(<Teams></Teams>);
         break;
       case "btn-3":
         setShowContent(<div>Contenido del botón 3</div>);
@@ -47,7 +43,7 @@ function Welcome () {
         <img
           className="mr-3 mt-3 responsive-image"
           src={usports_logo_mini}
-          style={{ width: "15%", height: "10%", marginLeft: "auto" }}
+          style={{ width: "20%", height: "10%", marginLeft: "auto" }}
         />
         <Container>
           <Navbar.Toggle />
@@ -116,7 +112,7 @@ function Welcome () {
       </div>
       <div
         className="d-flex justify-content-center containerPrincipal"
-        style={{ minHeight: "100hv", margin: "0 5% 0 5%",height: "79%" }}
+        style={{ minHeight: "100hv", height: "79%" }}
       >
         <div className="mr-2"
           style={{
@@ -163,7 +159,7 @@ function Welcome () {
             borderRadius: "30px",
           }}
         >
-          {/* cosas a cargar en el cuadrado grande */}
+          {/* cosas a cargar en el cuadrado grande*/}
           {showContent}
           
         </div>
@@ -172,4 +168,4 @@ function Welcome () {
   );
 };
 
-export default Welcome;
+export default Home;

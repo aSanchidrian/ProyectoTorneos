@@ -7,19 +7,18 @@ import web_icon from "./web-globe-icon-23.png";
 import { useState, useEffect } from "react";
 import "@fontsource/montserrat";
 
-
 import Welcome from "./Welcome";
 import Home from "./Home";
 
 function App() {
-  const [logued, setLogued] = useState(false);
-  let test=true;
+  const [logued, setLogued] = useState(true);
+  let test = true;
 
   const isLogued = () => {
     if (!logued) {
       return (
         <>
-          <Welcome state={{logued, test}}></Welcome>
+          <Welcome state={{ logued, test }}></Welcome>
         </>
       );
     } else {
@@ -31,28 +30,17 @@ function App() {
     }
   };
 
-  const gridStyle = {
-    display: "grid",
-    gridTemplateColumns: "repeat(2, 1fr)",
-    gridTemplateRows: "repeat(4, 1fr)",
-    gap: "1rem",
-    height: "100vh",
-  };
-
-  const sectionStyle = {
-    background: "#f2f2f2",
-    padding: "20px",
-  };
-
   return (
     <div className="App">
       {/* Aqui va la mitad de la pagina: welcome, home... */}
       <>{isLogued()}</>
       {/* parte de abajo */}
-      
-      <footer className="d-flex justify-content-center">
-        <hr />
-      </footer>
+
+      <div id="holder">
+        <footer className="d-flex justify-content-center">
+          <hr />
+        </footer>
+      </div>
     </div>
   );
 }
