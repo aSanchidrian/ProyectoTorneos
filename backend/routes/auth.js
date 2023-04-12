@@ -1,28 +1,32 @@
 const express = require("express");
 
-const router = express.Router()
+const router = express.Router();
 
-const {login, createUser,getUsers,deleteUser} = require("../controllers/Users")
-require("dotenv").config()
+const {
+  login,
+  createUser,
+  getUsers,
+  deleteUser,
+} = require("../controllers/Users");
+require("dotenv").config();
 
 // LOGIN PAGE - START
-router.get('/login', function(req, res, next) {
-    res.render('login.html');
+router.get("/login", function (req, res, next) {
+  res.render("../frontend/pagina_torneos/public/index.html"); // TODO (?)
 });
 
-router.post("/login", login) 
+router.post("/login", login);
 // LOGIN PAGE - END
 
-
 // REGISTER PAGE - START
-router.get('/register', function(req, res, next) {
-    res.render('register.html');
+router.get("/register", function (req, res, next) {
+  res.render("register.html");
 });
 
 router.get("/getUsers", getUsers);
-router.get("/delete/:nickname",deleteUser);
+router.get("/delete/:nickname", deleteUser);
 
-router.post("/register", createUser) 
+router.post("/register", createUser);
 // REGISTER PAGE - END
 
-module.exports = router
+module.exports = router;

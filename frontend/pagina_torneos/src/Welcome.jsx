@@ -1,4 +1,6 @@
 import React from "react";
+import axios from "axios";
+
 // import Redirect from "react-router-dom";
 import usports_logo from "./U-sports_logo.png";
 import utad_logo from "./img.swapcard.png";
@@ -39,17 +41,64 @@ function Welcome(props) {
     setJustifyActive(value);
   };
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
+    event.preventDefault(); //Evita que el formulario HTML se envíe automáticamente cuando se presiona el botón "submit"
 
-    if (event.target.id === "login") {
-      console.log("Login");
-      // coger los datos y enviarlos al back
-    } 
-    else if (event.target.id === "register") {
-      console.log("Register");
-      // coger los datos y enviarlos al back
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    try {
+      const response = await axios.post("http://localhost:3000/login", {
+        username,
+        password,
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
     }
   };
+
+  const handleRegister = async (event) => {
+    event.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const nickname = document.getElementById("nickname").value;
+    const sport = document.getElementById("sport").value;
+    const schedule = document.getElementById("schedule").value;
+    const password = document.getElementById("password").value;
+    const conf_password = document.getElementById("conf_password").value;
+
+    try {
+      const response = await axios.post("http://localhost:3000/login", {
+        name,
+        email,
+        nickname,
+        sport,
+        schedule,
+        password,
+        conf_password,
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  document.getElementById("login-form").addEventListener("submit", handleLogin);
+  document
+    .getElementById("register-form")
+    .addEventListener("submit", handleRegister);
+
+  // const handleLogin = (event) => {
+  //   if (event.target.id === "login") {
+  //     console.log("Login");
+  //     // coger los datos y enviarlos al back
+  //   } else if (event.target.id === "register") {
+  //     console.log("Register");
+  //     // coger los datos y enviarlos al back
+  //   }
+  // };
 
   return (
     <>
@@ -149,14 +198,14 @@ function Welcome(props) {
                 <br></br>
                 <MDBInput
                   wrapperClass="mb-4"
-                  label="Email address"
-                  id="form1"
-                  type="email"
+                  label="Username"
+                  id="username"
+                  type="text"
                 />
                 <MDBInput
                   wrapperClass="mb-4"
                   label="Password"
-                  id="form2"
+                  id="password"
                   type="password"
                 />
 
@@ -170,7 +219,11 @@ function Welcome(props) {
                   <a href="!#">Forgot password?</a>
                 </div>
 
-                <Button className="mb-4 w-100" id="login" onClick={handleLogin}>
+                <Button
+                  className="mb-4 w-100"
+                  id="login-form"
+                  onClick={handleLogin}
+                >
                   Sign in
                 </Button>
               </MDBTabsPane>
@@ -180,25 +233,43 @@ function Welcome(props) {
                 <MDBInput
                   wrapperClass="mb-4"
                   label="Name"
-                  id="form1"
-                  type="text"
-                />
-                <MDBInput
-                  wrapperClass="mb-4"
-                  label="Username"
-                  id="form1"
+                  id="name"
                   type="text"
                 />
                 <MDBInput
                   wrapperClass="mb-4"
                   label="Email"
-                  id="form1"
+                  id="email"
                   type="email"
                 />
                 <MDBInput
                   wrapperClass="mb-4"
+                  label="Nickname"
+                  id="nickname"
+                  type="text"
+                />
+                <MDBInput
+                  wrapperClass="mb-4"
+                  label="Sport"
+                  id="sport"
+                  type="text"
+                />
+                <MDBInput
+                  wrapperClass="mb-4"
+                  label="Schedule"
+                  id="schedule"
+                  type="text"
+                />
+                <MDBInput
+                  wrapperClass="mb-4"
                   label="Password"
-                  id="form1"
+                  id="password"
+                  type="password"
+                />
+                <MDBInput
+                  wrapperClass="mb-4"
+                  label="ConfirmPassword"
+                  id="conf_password"
                   type="password"
                 />
 
@@ -212,7 +283,7 @@ function Welcome(props) {
 
                 <Button
                   className="mb-4 w-100"
-                  id="register"
+                  id="register-form"
                   onClick={handleLogin}
                 >
                   Sign up
@@ -222,7 +293,7 @@ function Welcome(props) {
           </MDBContainer>
         </Modal.Body>
       </Modal>
-      <div className="mt-5 justify-content-start" style={{  minHeight: "65%" }}>
+      <div className="mt-5 justify-content-start" style={{ minHeight: "65%" }}>
         <div className="display-4">
           <p
             className="mr-auto"
