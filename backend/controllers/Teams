@@ -1,0 +1,19 @@
+const { Team } = require('../models/models');
+
+async function createTeam(req, res) {
+  try {
+    const { name, sport,logo, max_players_team } = req.body;
+    const team = await Team.create({
+      name,
+      sport,
+      logo,
+      max_players_team
+    });
+    res.status(201).json(team);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+}
+
+module.exports={createTeam}
