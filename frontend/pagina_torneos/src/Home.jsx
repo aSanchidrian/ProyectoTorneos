@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Accordion, Card } from 'react-bootstrap';
+import { Accordion, Card } from "react-bootstrap";
 import bell_logo from "./bell_icon.png";
 import usports_logo_mini from "./mini_usports.png";
 import calendar_logo from "./calendar_icon.jpg";
@@ -13,11 +13,10 @@ import Navbar from "react-bootstrap/Navbar";
 
 import Teams from "./Teams";
 
-function Home () {
-
+function Home() {
   const [showContent, setShowContent] = useState(false);
   const [open, setOpen] = useState(false);
-  
+
   function handleButtonClick(buttonId) {
     switch (buttonId) {
       case "btn-1":
@@ -97,6 +96,9 @@ function Home () {
                         Mis torneos
                       </a>
                       <a className="dropdown-item" href="#">
+                        Mis actividades
+                      </a>
+                      <a className="dropdown-item" href="#">
                         Cerrar sesion
                       </a>
                     </div>
@@ -114,7 +116,8 @@ function Home () {
         className="d-flex justify-content-center containerPrincipal"
         style={{ minHeight: "100hv", height: "79%" }}
       >
-        <div className="mr-2"
+        <div
+          className="mr-2"
           style={{
             width: "20%",
           }}
@@ -149,10 +152,19 @@ function Home () {
             onClick={() => handleButtonClick("btn-4")}
             style={{ width: "100%", height: "10%" }}
           >
+            <b>ACTIVIDADES</b>
+          </Button>
+          <Button
+            className="rounded-blue-button btn btn-primary"
+            id="btn-4"
+            onClick={() => handleButtonClick("btn-4")}
+            style={{ width: "100%", height: "10%" }}
+          >
             <b>ULTIMOS RESULTADOS</b>
           </Button>
         </div>
-        <div className="ml-2"
+        <div
+          className="ml-2"
           style={{
             width: "80%",
             border: "1.5px solid #0066ef",
@@ -161,11 +173,10 @@ function Home () {
         >
           {/* cosas a cargar en el cuadrado grande*/}
           {showContent}
-          
         </div>
       </div>
     </>
   );
-};
+}
 
 export default Home;
