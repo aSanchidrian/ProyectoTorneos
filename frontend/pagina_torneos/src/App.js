@@ -11,20 +11,26 @@ import Welcome from "./Welcome";
 import Home from "./Home";
 
 function App() {
-  const [logued, setLogued] = useState(true);
+  const [logued, setLogued] = useState(false);
   let test = true;
 
+  // useEffect(() => {
+  //   // Aquí podríamos consultar si el usuario ya ha iniciado sesión en el servidor
+  //   // y establecer el estado de logued en consecuencia.
+
+  //   setLogued(false);
+  // }, []);
   const isLogued = () => {
-    if (!logued) {
+    if (logued) {
       return (
         <>
-          <Welcome state={{ logued, test }}></Welcome>
+          <Home></Home>
         </>
       );
     } else {
       return (
         <>
-          <Home></Home>
+          <Welcome state={{ logued, test }}></Welcome>
         </>
       );
     }
