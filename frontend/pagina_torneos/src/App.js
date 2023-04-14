@@ -11,15 +11,15 @@ import Welcome from "./Welcome";
 import Home from "./Home";
 
 function App() {
-  const [logued, setLogued] = useState(false);
+  const [logued, setLogued] = useState(true);
   let test = true;
 
-  // useEffect(() => {
-  //   // Aquí podríamos consultar si el usuario ya ha iniciado sesión en el servidor
-  //   // y establecer el estado de logued en consecuencia.
+  useEffect(() => {
+    // Aquí podríamos consultar si el usuario ya ha iniciado sesión en el servidor
+    // y establecer el estado de logued en consecuencia.
 
-  //   setLogued(false);
-  // }, []);
+    setLogued(false);
+  }, []);
   const isLogued = () => {
     if (logued) {
       return (
