@@ -54,6 +54,8 @@ const Tournament = sequelize.define('tournaments', {
     max_teams: DataTypes.INTEGER,
     max_players_team: DataTypes.INTEGER,
     rounds: DataTypes.INTEGER,
+    type: DataTypes.INTEGER, // 1: solo equipos, 2: equipos + jugadores sueltos
+    privacity: DataTypes.INTEGER, // 1: torneo privado (admin elige a quien meter), 2: torneo público (cualquiera puede unirse)
 });
 
 Tournament.sync()
@@ -81,7 +83,7 @@ Activity.belongsToMany(Tournament, { through: Calendar });
 Calendar.sync()
 
 const ActivityPlayer = sequelize.define('activity_players', {
-    permission: DataTypes.TINYINT
+    permission: DataTypes.TINYINT,
 });
 
 User.belongsToMany(Activity, { through: ActivityPlayer });
@@ -102,6 +104,10 @@ const TournamentPlayers = sequelize.define('tournament_players', {
 
 User.belongsToMany(Tournament, { through: TournamentPlayers });
 Tournament.belongsToMany(User, { through: TournamentPlayers });
+
+Team.belongsToMany(Tournament, { through: TournamentPlayers });
+Tournament.belongsToMany(Team, { through: TournamentPlayers });
+
 TournamentPlayers.sync()
 
 module.exports = { User, Team, TeamMember, TournamentPlayers, Activity, Calendar, Tournament,ActivityPlayer }
