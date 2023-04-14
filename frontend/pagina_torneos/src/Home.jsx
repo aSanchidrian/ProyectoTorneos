@@ -86,7 +86,7 @@ function Home() {
                       />
                     </a>
                     <div
-                      className="dropdown-menu"
+                      className="dropdown-menu dropdown-menu-right"
                       aria-labelledby="navbarDropdownMenuLink"
                     >
                       <a className="dropdown-item" href="#">

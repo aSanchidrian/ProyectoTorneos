@@ -85,10 +85,10 @@ function Welcome(props) {
     }
   };
 
-  document.getElementById("login-form").addEventListener("submit", handleLogin);
-  document
-    .getElementById("register-form")
-    .addEventListener("submit", handleRegister);
+  // document.getElementById("login-form").addEventListener("submit", handleLogin);
+  // document
+  //   .getElementById("register-form")
+  //   .addEventListener("submit", handleRegister);
 
   // const handleLogin = (event) => {
   //   if (event.target.id === "login") {
@@ -231,43 +231,43 @@ function Welcome(props) {
               <MDBTabsPane show={justifyActive === "tab2"}>
                 <br></br>
                 <MDBInput
-                  wrapperClass="mb-4"
+                  wrapperClass="mb-3"
                   label="Name"
                   id="name"
                   type="text"
                 />
                 <MDBInput
-                  wrapperClass="mb-4"
+                  wrapperClass="mb-3"
                   label="Email"
                   id="email"
                   type="email"
                 />
                 <MDBInput
-                  wrapperClass="mb-4"
+                  wrapperClass="mb-3"
                   label="Nickname"
                   id="nickname"
                   type="text"
                 />
                 <MDBInput
-                  wrapperClass="mb-4"
+                  wrapperClass="mb-3"
                   label="Sport"
                   id="sport"
                   type="text"
                 />
                 <MDBInput
-                  wrapperClass="mb-4"
+                  wrapperClass="mb-3"
                   label="Schedule"
                   id="schedule"
                   type="text"
                 />
                 <MDBInput
-                  wrapperClass="mb-4"
+                  wrapperClass="mb-3"
                   label="Password"
                   id="password"
                   type="password"
                 />
                 <MDBInput
-                  wrapperClass="mb-4"
+                  wrapperClass="mb-3"
                   label="ConfirmPassword"
                   id="conf_password"
                   type="password"
@@ -284,7 +284,7 @@ function Welcome(props) {
                 <Button
                   className="mb-4 w-100"
                   id="register-form"
-                  onClick={handleLogin}
+                  onClick={handleRegister}
                 >
                   Sign up
                 </Button>
