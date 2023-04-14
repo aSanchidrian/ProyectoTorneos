@@ -75,7 +75,7 @@ const Team = sequelize.define('teams', {
 Team.sync()
 
 const Calendar = sequelize.define('calendar', {
-    date: DataTypes.DATE
+    
 });
 
 Tournament.belongsToMany(Activity, { through: Calendar });
@@ -104,10 +104,6 @@ const TournamentPlayers = sequelize.define('tournament_players', {
 
 User.belongsToMany(Tournament, { through: TournamentPlayers });
 Tournament.belongsToMany(User, { through: TournamentPlayers });
-
-Team.belongsToMany(Tournament, { through: TournamentPlayers });
-Tournament.belongsToMany(Team, { through: TournamentPlayers });
-
 TournamentPlayers.sync()
 
 module.exports = { User, Team, TeamMember, TournamentPlayers, Activity, Calendar, Tournament,ActivityPlayer }
