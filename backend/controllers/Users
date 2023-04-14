@@ -98,8 +98,6 @@ const getUsers = async (req, res) => {
   }
 };
 
-const { handleHttpError } = require("../utils/handleError");
-
 const checkUserRole = (req, res, next) => {
   // Comprueba que req.user esté definido y que tenga una propiedad 'role'
   if (req.user && req.user.role) {
