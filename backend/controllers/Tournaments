@@ -3,11 +3,115 @@ const { matchedData } = require("express-validator");
 const router = express.Router();
 const mysql = require("mysql");
 const conection = require("../connection");
-const { Tournament, TournamentPlayers } = require("../models/models");
+const { Tournament, TournamentPlayers, Team, TeamMember } = require("../models/models");
 const { Op } = require("sequelize");
 
 require("dotenv").config();
 db = conection;
+
+async function f_getPlayersInTournament(tournamentId) {
+    const playersInTournament = await TournamentPlayers.findAll({
+        where: {
+            id: tournamentId,
+        },
+    });
+
+    return playersInTournament
+}
+
+async function f_getTeamsInTournament(tourPlayerIds) {
+    const teamsIDInTournament = await TeamMember.findAll({
+        where: {
+            id: tourPlayerIds,
+        },
+    });
+
+    const teamIds = [];
+    for (let i = 0; i < teamsIDInTournament.length; i++)
+        teamIds.push(teamsIDInTournament[i].teamId);
+
+    const teamsInTournament = await Team.findAll({
+        where: {
+            id: teamIds,
+        },
+    })
+
+    return teamsInTournament
+}
+
+async function generateMatches(tournamentId, team_members) {
+    let teamCount = team_members.length
+
+    const partidos = [];
+    for (let i = 0; i < teamCount; i++) {
+        const fila = [];
+        for (let j = 0; j < teamCount; j++) {
+            if (i === j)
+                fila.push(null); // No hay enfrentamiento consigo mismo
+            else if (partidos[j] && partidos[j][i])
+                fila.push(partidos[j][i]); // Evita enfrentamientos duplicados
+            else {
+                const rnd = Math.floor(Math.random() * 3); // Genera un número aleatorio entre 0 y 2
+                let enfrentamiento;
+                if (rnd === 0)
+                    enfrentamiento = { local: i, visitante: j }; // Equipo i juega en casa contra equipo j
+                else if (rnd === 1)
+                    enfrentamiento = { local: j, visitante: i }; // Equipo j juega en casa contra equipo i
+                else
+                    enfrentamiento = null; // No hay enfrentamiento
+                
+                fila.push(enfrentamiento);
+            }
+        }
+        partidos.push(fila);
+    }
+
+    return partidos;
+}
+
+async function fixTeams() {
+
+}
+
+const getTeamsInTournament = async (req, res) => {
+    const playersInTournament = f_getPlayersInTournament(tournamentId)
+
+    const tourPlayerIds = [];
+    for (let i = 0; i < playersInTournament.length; i++)
+        tourPlayerIds.push(playersInTournament[i].userId);
+
+    res.send(f_getTeamsInTournament(tourPlayerIds))
+};
+
+const getPlayersInTournament = async (req, res) => {
+    res.send(f_getPlayersInTournament(req.body.tournamentId))
+};
+
+const generateTournament = async (req, res) => {
+    const { tournamentId } = req.body;
+    const tournamentInfo = await Tournament.findOne({ where: { id: tournamentId } })
+
+    // Recopilar todos los equipos y jugadores disponibles en el torneo
+    const playersInTournament = f_getPlayersInTournament(tournamentId)
+
+    const tourPlayerIds = [];
+    for (let i = 0; i < playersInTournament.length; i++)
+        tourPlayerIds.push(playersInTournament[i].userId);
+
+    const teamsInTournament = f_getTeamsInTournament(tourPlayerIds)
+    let teamsNumber = teamsInTournament.length
+    // si es modo equipos
+    // asignación de partidos
+    if (tournamentInfo.type == 1) {
+        generateMatches(tournamentId, teamsInTournament)
+    }
+    // si es modo equipos y jugadores
+    // ver jugadores sin equipo y asignarles a un equipo
+    else if (tournamentInfo.type == 2) {
+        fixTeams() // mete a jugadores sin equipo en equipos sin mucha gente o crea nuevos equipos si necesario
+        generateMatches(tournamentId, teamsInTournament)   
+    }
+}
 
 const createTournament = async (req, res) => {
     try {
@@ -59,13 +163,13 @@ const getMyTournaments = async (req, res) => {
             },
         });
 
-        const tourPlayerIds = [];
+        const tournamentIds = [];
         for (let i = 0; i < data.length; i++)
-            tourPlayerIds.push(data[i].tournamentId);
+            tournamentIds.push(data[i].tournamentIds);
         
         const relatedRecords = await Tournament.findAll({
             where: {
-                id: tourPlayerIds,
+                id: tournamentIds,
             },
         });
 
@@ -77,9 +181,5 @@ const getMyTournaments = async (req, res) => {
     }
 };
 
-const getTeamsInTournament = async (req, res) => {
-    
-};
 
-
-module.exports = { createTournament, getTournaments, suscribeTournament, getMyTournaments };
+module.exports = { createTournament, getTournaments, suscribeTournament, getMyTournaments, generateTournament, getPlayersInTournament, getTeamsInTournament };
