@@ -76,10 +76,10 @@ api_key: Api-publica-123
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODE0NjM2NTUsImV4cCI6MTY4MTQ3MDg1NX0.2VWHf-5S78faQV-CXk1TGb5y3HcX85iznWAL3mvjDJI
 
 {
-  "name":"Security Data",
+  "name":"Game team",
   "sport":"Football",
-  "logo":"asd",
-  "max_players_team":12
+  "logo":"logo.png",
+  "max_players_team":8
 }
 
 
@@ -94,7 +94,7 @@ api_key: Api-publica-123
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODE0NjYwOTEsImV4cCI6MTcxNzQ2MjQ5MX0.0EIrZmzCkrN320RWYdqsd6xHdhpmBsrr-4hzbNxzPcc
 
 {
- "id":1
+ "id":7
 }
 
 

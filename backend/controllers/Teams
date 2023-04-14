@@ -3,6 +3,7 @@ const { Team,TeamMember } = require('../models/models');
 
 async function createTeam(req, res) {
   try {
+    let userId = req.user.id;
     const { name, sport,logo, max_players_team } = req.body;
     const team = await Team.create({
       name,
@@ -10,6 +11,15 @@ async function createTeam(req, res) {
       logo,
       max_players_team
     });
+    const teamId=team.id;
+    const captain=1;
+    const TeamPlayer = await TeamMember.create({
+      userId: userId,
+      teamId: teamId,
+      captain: captain,
+    });
+
+
     res.status(201).json(team);
   } catch (error) {
     console.error(error);
