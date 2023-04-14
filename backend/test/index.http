@@ -29,7 +29,7 @@ api_key: Api-publica-123
 ### todos usuario
 GET http://localhost:3000/auth/getUsers HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODA5NDQ4NTksImV4cCI6MTY4MDk1MjA1OX0.DvJPe8BscFTFWMWaVNUwrfehYRIquygyzqesNEnjoXQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODE0NjYwOTEsImV4cCI6MTcxNzQ2MjQ5MX0.0EIrZmzCkrN320RWYdqsd6xHdhpmBsrr-4hzbNxzPcc
 ######crear actividades
 POST http://localhost:3000/activity/createActivity HTTP/1.1
 Content-Type: application/json
@@ -73,14 +73,30 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 POST http://localhost:3000/team/createTeam HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODEzNzM4ODEsImV4cCI6MTY4MTM4MTA4MX0.SAKCLQyB6Kyp27SOMDmAaDFOVxT8L3rwc58gNKqF8FM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODE0NjM2NTUsImV4cCI6MTY4MTQ3MDg1NX0.2VWHf-5S78faQV-CXk1TGb5y3HcX85iznWAL3mvjDJI
 
 {
   "name":"Security Data",
   "sport":"Football",
   "logo":"asd",
-  "max_players_team":12,
+  "max_players_team":12
 }
+
+
+#####get teams####
+GET http://localhost:3000/team/getTeams HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODE0NjM2NTUsImV4cCI6MTY4MTQ3MDg1NX0.2VWHf-5S78faQV-CXk1TGb5y3HcX85iznWAL3mvjDJI
+
+##########inscribe into a team###########
+POST  http://localhost:3000/team/joinTeam
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODE0NjYwOTEsImV4cCI6MTcxNzQ2MjQ5MX0.0EIrZmzCkrN320RWYdqsd6xHdhpmBsrr-4hzbNxzPcc
+
+{
+ "id":1
+}
+
 
 
 
