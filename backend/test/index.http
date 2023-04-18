@@ -50,7 +50,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 ### todos las actividades
 GET http://localhost:3000/activity/getActivitys HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODEzNzAwODYsImV4cCI6MTY4MTM3NzI4Nn0.leKq5RBTUT5kjON_H6aMvILUJgQBDEnfONXDk7MuIsY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODE3MzUzNzEsImV4cCI6MTcxNzczMTc3MX0.PD6rvE3WsL-7rZBeCPBCXci_oUs4fBDNkJcVwsbg08I
 
 ### todos las actividades
 POST http://localhost:3000/activity/suscribeActivity HTTP/1.1
