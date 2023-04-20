@@ -129,9 +129,36 @@ const getMyActivitys = async (req, res) => {
     handleHttpError(res, "ERROR_GET_ACTIVITY");
   }
 };
+
+
+const submitResult = async (req, res) => {
+  const { id } = req.params; // get the ID of the activity from the URL parameter
+  const { result } = req.body; // get the result data from the request body
+  const status=false;
+  try {
+    // find the activity with the given ID in the database
+    const activity = await Activity.findOne({ _id:id});
+
+    if (!activity) {
+      // if the activity doesn't exist, return a 404 error
+      return res.status(404).json({ message: `Activity with ID ${id} not found.` });
+    }
+
+    // update the result for the activity in the database
+    await activity.update({ result ,status});
+
+    // return a success message and the updated activity data
+    return res.json({ message: `Result submitted for activity ${id}.`, activity });
+  } catch (error) {
+    // if there's an error, return a 500 error with the error message
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createActivity,
   getActivitys,
   suscribeActivity,
   getMyActivitys,
+  submitResult,
 };
