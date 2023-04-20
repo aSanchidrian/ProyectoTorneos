@@ -39,7 +39,7 @@ async function f_getTeamsInTournament(tourPlayerIds) {
     return teamsInTournament
 }
 
-async function generateGroups(teamsCount) {
+function generateTeamsPerGroup(teamsCount) {
     let numGroups = 2
     let minTeamsInGroup = teamsCount / numGroups
     let maxTeamsInGroup = 5
@@ -64,7 +64,26 @@ async function generateGroups(teamsCount) {
             restoTeams -= 1
         }
     }
-    
+
+    return groups
+}
+
+function ordenamientoAleatorio(a, b) {
+    return 0.5 - Math.random();
+}
+  
+function generateGroups(teams) {
+    let teamsCount = teams.length
+    let groupsCount = generateTeamsPerGroup(teamsCount)
+    teams.sort(ordenamientoAleatorio)
+      
+    let groups = []
+    for(let i=0; i<groupsCount.length; i++) {
+        groups[i] = []
+        for(let j=0; j<groupsCount[i];j++)
+            groups[i].push(teams.pop())
+    }
+      
     return groups
 }
 
