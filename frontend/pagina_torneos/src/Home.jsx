@@ -12,6 +12,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
 import Teams from "./Teams";
+import Results from "./Results";
 
 function Home() {
   const [showContent, setShowContent] = useState(false);
@@ -28,8 +29,11 @@ function Home() {
       case "btn-3":
         setShowContent(<div>Contenido del botón 3</div>);
         break;
-      case "btn-4":
-        setShowContent(<span>Contenido del botón 4</span>);
+      // case "btn-4":
+      //   setShowContent(<span>Contenido del botón 4</span>);
+      //   break;
+      case "btn-5":
+        setShowContent(<Results></Results>);
         break;
       default:
         setShowContent(null);
@@ -93,11 +97,11 @@ function Home() {
                         Mi perfil
                       </a>
                       <a className="dropdown-item" href="#">
-                        Mis torneos
+                        Ajustes
                       </a>
-                      <a className="dropdown-item" href="#">
+                      {/* <a className="dropdown-item" href="#">
                         Mis actividades
-                      </a>
+                      </a> */}
                       <a className="dropdown-item" href="#">
                         Cerrar sesion
                       </a>
@@ -146,18 +150,18 @@ function Home() {
           >
             <b>TORNEOS</b>
           </Button>
-          <Button
+          {/* <Button
             className="rounded-blue-button btn btn-primary"
             id="btn-4"
             onClick={() => handleButtonClick("btn-4")}
             style={{ width: "100%", height: "10%" }}
           >
             <b>ACTIVIDADES</b>
-          </Button>
+          </Button> */}
           <Button
             className="rounded-blue-button btn btn-primary"
-            id="btn-4"
-            onClick={() => handleButtonClick("btn-4")}
+            id="btn-5"
+            onClick={() => handleButtonClick("btn-5")}
             style={{ width: "100%", height: "10%" }}
           >
             <b>ULTIMOS RESULTADOS</b>
