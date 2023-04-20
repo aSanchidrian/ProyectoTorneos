@@ -85,16 +85,28 @@ function generateGroups(teams) {
     return groups
 }
 
-async function generateMatches(tournamentId, tournamentTeams) {
+function generateMatchesInGroup(group) {
+    let numMatches = Math.ceil(group.length / 2)
+    let matches = []
+    
+    for(let i=0; i<numMatches; i++){
+        matches[i] = []
+        matches[i].push(group.pop() +' vs '+group.pop())
+    }
+    
+    return matches
+}
+
+async function generateTournament(tournamentId, tournamentTeams) {
     let teamsCount = tournamentTeams.length
     let groups = generateGroups(teamsCount)
-    let partidos = []
+    let matches = []
 
-    for(let v in groups) {
-
+    for(let v of groups) {
+        matches.push(generateMatchesInGroup(v))
     }
 
-    return partidos;
+    return matches;
 }
 
 async function fixTeams() {
@@ -131,13 +143,13 @@ const generateTournament = async (req, res) => {
     // si es modo equipos
     // asignación de partidos
     if (tournamentInfo.type == 1) {
-        generateMatches(tournamentId, teamsInTournament)
+        generateTournament(tournamentId, teamsInTournament)
     }
     // si es modo equipos y jugadores
     // ver jugadores sin equipo y asignarles a un equipo
     else if (tournamentInfo.type == 2) {
         fixTeams() // mete a jugadores sin equipo en equipos sin mucha gente o crea nuevos equipos si necesario
-        generateMatches(tournamentId, teamsInTournament)   
+        generateTournament(tournamentId, teamsInTournament)   
     }
 }
 
