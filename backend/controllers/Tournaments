@@ -39,34 +39,74 @@ async function f_getTeamsInTournament(tourPlayerIds) {
     return teamsInTournament
 }
 
-async function generateMatches(tournamentId, team_members) {
-    let teamCount = team_members.length
+function generateTeamsPerGroup(teamsCount) {
+    let numGroups = 2
+    let minTeamsInGroup = Math.floor(teamsCount / numGroups)
+    let maxTeamsInGroup = 5
 
-    const partidos = [];
-    for (let i = 0; i < teamCount; i++) {
-        const fila = [];
-        for (let j = 0; j < teamCount; j++) {
-            if (i === j)
-                fila.push(null); // No hay enfrentamiento consigo mismo
-            else if (partidos[j] && partidos[j][i])
-                fila.push(partidos[j][i]); // Evita enfrentamientos duplicados
-            else {
-                const rnd = Math.floor(Math.random() * 3); // Genera un número aleatorio entre 0 y 2
-                let enfrentamiento;
-                if (rnd === 0)
-                    enfrentamiento = { local: i, visitante: j }; // Equipo i juega en casa contra equipo j
-                else if (rnd === 1)
-                    enfrentamiento = { local: j, visitante: i }; // Equipo j juega en casa contra equipo i
-                else
-                    enfrentamiento = null; // No hay enfrentamiento
-                
-                fila.push(enfrentamiento);
-            }
+    while ( minTeamsInGroup > maxTeamsInGroup) {
+        numGroups += 1
+        minTeamsInGroup = Math.floor(teamsCount / numGroups)
+    }
+    
+    let groups = []
+    let groupCounter = 0
+    for(let i = 0; i<numGroups; i++){
+        let teamsInGroup = minTeamsInGroup
+        groupCounter += teamsInGroup
+        groups.push(teamsInGroup)
+    }
+    
+    let restoTeams = teamsCount % numGroups
+    for(let i=0; i<groups.length; i++) {
+        if(restoTeams != 0) {
+            groups[i] += 1
+            restoTeams -= 1
         }
-        partidos.push(fila);
     }
 
-    return partidos;
+    return groups
+}
+
+function ordenamientoAleatorio(a, b) { return 0.5 - Math.random() }
+
+function generateGroups(teams) {
+    let teamsCount = teams.length
+    let groupsCount = generateTeamsPerGroup(teamsCount)
+    teams.sort(ordenamientoAleatorio)
+    
+    let groups = []
+    for(let i=0; i<groupsCount.length; i++) {
+        groups[i] = []
+        for(let j=0; j<groupsCount[i];j++)
+            groups[i].push(teams.pop())
+    }
+    
+    return groups
+}
+
+function generateMatchesInGroup(group) {
+    let numMatches = Math.ceil(group.length / 2)
+    let matches = []
+    
+    for(let i=0; i<numMatches; i++){
+        matches[i] = []
+        matches[i].push(group.pop() +' vs '+group.pop())
+    }
+    
+    return matches
+}
+
+async function generateTournament(tournamentId, tournamentTeams) {
+    let teamsCount = tournamentTeams.length
+    let groups = generateGroups(teamsCount)
+    let matches = []
+
+    for(let v of groups) {
+        matches.push(generateMatchesInGroup(v))
+    }
+
+    return matches;
 }
 
 async function fixTeams() {
@@ -103,13 +143,13 @@ const generateTournament = async (req, res) => {
     // si es modo equipos
     // asignación de partidos
     if (tournamentInfo.type == 1) {
-        generateMatches(tournamentId, teamsInTournament)
+        generateTournament(tournamentId, teamsInTournament)
     }
     // si es modo equipos y jugadores
     // ver jugadores sin equipo y asignarles a un equipo
     else if (tournamentInfo.type == 2) {
         fixTeams() // mete a jugadores sin equipo en equipos sin mucha gente o crea nuevos equipos si necesario
-        generateMatches(tournamentId, teamsInTournament)   
+        generateTournament(tournamentId, teamsInTournament)   
     }
 }
 
