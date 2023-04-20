@@ -39,31 +39,42 @@ async function f_getTeamsInTournament(tourPlayerIds) {
     return teamsInTournament
 }
 
-async function generateMatches(tournamentId, team_members) {
-    let teamCount = team_members.length
+async function generateGroups(teamsCount) {
+    let numGroups = 2
+    let minTeamsInGroup = teamsCount / numGroups
+    let maxTeamsInGroup = 5
 
-    const partidos = [];
-    for (let i = 0; i < teamCount; i++) {
-        const fila = [];
-        for (let j = 0; j < teamCount; j++) {
-            if (i === j)
-                fila.push(null); // No hay enfrentamiento consigo mismo
-            else if (partidos[j] && partidos[j][i])
-                fila.push(partidos[j][i]); // Evita enfrentamientos duplicados
-            else {
-                const rnd = Math.floor(Math.random() * 3); // Genera un número aleatorio entre 0 y 2
-                let enfrentamiento;
-                if (rnd === 0)
-                    enfrentamiento = { local: i, visitante: j }; // Equipo i juega en casa contra equipo j
-                else if (rnd === 1)
-                    enfrentamiento = { local: j, visitante: i }; // Equipo j juega en casa contra equipo i
-                else
-                    enfrentamiento = null; // No hay enfrentamiento
-                
-                fila.push(enfrentamiento);
-            }
+    while ( minTeamsInGroup > maxTeamsInGroup) {
+        numGroups += 1
+        minTeamsInGroup = Math.round(teamsCount / numGroups)
+    }
+    
+    let groups = []
+    let groupCounter = 0
+    for(let i = 0; i<numGroups; i++){
+        let teamsInGroup = minTeamsInGroup
+        groupCounter += teamsInGroup
+        groups.push(teamsInGroup)
+    }
+    
+    let restoTeams = teamsCount % numGroups
+    for(let i=0; i<groups.length; i++) {
+        if(restoTeams != 0) {
+            groups[i] += 1
+            restoTeams -= 1
         }
-        partidos.push(fila);
+    }
+    
+    return groups
+}
+
+async function generateMatches(tournamentId, tournamentTeams) {
+    let teamsCount = tournamentTeams.length
+    let groups = generateGroups(teamsCount)
+    let partidos = []
+
+    for(let v in groups) {
+
     }
 
     return partidos;
