@@ -4,9 +4,9 @@ Content-Type: application/json
 api_key: Api-publica-123
 
 {
-    "name": "javi",
-    "email": "javi@u-tad.com",
-    "nickname":"javichu",
+    "name": "jav2i",
+    "email": "javi2@u-tad.com",
+    "nickname":"javichu2",
     "sport":"futbol,padel",
     "schedule":"11:00-12:00",
     "password":"javiScript",
@@ -50,7 +50,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 ### todos las actividades
 GET http://localhost:3000/activity/getActivitys HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODE3MzUzNzEsImV4cCI6MTcxNzczMTc3MX0.PD6rvE3WsL-7rZBeCPBCXci_oUs4fBDNkJcVwsbg08I
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsIR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODE4MTYzNTcsImV4cCI6MTcxNzgxMjc1N30.spwbV-WHN13dEX7N0D59TzkA3YkxvuZVCPRpGIv9vPE
 
 ### todos las actividades
 POST http://localhost:3000/activity/suscribeActivity HTTP/1.1
@@ -73,7 +73,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 POST http://localhost:3000/team/createTeam HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODE0NjM2NTUsImV4cCI6MTY4MTQ3MDg1NX0.2VWHf-5S78faQV-CXk1TGb5y3HcX85iznWAL3mvjDJI
+Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODE5NzU0MTEsImV4cCI6MTcxNzk3MTgxMX0.koSaCMtFcdAYCj8pCXdqc5rNX3OK_4riROVLbrOC7GA
 
 {
   "name":"Game team",
@@ -85,17 +85,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 
 #####get teams####
 GET http://localhost:3000/team/getTeams HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODE0NjM2NTUsImV4cCI6MTY4MTQ3MDg1NX0.2VWHf-5S78faQV-CXk1TGb5y3HcX85iznWAL3mvjDJI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODE5NzU0MTEsImV4cCI6MTcxNzk3MTgxMX0.koSaCMtFcdAYCj8pCXdqc5rNX3OK_4riROVLbrOC7GA
 
 ##########inscribe into a team###########
 POST  http://localhost:3000/team/joinTeam
 Content-Type: application/json
 api_key: Api-publica-123
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODE0NjYwOTEsImV4cCI6MTcxNzQ2MjQ5MX0.0EIrZmzCkrN320RWYdqsd6xHdhpmBsrr-4hzbNxzPcc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyIiwiaWF0IjoxNjgxOTc1NTU2LCJleHAiOjE3MTc5NzE5NTZ9.6MOk8FqX6Bpw_p52VjVDZok9r21dW-qtHMNwbJrlHsA
 
 {
- "id":7
+ "id":9
 }
+
+#####get my team####
+GET http://localhost:3000/team/myTeams HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyIiwiaWF0IjoxNjgxOTc3NjA5LCJleHAiOjE3MTc5NzQwMDl9.x2k_oTKtFPWvyBbRAeO7Q2xuAjiD_Kr9f2NcbYwV2Vs
 
 
 

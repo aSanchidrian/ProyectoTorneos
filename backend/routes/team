@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router()
 
-const {createTeam,getTeams} = require("../controllers/Teams")
+const {createTeam,getTeams,myTeams} = require("../controllers/Teams")
 const authMiddleware = require("../middleware/session");
 const { joinTeam } = require("../controllers/Teams");
 
@@ -11,7 +11,8 @@ router.post("/createTeam",authMiddleware,createTeam);
 
 router.get("/getTeams",authMiddleware,getTeams);
 
-router.post("/joinTeam",authMiddleware,joinTeam)
+router.post("/joinTeam",authMiddleware,joinTeam);
 
+router.get("/myTeams",authMiddleware,myTeams);
 
 module.exports=router;

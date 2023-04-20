@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const router = express.Router();
 const mysql = require("mysql");
 const conection = require("../connection");
+const { handleHttpError } = require('../utils/handleError')
 const { verifyToken } = require("../utils/handleJwt");
 const { tokenSign } = require("../utils/handleJwt");
 const { User } = require("../models/models");

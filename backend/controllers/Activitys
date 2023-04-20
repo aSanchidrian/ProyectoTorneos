@@ -3,6 +3,7 @@ const { matchedData } = require("express-validator");
 const router = express.Router();
 const mysql = require("mysql");
 const conection = require("../connection");
+const { handleHttpError } = require('../utils/handleError')
 const { Activity, ActivityPlayer } = require("../models/models");
 const { Op } = require("sequelize");
 

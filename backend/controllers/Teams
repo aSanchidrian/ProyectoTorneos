@@ -1,5 +1,8 @@
 const { Team,TeamMember } = require('../models/models');
-
+const { handleHttpError } = require('../utils/handleError')
+const { matchedData } = require("express-validator");
+const conection = require("../connection");
+const express = require("express");
 
 async function createTeam(req, res) {
   try {
@@ -72,4 +75,24 @@ if (TeamPlayer) {
 //return res.send("Already susbscribe")
 }
 
-module.exports={createTeam,getTeams,joinTeam}
+
+const myTeams = async (req, res) => {
+  try {
+    const idUs = req.user.id;
+
+    const teamMemberData = await TeamMember.findAll({ where: { userId: idUs } });
+    const teamIds = teamMemberData.map((teamMemberData) => teamMemberData.teamId);
+    console.log(teamIds);
+
+    const teamData = await Team.findAll({ where: { id: teamIds } });
+
+    res.send(teamData);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send("ERROR GETTING YOUR TEAMS");
+  }
+};
+
+
+
+module.exports={createTeam,getTeams,joinTeam,myTeams}
