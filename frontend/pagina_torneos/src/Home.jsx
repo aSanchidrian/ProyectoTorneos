@@ -13,6 +13,8 @@ import Navbar from "react-bootstrap/Navbar";
 
 import Teams from "./Teams";
 import Results from "./Results";
+import MiPerfil from "./MiPerfil";
+import Ajustes from "./Ajustes";
 
 function Home() {
   const [showContent, setShowContent] = useState(false);
@@ -34,6 +36,15 @@ function Home() {
       //   break;
       case "btn-5":
         setShowContent(<Results></Results>);
+        break;
+      case "miperfil":
+        setShowContent(<MiPerfil></MiPerfil>);
+        break;
+      case "ajustes":
+        setShowContent(<Ajustes></Ajustes>);
+        break;
+      case "cerrarsesion":
+        setShowContent(<div>Cerrar sesion</div>);
         break;
       default:
         setShowContent(null);
@@ -93,16 +104,28 @@ function Home() {
                       className="dropdown-menu dropdown-menu-right"
                       aria-labelledby="navbarDropdownMenuLink"
                     >
-                      <a className="dropdown-item" href="#">
+                      <a
+                        className="dropdown-item"
+                        href="#"
+                        onClick={() => handleButtonClick("miperfil")}
+                      >
                         Mi perfil
                       </a>
-                      <a className="dropdown-item" href="#">
+                      <a
+                        className="dropdown-item"
+                        href="#"
+                        onClick={() => handleButtonClick("ajustes")}
+                      >
                         Ajustes
                       </a>
                       {/* <a className="dropdown-item" href="#">
                         Mis actividades
                       </a> */}
-                      <a className="dropdown-item" href="#">
+                      <a
+                        className="dropdown-item"
+                        href="#"
+                        onClick={() => handleButtonClick("cerrarsesion")}
+                      >
                         Cerrar sesion
                       </a>
                     </div>
