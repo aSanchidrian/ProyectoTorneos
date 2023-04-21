@@ -1,91 +1,48 @@
-// // import React, { useState } from "react";
-// // import { Accordion, Card } from "react-bootstrap";
-// // import bell_logo from "./bell_icon.png";
-// // import usports_logo_mini from "./mini_usports.png";
-// // import calendar_logo from "./calendar_icon.jpg";
-// // import web_icon from "./web-globe-icon-23.png";
-
-// // import "@fontsource/montserrat";
-// // import Button from "react-bootstrap/Button";
-// // import Container from "react-bootstrap/Container";
-// // import Nav from "react-bootstrap/Nav";
-// // import Navbar from "react-bootstrap/Navbar";
-
-// function Teams() {
-//   return (
-//     <>
-//       {/* <div
-//         className="d-flex justify-content-center container-3"
-//         style={{ flexDirection: "column", height: "100%", margin: "0.25% 2% 0.25% 2%", alignItems: "center" }}
-//       >
-//         <div
-//           style={{
-//             height: "30%",
-//             border: "1.5px solid #0066ef",
-//             borderRadius: "30px",
-//           }}
-//         >
-
-//         </div>
-//         <h1></h1>
-//         <div
-//           style={{
-//             height: "30%",
-//             border: "1.5px solid #0066ef",
-//             borderRadius: "30px",
-//           }}
-//         >
-//           <h3 style={{color: "#0066ef"}}><b>Equipos</b></h3>
-//         </div>
-//         <h1></h1>
-//         <div
-//           style={{
-//             height: "30%",
-//             border: "1.5px solid #0066ef",
-//             borderRadius: "30px",
-//           }}
-//         >
-//           <h3 style={{color: "#0066ef"}}><b>Publicaciones</b></h3>
-//         </div>
-//       </div> */}
-//     </>
-//   );
-// }
-
-// export default Teams;
-
 import { useState, useEffect } from "react";
 import axios from "axios";
 
 function Teams() {
-  const [teams, setTeams] = useState([]);
+    const [team, setTeam] = useState([]);
 
-  const getTeams = async () => {
-    const response = await axios.get("URL_BACKEND/equipos");
-    setTeams(response.data);
-  };
+    useEffect(() => {
+        axios.get("http://localhost:3001/team/getTeams", {
+            headers: {
+                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODIwNzc0MDYsImV4cCI6MTcxODA3MzgwNn0.vFpIRgcApHpNNrgA8oGRUSpfrdMR6NPb0jo_2ZhnSeQ`
+            }
+        }).then((response) => {
+            setTeam(response.data);
+        });
+    }, []);
 
-  useEffect(() => {
-    getTeams();
-  }, []);
-
-  return (
-    <div className="teams-container">
-      {teams.map((team) => (
-        <div key={team.id} className="team-box">
-          <img src={team.logo} alt={team.nombre} />
-          <h2>{team.nombre}</h2>
-          <p>Torneos: {team.torneos.join(", ")}</p>
-          <p>Miembros:</p>
-          <ul>
-            {team.miembros.map((miembro) => (
-              <li key={miembro.id}>{miembro.nombre}</li>
-            ))}
-          </ul>
+    return (
+        <div>
+            
+            {team.length > 0 ? (
+                team.map((equipo) => (
+                  <div>
+                        <div className="card">
+                            <h5 className="card-header" data-toggle="collapse" href={"#collapseExample" + equipo.id}
+                               aria-expanded="false" aria-controls="collapseExample">
+                                <img className="card-img-top" src={equipo.logo} width="100" height="100">{equipo.name}</img>
+                                
+                            </h5>
+                            <div className="collapse card-body" id={"collapseExample" + equipo.id}>
+                                <div>
+                                  <a>
+                                    Tipo de equipo: {equipo.sport}
+                                    <br></br>
+                                    Tamaño del equipo: {equipo.max_players_team}
+                                  </a>
+                                </div>
+                            </div>
+                        </div>
+                  </div>
+                ))
+            ) : (
+                <p style={{color:"black"}}>No hay actividades disponibles...</p>
+            )}
         </div>
-      ))}
-    </div>
-  );
+    );
 }
 
 export default Teams;

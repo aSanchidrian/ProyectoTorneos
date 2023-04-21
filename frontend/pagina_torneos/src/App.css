@@ -20,6 +20,13 @@ body,
   }
 }
 
+.scrollable {
+  overflow: auto; /* permite el desplazamiento vertical */
+  margin-left: 0.5rem !important;
+}
+.scrollable::-webkit-scrollbar {
+  display: none; /* oculta la barra de desplazamiento */
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

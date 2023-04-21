@@ -1,5 +1,6 @@
 const express = require("express")
 const app = express()
+const cors = require('cors');
 const path = require('path')
 const conection=require("./connection")
 const nunjucks = require('nunjucks')
@@ -9,6 +10,10 @@ const { User } = require("./models/models")
 require("dotenv").config()
 
 app.use(express.json())
+
+app.use(cors({
+   origin: 'http://localhost:3000'
+ }));
 
 // CONEXIÓN BD - START
 
