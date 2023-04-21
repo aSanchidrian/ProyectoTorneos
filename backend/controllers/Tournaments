@@ -68,6 +68,8 @@ function generateTeamsPerGroup(teamsCount) {
     return groups
 }
 
+// ROUND ROBIN SCHEDULE
+
 function ordenamientoAleatorio(a, b) { return 0.5 - Math.random() }
 
 function generateGroups(teams) {
@@ -85,29 +87,59 @@ function generateGroups(teams) {
     return groups
 }
 
-function generateMatchesInGroup(group) {
-    let numMatches = Math.ceil(group.length / 2)
-    let matches = []
+function generateMatchesImpar(group, numTeams, numJornadas) {
+    let schedule = []
     
-    for(let i=0; i<numMatches; i++){
-        matches[i] = []
-        matches[i].push(group.pop() +' vs '+group.pop())
+    for (let i=0; i<numJornadas; i++) {
+        let matches = []
+        
+        for(let j=0; j<(numTeams/2); j++) {
+            let match = [group[j], group[numTeams - 1 - j]]
+            matches.push(match)
+        }
+        
+        schedule.push(matches)
+        const firstTeam = group.shift()
+        group.push(firstTeam)
     }
     
-    return matches
+    return schedule
 }
 
-async function generateTournament(tournamentId, tournamentTeams) {
-    let teamsCount = tournamentTeams.length
-    let groups = generateGroups(teamsCount)
-    let matches = []
+function generateMatchesPar(group, numTeams, numJornadas) {
+    let schedule = []
+    
+    return schedule
+}
 
-    for(let v of groups) {
-        matches.push(generateMatchesInGroup(v))
+function generateMatchesInGroup(group) {
+    let numTeams = group.length
+    let numJornadas = numTeams
+    let numMatchesPerJornada = Math.ceil(numTeams / 2)
+
+    let schedule = numTeams % 2 == 0 
+        ? generateMatchesPar(group, numTeams, numJornadas)
+        : generateMatchesImpar(group, numTeams, numJornadas)
+    
+    console.log(schedule)
+    return schedule
+}
+
+function generateTournament(tournamentId, tournamentTeams) {
+    let groups = generateGroups(tournamentTeams)
+    let matches = []
+    
+    for(let i=0; i<groups.length; i++) {
+        console.log(`Grupo ${i+1}: ${groups[i]}`)
+        matches.push(generateMatchesInGroup(groups[i]))
     }
 
     return matches;
 }
+
+// var equipos = ['Real Madrid', 'Barça', 'Atlético de Madrid', 'Sevilla', 'Betis', 'Cádiz', 'Valencia', 'Villareal', 'Osasuna', 'Real Sociedad', 'Celta', 'Athletic Bilbao', 'RCD Espanyol']
+
+// generateTournament(1, equipos)
 
 async function fixTeams() {
 
