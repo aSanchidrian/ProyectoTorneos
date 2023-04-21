@@ -70,6 +70,35 @@ function generateTeamsPerGroup(teamsCount) {
 
 // ROUND ROBIN SCHEDULE
 
+function generateTeamsPerGroup(teamsCount) {
+    let numGroups = 2
+    let minTeamsInGroup = Math.floor(teamsCount / numGroups)
+    let maxTeamsInGroup = 5
+
+    while ( minTeamsInGroup > maxTeamsInGroup) {
+        numGroups += 1
+        minTeamsInGroup = Math.floor(teamsCount / numGroups)
+    }
+    
+    let groups = []
+    let groupCounter = 0
+    for(let i = 0; i<numGroups; i++){
+        let teamsInGroup = minTeamsInGroup
+        groupCounter += teamsInGroup
+        groups.push(teamsInGroup)
+    }
+    
+    let restoTeams = teamsCount % numGroups
+    for(let i=0; i<groups.length; i++) {
+        if(restoTeams != 0) {
+            groups[i] += 1
+            restoTeams -= 1
+        }
+    }
+
+    return groups
+}
+
 function ordenamientoAleatorio(a, b) { return 0.5 - Math.random() }
 
 function generateGroups(teams) {
@@ -108,6 +137,19 @@ function generateMatchesImpar(group, numTeams, numJornadas) {
 
 function generateMatchesPar(group, numTeams, numJornadas) {
     let schedule = []
+    
+    for (let i=0; i<(numJornadas-1); i++) {
+        let matches = []
+        console.log(group)
+        for(let j=0; j<(numTeams/2); j++) {
+            let match = [group[j], group[numTeams - 1 - j]]
+            matches.push(match)
+        }
+        
+        schedule.push(matches)
+        const firstTeam = group.shift()
+        group.push(firstTeam)
+    }
     
     return schedule
 }
