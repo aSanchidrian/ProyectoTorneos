@@ -17,7 +17,7 @@ import MiPerfil from "./MiPerfil";
 import Ajustes from "./Ajustes";
 import Actividades from "./Actividades";
 
-function Home() {
+function Home(props) {
   const [showContent, setShowContent] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -45,12 +45,16 @@ function Home() {
         setShowContent(<Ajustes></Ajustes>);
         break;
       case "cerrarsesion":
-        setShowContent(<div>Cerrar sesion</div>);
+        
         break;
       default:
         setShowContent(null);
     }
   }
+
+  const handleLogout = async () => {
+    props.setLogued(false);
+  };
 
   return (
     <>
@@ -125,7 +129,7 @@ function Home() {
                       <a
                         className="dropdown-item"
                         href="#"
-                        onClick={() => handleButtonClick("cerrarsesion")}
+                        onClick={handleLogout}
                       >
                         Cerrar sesion
                       </a>
