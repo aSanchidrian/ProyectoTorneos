@@ -15,6 +15,6 @@ router.post("/joinTeam",authMiddleware,joinTeam);
 
 router.get("/myTeams",authMiddleware,myTeams);
 
-router.get('/teams-with-users',authMiddleware,getTeamUsers)
+router.get('/teams-with-users',authMiddleware,getTeamUsers);
 
 module.exports=router;

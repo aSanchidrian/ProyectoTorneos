@@ -197,9 +197,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 }
 
 #####get my team####
-GET http://localhost:3000/team/myTeams HTTP/1.1
+GET http://localhost:3001/team/myTeams HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODE5ODA1OTEsImV4cCI6MTcxNzk3Njk5MX0.4vwb3kbhxAhrEmnFw02Xk1Sbd1cburrUwGBiygRueno
 
-
+#######get de teams with the useres######
+GET http://localhost:3001/team/teams-with-users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODE5ODA1OTEsImV4cCI6MTcxNzk3Njk5MX0.4vwb3kbhxAhrEmnFw02Xk1Sbd1cburrUwGBiygRueno
 
 

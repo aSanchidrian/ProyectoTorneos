@@ -1,4 +1,4 @@
-const { Team,TeamMember } = require('../models/models');
+const { Team,TeamMember,User } = require('../models/models');
 const { handleHttpError } = require('../utils/handleError')
 const { matchedData } = require("express-validator");
 const conection = require("../connection");
@@ -107,6 +107,7 @@ const getTeamUsers = async (req, res) => {
               }
           }
       });
+      
 
       const result = teams.map(team => ({
           teamName: team.name,
