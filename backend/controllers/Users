@@ -179,4 +179,4 @@ const updateForAdmin= async (req,res)=>{
 
 
 
-module.exports = { createUser, login, deleteUser, getUsers, checkUserRole,update,updateForAdmin };
+module.exports = { createUser, login, deleteUser, getUsers,update,updateForAdmin };

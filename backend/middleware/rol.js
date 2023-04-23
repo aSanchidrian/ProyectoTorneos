@@ -6,6 +6,7 @@ const { handleHttpError } = require("../utils/handleError")
  */
 
 const checkAdminRole = (req, res, next) => {
+    console.log(req.user.nickname)
     // Comprueba que req.user esté definido y que tenga una propiedad 'role'
     if (req.user.role==1) {
       // Retorna el rol del usuario
@@ -18,4 +19,4 @@ const checkAdminRole = (req, res, next) => {
   };
 
 
-  module.exports = checkUserRole
+  module.exports = checkAdminRole

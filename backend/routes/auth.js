@@ -1,5 +1,6 @@
 const express = require("express");
 const authMiddleware = require("../middleware/session")
+const checkAdminRole = require("../middleware/rol")
 
 const router = express.Router();
 
@@ -35,9 +36,13 @@ router.post("/update",authMiddleware,update);
 
 //administrador
 
-router.put("/update/:id",authMiddleware,updateForAdmin);
-router.delete("/delete/:nickname", deleteUser);
-router.get("/getUsers", getUsers);
+router.put("/update/:id",authMiddleware,checkAdminRole,updateForAdmin);
+router.delete("/delete/:nickname",authMiddleware,checkAdminRole, deleteUser);
+router.get("/getUsers",authMiddleware, checkAdminRole,getUsers);
+
+
+
+
 
 
 module.exports = router;
