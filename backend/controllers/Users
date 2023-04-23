@@ -80,7 +80,7 @@ const deleteUser = async (req, res) => {
     data = await User.destroy({ where: { nickname: nickname } });
 
     
-    res.send.status(200);
+    return res.status(200).json("usuario borrado");
   } catch (err) {
     console.log(err);
     handleHttpError(res, "ERROR_DELETE_USER");
@@ -92,7 +92,7 @@ const getUsers = async (req, res) => {
     var data = "";
     data = await User.findAll();
 
-    return res.status(200);
+    return res.status(200).json(data);
   } catch (err) {
     console.log(err); //Opcional
     //handleHttpError(res, 'ERROR_GET_ITEMS', 404)
