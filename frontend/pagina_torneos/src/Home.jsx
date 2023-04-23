@@ -15,6 +15,7 @@ import Teams from "./Teams";
 import Results from "./Results";
 import MiPerfil from "./MiPerfil";
 import Ajustes from "./Ajustes";
+import Actividades from "./Actividades";
 
 function Home() {
   const [showContent, setShowContent] = useState(false);
@@ -31,9 +32,9 @@ function Home() {
       case "btn-3":
         setShowContent(<div>Contenido del botón 3</div>);
         break;
-      // case "btn-4":
-      //   setShowContent(<span>Contenido del botón 4</span>);
-      //   break;
+       case "btn-4":
+         setShowContent(<Actividades></Actividades>);
+         break;
       case "btn-5":
         setShowContent(<Results></Results>);
         break;
@@ -173,14 +174,14 @@ function Home() {
           >
             <b>TORNEOS</b>
           </Button>
-          {/* <Button
+          <Button
             className="rounded-blue-button btn btn-primary"
             id="btn-4"
             onClick={() => handleButtonClick("btn-4")}
             style={{ width: "100%", height: "10%" }}
           >
             <b>ACTIVIDADES</b>
-          </Button> */}
+          </Button>
           <Button
             className="rounded-blue-button btn btn-primary"
             id="btn-5"
@@ -191,11 +192,11 @@ function Home() {
           </Button>
         </div>
         <div
-          className="ml-2"
+          className="scrollable"
           style={{
             width: "80%",
             border: "1.5px solid #0066ef",
-            borderRadius: "30px",
+            borderRadius: "30px"
           }}
         >
           {/* cosas a cargar en el cuadrado grande*/}

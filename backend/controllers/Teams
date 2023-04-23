@@ -94,5 +94,32 @@ const myTeams = async (req, res) => {
 };
 
 
+const getTeamUsers = async (req, res) => {
+  try {
+      const teams = await Team.findAll({
+          attributes: ['name'],
+          include: {
+              model: User,
+              attributes: ['name'],
+              through: {
+                  model: TeamMember,
+                  attributes: [] // No queremos mostrar información adicional del modelo intermedio
+              }
+          }
+      });
 
-module.exports={createTeam,getTeams,joinTeam,myTeams}
+      const result = teams.map(team => ({
+          teamName: team.name,
+          members: team.users.map(user => user.name)
+      }));
+
+      res.status(200).json(result);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error al obtener los equipos y sus miembros' });
+  }
+};
+
+
+
+module.exports={createTeam,getTeams,joinTeam,myTeams,getTeamUsers}
