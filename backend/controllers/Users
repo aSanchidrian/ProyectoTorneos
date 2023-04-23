@@ -178,18 +178,5 @@ const updateForAdmin= async (req,res)=>{
 };
 
 
-const checkUserRole = (req, res, next) => {
-  // Comprueba que req.user esté definido y que tenga una propiedad 'role'
-  if (req.user && req.user.role) {
-    // Retorna el rol del usuario
-    return req.user.role;
-  }
-
-  // Si no se encuentra un rol válido, retornamos un error de HTTP
-  handleHttpError(res, "ERROR_ID_TOKEN", 401);
-};
-
-
-
 
 module.exports = { createUser, login, deleteUser, getUsers, checkUserRole,update,updateForAdmin };
