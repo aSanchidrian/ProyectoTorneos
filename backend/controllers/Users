@@ -74,12 +74,13 @@ const login = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   try {
-    const { nickname } = matchedData(req);
+    const  nickname  = req.params.nickname;;
     var data = "";
-
+    
     data = await User.destroy({ where: { nickname: nickname } });
 
-    res.send(data);
+    
+    res.send.status(200);
   } catch (err) {
     console.log(err);
     handleHttpError(res, "ERROR_DELETE_USER");
@@ -91,13 +92,91 @@ const getUsers = async (req, res) => {
     var data = "";
     data = await User.findAll();
 
-    res.send(data);
+    return res.status(200);
   } catch (err) {
     console.log(err); //Opcional
     //handleHttpError(res, 'ERROR_GET_ITEMS', 404)
     handleHttpError(res, "ERROR_GET_USERS"); //Si nos sirve el de por defecto que hemos establecido, no es necesario pasar el 403
   }
 };
+
+const update= async (req,res)=>{
+
+  const userId = req.user.id;
+
+  try {
+      const user = await User.findByPk(userId);
+      
+      if (!user) {
+          return res.status(404).json({ error: 'Usuario no encontrado' });
+      }
+
+      const {
+          name,
+          email,
+          nickname,
+          sport,
+          schedule,
+          role,
+          password,
+      } = req.body;
+
+      await user.update({
+          name: name || user.name,
+          email: email || user.email,
+          nickname: nickname || user.nickname,
+          sport: sport || user.sport,
+          schedule: schedule || user.schedule,
+          role: role || user.role,
+          password: password || user.password,
+      });
+
+      return res.status(200).json({ message: 'Usuario actualizado correctamente', user });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Error al actualizar el usuario' });
+  }
+};
+
+
+// para administradores
+const updateForAdmin= async (req,res)=>{
+  const userId = req.params.id;
+
+    try {
+        const user = await User.findByPk(userId);
+        
+        if (!user) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+        const {
+            name,
+            email,
+            nickname,
+            sport,
+            schedule,
+            role,
+            password,
+        } = req.body;
+
+        await user.update({
+            name: name || user.name,
+            email: email || user.email,
+            nickname: nickname || user.nickname,
+            sport: sport || user.sport,
+            schedule: schedule || user.schedule,
+            role: role || user.role,
+            password: password || user.password,
+        });
+
+        return res.status(200).json({ message: 'Usuario actualizado correctamente', user });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al actualizar el usuario' });
+    }
+};
+
 
 const checkUserRole = (req, res, next) => {
   // Comprueba que req.user esté definido y que tenga una propiedad 'role'
@@ -112,4 +191,5 @@ const checkUserRole = (req, res, next) => {
 
 
 
-module.exports = { createUser, login, deleteUser, getUsers, checkUserRole };
+
+module.exports = { createUser, login, deleteUser, getUsers, checkUserRole,update,updateForAdmin };

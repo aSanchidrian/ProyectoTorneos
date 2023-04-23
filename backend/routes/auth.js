@@ -1,4 +1,5 @@
 const express = require("express");
+const authMiddleware = require("../middleware/session")
 
 const router = express.Router();
 
@@ -7,6 +8,8 @@ const {
   createUser,
   getUsers,
   deleteUser,
+  update,
+  updateForAdmin,
 } = require("../controllers/Users");
 require("dotenv").config();
 
@@ -23,10 +26,18 @@ router.get("/register", function (req, res, next) {
   res.render("register.html");
 });
 
-router.get("/getUsers", getUsers);
-router.get("/delete/:nickname", deleteUser);
+
+
 
 router.post("/register", createUser);
 // REGISTER PAGE - END
+router.post("/update",authMiddleware,update);
+
+//administrador
+
+router.put("/update/:id",authMiddleware,updateForAdmin);
+router.delete("/delete/:nickname", deleteUser);
+router.get("/getUsers", getUsers);
+
 
 module.exports = router;

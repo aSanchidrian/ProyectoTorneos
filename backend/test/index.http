@@ -24,12 +24,44 @@ api_key: Api-publica-123
 
 
 
+#######editar tu usuario los campos que le pases son los que se editan########################
+POST http://localhost:3001/auth/update  HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODE0NjYwOTEsImV4cCI6MTcxNzQ2MjQ5MX0.0EIrZmzCkrN320RWYdqsd6xHdhpmBsrr-4hzbNxzPcc
+
+{
+"nickname": "nuevo_nickname"
+}
+
+
+##### PARA ADMINISTRADORES ##########################
+
+##eliminar usuario
+DELETE http://localhost:3001/auth/delete/javichu2
+
+###actualizar usuario
+PUT http://localhost:3001/auth/update/1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODE0NjYwOTEsImV4cCI6MTcxNzQ2MjQ5MX0.0EIrZmzCkrN320RWYdqsd6xHdhpmBsrr-4hzbNxzPcc
+
+{
+"nickname": "javivi"
+}
 
 
 ### todos usuario
-GET http://localhost:3000/auth/getUsers HTTP/1.1
+GET http://localhost:3001/auth/getUsers HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODE0NjYwOTEsImV4cCI6MTcxNzQ2MjQ5MX0.0EIrZmzCkrN320RWYdqsd6xHdhpmBsrr-4hzbNxzPcc
+
+
+
+################# FIN ADMIN ###################
+
+
+
 ######crear actividades
 POST http://localhost:3001/activity/createActivity HTTP/1.1
 Content-Type: application/json
