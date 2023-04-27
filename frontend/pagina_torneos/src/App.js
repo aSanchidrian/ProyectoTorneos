@@ -54,7 +54,7 @@ function App() {
     const password = document.getElementById("password").value;
 
     try {
-      const response = await axios.post("http://localhost:3000/login", {
+      const response = await axios.post("http://localhost:3001/auth/login", {
         username,
         password,
       });
@@ -72,11 +72,11 @@ function App() {
     const nickname = document.getElementById("nickname").value;
     const sport = document.getElementById("sport").value;
     const schedule = document.getElementById("schedule").value;
-    const password = document.getElementById("password").value;
+    const password = document.getElementById("password_r").value;
     const conf_password = document.getElementById("conf_password").value;
 
     try {
-      const response = await axios.post("http://localhost:3000/login", {
+      const response = await axios.post("http://localhost:3001/auth/register", {
         name,
         email,
         nickname,
@@ -274,7 +274,7 @@ function App() {
                     <MDBInput
                       wrapperClass="mb-3"
                       label="Contraseña"
-                      id="password"
+                      id="password_r"
                       type="password"
                     />
                     <MDBInput
