@@ -60,6 +60,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 
 
 ################# FIN ADMIN ###################
+### getUser usuario
+GET http://localhost:3001/auth/getUser HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyIiwiaWF0IjoxNjgyNTg0MzA5LCJleHAiOjE3MTg1ODA3MDl9.9h2gbKG9X10lOyQj4KFdjzHZNbUp2x9g06R8h6P46KI
+
 
 
 
