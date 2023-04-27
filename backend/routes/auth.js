@@ -11,6 +11,7 @@ const {
   deleteUser,
   update,
   updateForAdmin,
+  getUser
 } = require("../controllers/Users");
 require("dotenv").config();
 
@@ -39,6 +40,7 @@ router.post("/update",authMiddleware,update);
 router.put("/update/:id",authMiddleware,checkAdminRole,updateForAdmin);
 router.delete("/delete/:nickname",authMiddleware,checkAdminRole, deleteUser);
 router.get("/getUsers",authMiddleware, checkAdminRole,getUsers);
+router.get("/getUser",authMiddleware,getUser);
 
 
 

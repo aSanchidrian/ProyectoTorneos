@@ -99,6 +99,20 @@ const getUsers = async (req, res) => {
     handleHttpError(res, "ERROR_GET_USERS"); //Si nos sirve el de por defecto que hemos establecido, no es necesario pasar el 403
   }
 };
+const getUser= async (req, res) => {
+
+  try {
+    var data = "";
+    data = req.user;
+
+    return res.status(200).json(data);
+  } catch (err) {
+    console.log(err); //Opcional
+    //handleHttpError(res, 'ERROR_GET_ITEMS', 404)
+    handleHttpError(res, "ERROR_GET_USER"); //Si nos sirve el de por defecto que hemos establecido, no es necesario pasar el 403
+  }
+
+};
 
 const update= async (req,res)=>{
 
@@ -179,4 +193,4 @@ const updateForAdmin= async (req,res)=>{
 
 
 
-module.exports = { createUser, login, deleteUser, getUsers,update,updateForAdmin };
+module.exports = { createUser, login, deleteUser, getUsers,update,updateForAdmin,getUser };

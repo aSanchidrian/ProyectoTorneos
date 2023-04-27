@@ -10,7 +10,7 @@ function Teams() {
     axios
       .get("http://localhost:3001/team/getTeams", {
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODIwNzc0MDYsImV4cCI6MTcxODA3MzgwNn0.vFpIRgcApHpNNrgA8oGRUSpfrdMR6NPb0jo_2ZhnSeQ`,
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyIiwiaWF0IjoxNjgyNTg0MzA5LCJleHAiOjE3MTg1ODA3MDl9.9h2gbKG9X10lOyQj4KFdjzHZNbUp2x9g06R8h6P46KI`,
         },
       })
       .then((response) => {
