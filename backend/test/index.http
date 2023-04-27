@@ -18,7 +18,7 @@ Content-Type: application/json
 api_key: Api-publica-123
 
 {
-    "username": "javi@u-tad.com",
+    "username": "javi2@u-tad.com",
     "password":"javiScript"
 }
 
@@ -55,7 +55,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 ### todos usuario
 GET http://localhost:3001/auth/getUsers HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphdml2aSIsImlhdCI6MTY4MjI1MjYxOSwiZXhwIjoxNzE4MjQ5MDE5fQ._Sm-iVCJu7v8UE81U4dZrXE1S9t8MQLJX0IJLSggDa8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyIiwiaWF0IjoxNjgyNTgyOTk4LCJleHAiOjE3MTg1NzkzOTh9.x1Txfz-3bvm_up8iYiOTfY5UgVRrKSIBbzw888pTynw
 
 
 
@@ -67,7 +67,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 POST http://localhost:3001/activity/createActivity HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODIwNzc0MDYsImV4cCI6MTcxODA3MzgwNn0.vFpIRgcApHpNNrgA8oGRUSpfrdMR6NPb0jo_2ZhnSeQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyIiwiaWF0IjoxNjgyNTgzMjc3LCJleHAiOjE3MTg1Nzk2Nzd9.nnH9ywFIxUajEBKCcO4H_aR7Lp_z5ENCa2JkK1F4qyQ
 
 {
   "name": "DAtas vs cyber",
@@ -84,9 +84,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 ######crear actividades 2
 POST http://localhost:3001/activity/createActivity HTTP/1.1
 Content-Type: application/json
-<<<<<<< HEAD
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODE5NzU0MTEsImV4cCI6MTcxNzk3MTgxMX0.koSaCMtFcdAYCj8pCXdqc5rNX3OK_4riROVLbrOC7GA
-=======
 api_key: Api-publica-123
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODIwNzc0MDYsImV4cCI6MTcxODA3MzgwNn0.vFpIRgcApHpNNrgA8oGRUSpfrdMR6NPb0jo_2ZhnSeQ
 
@@ -119,7 +116,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
   "result": "",
   "place": "Pista tenis U-tad"
 }
->>>>>>> 0578e103209c2637ed4e5e9b0d1713cb786d941a
 
 ### todos las actividades
 GET http://localhost:3001/activity/getActivitys HTTP/1.1
@@ -156,11 +152,7 @@ Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imph
 POST http://localhost:3001/team/createTeam HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
-<<<<<<< HEAD
-Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODE5NzU0MTEsImV4cCI6MTcxNzk3MTgxMX0.koSaCMtFcdAYCj8pCXdqc5rNX3OK_4riROVLbrOC7GA
-=======
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODIwNzc0MDYsImV4cCI6MTcxODA3MzgwNn0.vFpIRgcApHpNNrgA8oGRUSpfrdMR6NPb0jo_2ZhnSeQ
->>>>>>> 0578e103209c2637ed4e5e9b0d1713cb786d941a
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyIiwiaWF0IjoxNjgyNTgzMjc3LCJleHAiOjE3MTg1Nzk2Nzd9.nnH9ywFIxUajEBKCcO4H_aR7Lp_z5ENCa2JkK1F4qyQ
 
 {
   "name":"SSH",
@@ -174,7 +166,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 POST http://localhost:3001/team/createTeam HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODIwNzc0MDYsImV4cCI6MTcxODA3MzgwNn0.vFpIRgcApHpNNrgA8oGRUSpfrdMR6NPb0jo_2ZhnSeQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyIiwiaWF0IjoxNjgyNTgzMjc3LCJleHAiOjE3MTg1Nzk2Nzd9.nnH9ywFIxUajEBKCcO4H_aR7Lp_z5ENCa2JkK1F4qyQ
 
 {
   "name":"DAWE",
@@ -188,7 +180,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 POST http://localhost:3001/team/createTeam HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODIwNzc0MDYsImV4cCI6MTcxODA3MzgwNn0.vFpIRgcApHpNNrgA8oGRUSpfrdMR6NPb0jo_2ZhnSeQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyIiwiaWF0IjoxNjgyNTgzMjc3LCJleHAiOjE3MTg1Nzk2Nzd9.nnH9ywFIxUajEBKCcO4H_aR7Lp_z5ENCa2JkK1F4qyQ
 
 {
   "name":"LIONS",
@@ -202,7 +194,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 POST http://localhost:3001/team/createTeam HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODIwNzc0MDYsImV4cCI6MTcxODA3MzgwNn0.vFpIRgcApHpNNrgA8oGRUSpfrdMR6NPb0jo_2ZhnSeQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyIiwiaWF0IjoxNjgyNTgzMjc3LCJleHAiOjE3MTg1Nzk2Nzd9.nnH9ywFIxUajEBKCcO4H_aR7Lp_z5ENCa2JkK1F4qyQ
 
 {
   "name":"SecurityData",
@@ -211,19 +203,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
   "max_players_team":8
 }
 #####get teams####
-<<<<<<< HEAD
 GET http://localhost:3000/team/getTeams HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODE5NzU0MTEsImV4cCI6MTcxNzk3MTgxMX0.koSaCMtFcdAYCj8pCXdqc5rNX3OK_4riROVLbrOC7GA
-=======
-GET http://localhost:3001/team/getTeams HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODIwNzc0MDYsImV4cCI6MTcxODA3MzgwNn0.vFpIRgcApHpNNrgA8oGRUSpfrdMR6NPb0jo_2ZhnSeQ
->>>>>>> 0578e103209c2637ed4e5e9b0d1713cb786d941a
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyIiwiaWF0IjoxNjgyNTgzMjc3LCJleHAiOjE3MTg1Nzk2Nzd9.nnH9ywFIxUajEBKCcO4H_aR7Lp_z5ENCa2JkK1F4qyQ
 
 ##########inscribe into a team###########
 POST  http://localhost:3000/team/joinTeam
 Content-Type: application/json
 api_key: Api-publica-123
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyIiwiaWF0IjoxNjgxOTc1NTU2LCJleHAiOjE3MTc5NzE5NTZ9.6MOk8FqX6Bpw_p52VjVDZok9r21dW-qtHMNwbJrlHsA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyIiwiaWF0IjoxNjgyNTgzMjc3LCJleHAiOjE3MTg1Nzk2Nzd9.nnH9ywFIxUajEBKCcO4H_aR7Lp_z5ENCa2JkK1F4qyQ
 
 {
  "id":9
