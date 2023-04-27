@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { joinTeam } from "../../../backend/controllers/Teams";
 
 function Teams() {
   const [team, setTeam] = useState([]);
+  const [numPlayers, setNumPlayers] = useState([]);
 
   useEffect(() => {
     axios
@@ -13,6 +15,19 @@ function Teams() {
       })
       .then((response) => {
         setTeam(response.data);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/team/teams-with-users", {
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODIwNzc0MDYsImV4cCI6MTcxODA3MzgwNn0.vFpIRgcApHpNNrgA8oGRUSpfrdMR6NPb0jo_2ZhnSeQ`,
+        },
+      })
+      .then((response) => {
+        setNumPlayers(response.data);
+        console.log(response.data)
       });
   }, []);
 
@@ -54,10 +69,14 @@ function Teams() {
                         <h5 style={{ color: "black" }} className="card-title">
                           Miembros
                         </h5>
-                      </div>
+                      </div> 
                       <div className="card-body">
                         <p style={{ color: "black" }} className="card-text">
-                          Miembros del equipo
+                        {numPlayers.length && numPlayers.map((player) => (
+                          <div key={player.teamName}>
+                            <a style={{ color: "black" }}>{player.members}</a>    
+                          </div>
+                        ))}
                         </p>
                       </div>
                     </div>
