@@ -108,26 +108,27 @@ function generateGroups(teams) {
     
     let groups = []
     for(let i=0; i<groupsCount.length; i++) {
-        groups[i] = []
+        groups[i] = new Object()
+        groups[i].teams = []
         for(let j=0; j<groupsCount[i];j++)
-            groups[i].push(teams.pop())
+            groups[i].teams.push(teams.pop())
     }
     
     return groups
 }
 
 function generateMatchesImpar(group, numTeams, numJornadas) {
-    let schedule = []
+    let schedule = new Object()
     
     for (let i=0; i<numJornadas; i++) {
         let matches = []
         
-        for(let j=0; j<(numTeams/2); j++) {
+        for(let j=0; j<(numTeams/2)-1; j++) {
             let match = [group[j], group[numTeams - 1 - j]]
             matches.push(match)
         }
         
-        schedule.push(matches)
+        schedule[`Jornada ${i+1}`]=(matches)
         const firstTeam = group.shift()
         group.push(firstTeam)
     }
@@ -136,19 +137,25 @@ function generateMatchesImpar(group, numTeams, numJornadas) {
 }
 
 function generateMatchesPar(group, numTeams, numJornadas) {
-    let schedule = []
+    let schedule = new Object()
     
     for (let i=0; i<(numJornadas-1); i++) {
         let matches = []
-        console.log(group)
         for(let j=0; j<(numTeams/2); j++) {
             let match = [group[j], group[numTeams - 1 - j]]
+            
+            if (i == numJornadas-2 && j==0) {
+                let temp = match[1]
+                match[1] = match[0]
+                match[0] = temp
+            }
+                
             matches.push(match)
         }
         
-        schedule.push(matches)
-        const firstTeam = group.shift()
-        group.push(firstTeam)
+        schedule[`Jornada ${i+1}`]=(matches)
+        const secondTeam = group.splice(1, 1)[0]
+        group.push(secondTeam)
     }
     
     return schedule
@@ -163,23 +170,24 @@ function generateMatchesInGroup(group) {
         ? generateMatchesPar(group, numTeams, numJornadas)
         : generateMatchesImpar(group, numTeams, numJornadas)
     
-    console.log(schedule)
     return schedule
 }
 
 function generateTournament(tournamentId, tournamentTeams) {
     let groups = generateGroups(tournamentTeams)
-    let matches = []
     
     for(let i=0; i<groups.length; i++) {
-        console.log(`Grupo ${i+1}: ${groups[i]}`)
-        matches.push(generateMatchesInGroup(groups[i]))
+        groups[i].matches = {}
+        groups[i].matches = generateMatchesInGroup(groups[i].teams)
     }
+    
+    console.log(groups)
+    console.log(JSON.parse(groups))
 
     return matches;
 }
 
-// var equipos = ['Real Madrid', 'Barça', 'Atlético de Madrid', 'Sevilla', 'Betis', 'Cádiz', 'Valencia', 'Villareal', 'Osasuna', 'Real Sociedad', 'Celta', 'Athletic Bilbao', 'RCD Espanyol']
+// var equipos = ['Real Madrid', 'Barça', 'Atlético de Madrid', 'Sevilla', 'Betis', 'Cádiz', 'Valencia', 'Villareal', 'Osasuna', 'Real Sociedad', 'Celta', 'Athletic Bilbao', 'RCD Espanyol', ]
 
 // generateTournament(1, equipos)
 
@@ -217,13 +225,13 @@ const generateTournament = async (req, res) => {
     // si es modo equipos
     // asignación de partidos
     if (tournamentInfo.type == 1) {
-        generateTournament(tournamentId, teamsInTournament)
+        generateTournamentSchedule(tournamentId, teamsInTournament)
     }
     // si es modo equipos y jugadores
     // ver jugadores sin equipo y asignarles a un equipo
     else if (tournamentInfo.type == 2) {
         fixTeams() // mete a jugadores sin equipo en equipos sin mucha gente o crea nuevos equipos si necesario
-        generateTournament(tournamentId, teamsInTournament)   
+        generateTournamentSchedule(tournamentId, teamsInTournament)   
     }
 }
 
