@@ -74,14 +74,6 @@ const Team = sequelize.define('teams', {
 
 Team.sync()
 
-const Calendar = sequelize.define('calendar', {
-    
-});
-
-Tournament.belongsToMany(Activity, { through: Calendar });
-Activity.belongsToMany(Tournament, { through: Calendar });
-Calendar.sync()
-
 const ActivityPlayer = sequelize.define('activity_players', {
     permission: DataTypes.TINYINT,
 });
@@ -106,4 +98,25 @@ User.belongsToMany(Tournament, { through: TournamentPlayers });
 Tournament.belongsToMany(User, { through: TournamentPlayers });
 TournamentPlayers.sync()
 
-module.exports = { User, Team, TeamMember, TournamentPlayers, Activity, Calendar, Tournament,ActivityPlayer }
+const TournamentTeams = sequelize.define('tournament_teams', {
+    position: DataTypes.INTEGER,
+    victories: DataTypes.INTEGER,
+    defeats: DataTypes.INTEGER,
+    drawns: DataTypes.INTEGER,
+    group: DataTypes.INTEGER
+})
+
+Team.belongsToMany(Tournament, { through: TournamentTeams });
+Tournament.belongsToMany(Team, { through: TournamentTeams });
+TournamentTeams.sync()
+
+const TournamentGroupActivities = sequelize.define('tournament_groups_activities', {
+    date: DataTypes.DATE,
+    jornada: DataTypes.INTEGER,
+})
+
+Activity.belongsToMany(Tournament, { through: TournamentGroupActivities });
+Tournament.belongsToMany(Activity, { through: TournamentGroupActivities });
+TournamentGroupActivities.sync()
+
+module.exports = { User, Team, TeamMember, Activity, ActivityPlayer, Tournament, TournamentPlayers, TournamentTeams, TournamentGroupActivities }
