@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 function MiPerfil() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState("");
   const [nickname, setNickname] = useState("");

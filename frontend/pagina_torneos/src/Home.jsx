@@ -13,7 +13,7 @@ import Navbar from "react-bootstrap/Navbar";
 
 import Teams from "./Teams";
 import Results from "./Results";
-import MiPerfil from "./MiPerfil";
+import Profile from "./Profile";
 import Ajustes from "./Ajustes";
 import Actividades from "./Actividades";
 
@@ -38,8 +38,8 @@ function Home(props) {
       case "btn-5":
         setShowContent(<Results></Results>);
         break;
-      case "miperfil":
-        setShowContent(<MiPerfil></MiPerfil>);
+      case "Profile":
+        setShowContent(<Profile></Profile>);
         break;
       case "ajustes":
         setShowContent(<Ajustes></Ajustes>);
@@ -53,6 +53,7 @@ function Home(props) {
   }
 
   const handleLogout = async () => {
+    localStorage.clear();
     props.setLogued(false);
   };
 
@@ -112,7 +113,7 @@ function Home(props) {
                       <a
                         className="dropdown-item"
                         href="#"
-                        onClick={() => handleButtonClick("miperfil")}
+                        onClick={() => handleButtonClick("Profile")}
                       >
                         Mi perfil
                       </a>

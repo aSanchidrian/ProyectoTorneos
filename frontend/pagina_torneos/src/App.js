@@ -32,7 +32,7 @@ import Navbar from "react-bootstrap/Navbar";
 
 function App() {
   const [logued, setLogued] = useState(false);
-  let test = true;
+  const [pageState, setPageState] = useState(false);
   const [show, setShow] = useState(false);
   const [justifyActive, setJustifyActive] = useState("tab1");
 
@@ -48,7 +48,8 @@ function App() {
   };
 
   const handleLogin = async (event) => {
-    event.preventDefault(); //Evita que el formulario HTML se envíe automáticamente cuando se presiona el botón "submit"
+    //Evita que el formulario HTML se envíe automáticamente cuando se presiona el botón "submit"
+    event.preventDefault();
 
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
@@ -58,7 +59,13 @@ function App() {
         username,
         password,
       });
-      console.log(response.data);
+
+      let respUser = response.data;
+
+      respUser = respUser.substring(0,respUser.indexOf('@'));
+      localStorage.setItem("user", respUser);
+      
+
     } catch (error) {
       console.error(error);
     }
@@ -92,7 +99,13 @@ function App() {
   };
 
   const handleStart = async (event) => {
-    setLogued(true);
+
+    if(localStorage.hasOwnProperty("user")) {
+      setLogued(true);
+    }
+    else{
+      alert("Porfavor, inicie sesion.")
+    }
   };
 
   useEffect(() => {
@@ -201,13 +214,13 @@ function App() {
                     </MDBTabsLink>
                   </MDBTabsItem>
                 </MDBTabs>
-
+                
                 <MDBTabsContent>
                   <MDBTabsPane show={justifyActive === "tab1"}>
                     <br></br>
                     <MDBInput
                       wrapperClass="mb-4"
-                      label="Nombre de usuario"
+                      label="E-mail"
                       id="username"
                       type="text"
                     />

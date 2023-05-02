@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { joinTeam } from "../../../backend/controllers/Teams";
+
 
 function Teams() {
   const [team, setTeam] = useState([]);
