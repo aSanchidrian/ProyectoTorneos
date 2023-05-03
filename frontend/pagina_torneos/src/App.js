@@ -112,6 +112,7 @@ function App() {
     // Aquí podríamos consultar si el usuario ya ha iniciado sesión en el servidor
     // y establecer el estado de logued en consecuencia.
     // setLogued(false);
+    // localStorage.clear();
   }, []);
 
   const isLogued = () => {

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-function MiPerfil() {
-  const [user, setUser] = useState(true);
+function Profile() {
+  const [user, setUser] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState("");
   const [nickname, setNickname] = useState("");
@@ -10,7 +10,7 @@ function MiPerfil() {
   const [teams, setTeams] = useState([]);
 
   useEffect(() => {
-    axios.get("/api/user").then((response) => {
+    axios.get("http://localhost:3001/auth/getUser").then((response) => {
       setUser(response.data);
       setName(response.data.name);
       setNickname(response.data.nickname);
@@ -45,16 +45,12 @@ function MiPerfil() {
 
   const handleSaveClick = () => {
     axios
-      .put("/api/user", { name, nickname, image, teams })
+      .put("http://localhost:3001/auth/update/1", { name, nickname, image, teams })
       .then((response) => {
         setUser(response.data);
         setIsEditing(false);
       });
   };
-
-  if (!user) {
-    return <div>Cargando...</div>;
-  }
 
   return (
     <div className="container">
@@ -106,4 +102,4 @@ function MiPerfil() {
   );
 }
 
-export default MiPerfil;
+export default Profile;
