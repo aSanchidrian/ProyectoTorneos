@@ -113,6 +113,9 @@ function App() {
     // y establecer el estado de logued en consecuencia.
     // setLogued(false);
     // localStorage.clear();
+    if(localStorage.hasOwnProperty("user")) {
+      setLogued(true);
+    }
   }, []);
 
   const isLogued = () => {
