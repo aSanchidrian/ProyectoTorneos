@@ -12,7 +12,7 @@ db = conection;
 
 const createActivity = async (req, res) => {
   try {
-    // Extract data from request body
+    // Extraccion de los datos de la requeest
     const {
       name,
       description,
@@ -25,7 +25,7 @@ const createActivity = async (req, res) => {
       place,
     } = req.body;
 
-    // Create activity in database
+    //Crea la actividad en la base de datos
     const [activity, created] = await Activity.findOrCreate({
       where: {
         name,
@@ -41,14 +41,14 @@ const createActivity = async (req, res) => {
         place,
       },
     });
-
+    //si no se ha podido  crear devuelve esto
     if (!created) {
       return res.status(409).json({
         message: "Activity already exists",
       });
     }
 
-    // Send response with success message
+    // Si ha sido un exito devuelve esto
     res.status(201).json({
       message: "Activity created successfully",
     });
@@ -63,23 +63,24 @@ const createActivity = async (req, res) => {
 const getActivitys = async (req, res) => {
   try {
     var data = "";
+    //busca todas las actividades de la tabla
     data = await Activity.findAll();
-
+    //envia los datos
     res.send(data);
   } catch (err) {
     console.log(err); //Opcional
-    //handleHttpError(res, 'ERROR_GET_ITEMS', 404)
     handleHttpError(res, "ERROR_GET_ACTIVITY"); //Si nos sirve el de por defecto que hemos establecido, no es necesario pasar el 403
   }
 };
 
 const suscribeActivity = async (req, res) => {
-  //let userId = req.body.userId
+  //coge el usuario de la request ya que el authmiddleware lo ha insertado 
   let userId = req.user.id;
   //console.log(req.user);
   let activityId = req.body.activityId;
   let permission = req.body.permission;
 
+  //busca en la tabla activity_player un registro que haga match con el userId y activityUd para saber si esta suscrito
   const activityPlayer2 = await ActivityPlayer.findOne({
     where: {
       userId: userId,
@@ -87,11 +88,11 @@ const suscribeActivity = async (req, res) => {
     },
   });
 
-  if (activityPlayer2) {
-    // El usuario ya está relacionado con esta actividad
+  if (activityPlayer2) { //si 
+    // El usuario ya está relacionado con esta actividad entonces te dira que ya esta suscrito
     res.send(`ALREADY SUSBCRIBE`);
   } else {
-    // El usuario no está relacionado con esta actividad
+    // El usuario no está relacionado con esta actividad se creara un registro en la tabla 
     const activityPlayer = await ActivityPlayer.create({
       userId: userId,
       activityId: activityId,
@@ -107,6 +108,7 @@ const suscribeActivity = async (req, res) => {
 const getMyActivitys = async (req, res) => {
   try {
     var data = "";
+    //busca todas las actividades en las que estas suscrito buscando con tu id
     data = await ActivityPlayer.findAll({
       where: {
         UserId: req.user.id,
@@ -114,9 +116,9 @@ const getMyActivitys = async (req, res) => {
     });
     const activityPlayerIds = [];
     for (let i = 0; i < data.length; i++) {
-      activityPlayerIds.push(data[i].activityId);
+      activityPlayerIds.push(data[i].activityId);//mete las id de actividades en el array creado anteriormente haciendo psuh
     }
-    const relatedRecords = await Activity.findAll({
+    const relatedRecords = await Activity.findAll({//busca todas las actividades con los ids correspondientes de el array
       where: {
         id: activityPlayerIds,
       },
@@ -132,25 +134,25 @@ const getMyActivitys = async (req, res) => {
 
 
 const submitResult = async (req, res) => {
-  const { id } = req.params; // get the ID of the activity from the URL parameter
-  const { result } = req.body; // get the result data from the request body
+  const { id } = req.params; // coge el id del parametro de la url
+  const { result } = req.body; // coge el result de el parametro del request
   const status=false;
   try {
-    // find the activity with the given ID in the database
+    // encuentra la actividad con el id dado 
     const activity = await Activity.findOne({ _id:id});
 
     if (!activity) {
-      // if the activity doesn't exist, return a 404 error
+      // si la actividad no se ha encotnrado retorna un 4o4
       return res.status(404).json({ message: `Activity with ID ${id} not found.` });
     }
 
-    // update the result for the activity in the database
+    // actualiza el resultado de la base de datos
     await activity.update({ result ,status});
 
-    // return a success message and the updated activity data
+    // Retorna un mensaje en el que dice que actividad se ha actualizado
     return res.json({ message: `Result submitted for activity ${id}.`, activity });
   } catch (error) {
-    // if there's an error, return a 500 error with the error message
+    //Su hay algin error retorna 500
     return res.status(500).json({ message: error.message });
   }
 };
