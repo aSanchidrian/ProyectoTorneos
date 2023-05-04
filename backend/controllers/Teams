@@ -5,9 +5,11 @@ const conection = require("../connection");
 const express = require("express");
 
 async function createTeam(req, res) {
+  //funcion para crear un equipo
   try {
     let userId = req.user.id;
-    const { name, sport,logo, max_players_team } = req.body;
+    const { name, sport,logo, max_players_team } = req.body;//extrae la informacion de la request
+    //crea un equipo con las variables extraidas
     const team = await Team.create({
       name,
       sport,
@@ -16,6 +18,7 @@ async function createTeam(req, res) {
     });
     const teamId=team.id;
     const captain=1;
+    //crea un regustro donde asigna el usuario al equipo con el rango de capitan ya que lo ha creado
     const TeamPlayer = await TeamMember.create({
       userId: userId,
       teamId: teamId,
@@ -34,23 +37,25 @@ async function createTeam(req, res) {
 const getTeams = async (req, res) => {
   try {
     var data = "";
+    //encuentra todos los esquipos
     data = await Team.findAll();
 
     res.send(data);
   } catch (err) {
     console.log(err); //Opcional
     //handleHttpError(res, 'ERROR_GET_ITEMS', 404)
-    handleHttpError(res, "ERROR_GET_TEAMS"); //Si nos sirve el de por defecto que hemos establecido, no es necesario pasar el 403
+    handleHttpError(res, "ERROR_GET_TEAMS"); 
   }
 };
 
 const joinTeam=async (req,res)=> {
+  //fincion para unirse a un equipo
 //let userId = req.body.userId
 let userId = req.user.id;
 teamId=req.body.id;
 captain="0";
 //console.log(req.user);
-
+//busca si hay algun registro de ese usurio en ese equipo
 const TeamPlayer = await TeamMember.findOne({
   where: {
     userId: userId,
@@ -59,10 +64,10 @@ const TeamPlayer = await TeamMember.findOne({
 });
 
 if (TeamPlayer) {
-  // El usuario ya está relacionado con esta actividad
+  // Si el usuarui  ya está relacionado con el equipo entonces
   res.send(`ALREADY joined to the team`);
 } else {
-  // El usuario no está relacionado con esta actividad
+  // Si no existe un registro de ese usuario con ese equipo entonces lo crea
   const TeamPlayer = await TeamMember.create({
     userId: userId,
     teamId: teamId,
@@ -80,10 +85,13 @@ const myTeams = async (req, res) => {
   try {
     const idUs = req.user.id;
 
+    //se encarga de darte todos los equipos en los que estas inscrito para ello busca tu id en la tabla team member y te devvuelve los registros que hagan match
     const teamMemberData = await TeamMember.findAll({ where: { userId: idUs } });
+    //coge todos los id de los quipos que ha encontrado que han matcheado
     const teamIds = teamMemberData.map((teamMemberData) => teamMemberData.teamId);
     console.log(teamIds);
 
+    //de la tabla team coge toda la informacion de los ids de los equipos que ha obtenido anterormente
     const teamData = await Team.findAll({ where: { id: teamIds } });
 
     res.send(teamData);
@@ -96,19 +104,22 @@ const myTeams = async (req, res) => {
 
 const getTeamUsers = async (req, res) => {
   try {
+    //se encarga de encontrar los mimebros  de un equipo
+
+
       const teams = await Team.findAll({
-          attributes: ['name'],
+          attributes: ['name'],//solo se devuelven los nombres de los equipos
           include: {
-              model: User,
-              attributes: ['name'],
+              model: User,//debe de incluir los miembros del equipo
+              attributes: ['name'],//se cogera solo el atriburo name de user
               through: {
-                  model: TeamMember,
+                  model: TeamMember,//los mimebros del equipo se buscaran en el team member
                   attributes: [] // No queremos mostrar información adicional del modelo intermedio
               }
           }
       });
       
-
+      //estrucutramos como queremos que nos de los datos, por cada instancia de teams nso devolvera el nombre y los miembros del equipo hacuendo un map sobre todos los usuarios
       const result = teams.map(team => ({
           teamName: team.name,
           members: team.users.map(user => user.name)
