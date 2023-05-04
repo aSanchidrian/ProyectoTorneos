@@ -22,14 +22,16 @@ const createUser = async (req, res) => {
   let password = req.body.password;
   let conf_password = req.body.conf_password;
 
+
+//se comprueba que el mail sea del dominio de u-tad
   if (!(email.includes("@u-tad.com") || email.includes("@live.u-tad.com")))
     return res.send("Necesitas un correo corporativo de U-Tad");
-
+//que las contraseñas sean igules
   if (password != conf_password)
     return res.send("¡Las contraseñas no coinciden!");
-
+//se hashea la contraseña 
   let hashedPassword = await bcrypt.hash(req.body.password, 10);
-
+//se crea el usuario o se encuentra
   const [user, created] = await User.findOrCreate({
     where: {
       [Op.or]: [{ email: email }, { nickname: nickname }],
@@ -44,9 +46,10 @@ const createUser = async (req, res) => {
       password: hashedPassword,
     },
   });
-
+//si no se ha podido crear el usuario ya existe y por lo tanto no se crea 
   if (!created) return res.send("User already registered");
 
+  // se crea el token 
   const token = await tokenSign(nickname);
   res.send(`¡User created! token: ${JSON.stringify(token)}`);
 };
@@ -54,20 +57,22 @@ const createUser = async (req, res) => {
 const login = async (req, res) => {
   let username = req.body.username;
   let password = req.body.password;
-
+//se busca un registro en el que conicida el nickname o el email
   const user = await User.findOne({
     where: {
       [Op.or]: [{ email: username }, { nickname: username }],
     },
   });
-
+//si no se ha encontrado user se deuvleve error
   if (user === null) return res.send("User or Password incorrect");
 
-  let hashedPassword = user.password;
 
+  let hashedPassword = user.password;
+//se comparan las contraseñas hasheadas
   if (!bcrypt.compare(password, hashedPassword))
     return res.send("User or Password incorrect");
 
+  //se crea el token
   const token = await tokenSign(user.nickname);
   res.send(`${username} is logged in!, Sesion token: ${token}`);
 };
