@@ -12,6 +12,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
 import Teams from "./Teams";
+import Tournaments from "./Tournaments";
 import Results from "./Results";
 import Profile from "./Profile";
 import Ajustes from "./Ajustes";
@@ -30,7 +31,7 @@ function Home(props) {
         setShowContent(<Teams></Teams>);
         break;
       case "btn-3":
-        setShowContent(<div>Contenido del botón 3</div>);
+        setShowContent(<Tournaments></Tournaments>);
         break;
        case "btn-4":
          setShowContent(<Actividades></Actividades>);

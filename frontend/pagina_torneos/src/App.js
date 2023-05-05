@@ -38,6 +38,7 @@ function App() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [tokenString, setTokenString] = useState(false);
 
   const handleJustifyClick = (value) => {
     if (value === justifyActive) {
@@ -59,12 +60,15 @@ function App() {
         username,
         password,
       });
+      
+      
 
       let respUser = response.data;
-
+      let token = respUser.split(": ")[1]
       respUser = respUser.substring(0,respUser.indexOf('@'));
       localStorage.setItem("user", respUser);
-      
+      let test = JSON.stringify(token);
+      setTokenString(test);
 
     } catch (error) {
       console.error(error);
