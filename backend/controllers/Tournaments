@@ -304,4 +304,7 @@ const getMyTournaments = async (req, res) => {
 };
 
 
+
+
+
 module.exports = { createTournament, getTournaments, suscribeTournament, getMyTournaments, generateTournament, getPlayersInTournament, getTeamsInTournament };

@@ -8,6 +8,7 @@ const { handleHttpError } = require('../utils/handleError')
 const { verifyToken } = require("../utils/handleJwt");
 const { tokenSign } = require("../utils/handleJwt");
 const { User } = require("../models/models");
+const { Tournament, Team,Activity } = require("../models/models");
 const { Op } = require("sequelize");
 
 require("dotenv").config();
@@ -196,6 +197,51 @@ const updateForAdmin= async (req,res)=>{
     }
 };
 
+const models = {
+  User,
+  Tournament,
+  Team,
+  Activity 
+};
+
+const deleteControllerForAdmin = async (req, res) => {
+  const { modelName, id } = req.params;
+
+  let Model;
+  switch (modelName) {
+    case 'User':
+      Model = User;
+      break;
+    case 'Tournament':
+      Model = Tournament;
+      break;
+    case 'Team':
+      Model = Team;
+      break;
+    case 'Activity':
+      Model = Activity;
+      break;
+    default:
+      return res.status(400).send({ message: 'Model not found' });
+  }
+
+  try {
+    const rowsDeleted = await Model.destroy({
+      where: { id: id }
+    });
+
+    if (rowsDeleted === 0) {
+      return res.status(404).send({ message: 'Document not found' });
+    }
+
+    res.status(200).send({ message: 'Document deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting document:', error);
+    res.status(500).send({ message: 'Error deleting document' });
+  }
+};
 
 
-module.exports = { createUser, login, deleteUser, getUsers,update,updateForAdmin,getUser };
+
+
+module.exports = {deleteControllerForAdmin, createUser, login, deleteUser, getUsers,update,updateForAdmin,getUser };

@@ -2,6 +2,7 @@ const express = require("express");
 const authMiddleware = require("../middleware/session")
 const checkAdminRole = require("../middleware/rol")
 
+
 const router = express.Router();
 
 const {
@@ -11,6 +12,7 @@ const {
   deleteUser,
   update,
   updateForAdmin,
+  deleteControllerForAdmin,
   getUser
 } = require("../controllers/Users");
 require("dotenv").config();
@@ -41,6 +43,7 @@ router.put("/update/:id",authMiddleware,checkAdminRole,updateForAdmin);
 router.delete("/delete/:nickname",authMiddleware,checkAdminRole, deleteUser);
 router.get("/getUsers",authMiddleware, checkAdminRole,getUsers);
 router.get("/getUser",authMiddleware,getUser);
+router.delete('/:modelName/:id',authMiddleware,checkAdminRole, deleteControllerForAdmin);
 
 
 
