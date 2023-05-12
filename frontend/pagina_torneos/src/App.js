@@ -3,12 +3,10 @@ import "./App.css";
 import utad_logo from "./img.swapcard.png";
 import usports_logo from "./U-sports_logo.png";
 import web_icon from "./web-globe-icon-23.png";
-
 import Home from "./Home";
-
+import LoginAdmin from "./LoginAdmin";
 import axios from "axios";
-
-// import Redirect from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
   MDBContainer,
@@ -38,6 +36,7 @@ function App() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [showLoginAdmin, setShowLoginAdmin] = useState(false);
   const [tokenString, setTokenString] = useState(false);
 
   const handleJustifyClick = (value) => {
@@ -60,16 +59,13 @@ function App() {
         username,
         password,
       });
-      
-      
 
       let respUser = response.data;
-      let token = respUser.split(": ")[1]
-      respUser = respUser.substring(0,respUser.indexOf('@'));
+      let token = respUser.split(": ")[1];
+      respUser = respUser.substring(0, respUser.indexOf("@"));
       localStorage.setItem("user", respUser);
       let test = JSON.stringify(token);
       setTokenString(test);
-
     } catch (error) {
       console.error(error);
     }
@@ -103,13 +99,15 @@ function App() {
   };
 
   const handleStart = async (event) => {
-
-    if(localStorage.hasOwnProperty("user")) {
+    if (localStorage.hasOwnProperty("user")) {
       setLogued(true);
+    } else {
+      alert("Porfavor, inicie sesion.");
     }
-    else{
-      alert("Porfavor, inicie sesion.")
-    }
+  };
+
+  const handleClickAdmin = async (event) => {
+    setShowLoginAdmin(true);
   };
 
   useEffect(() => {
@@ -117,7 +115,7 @@ function App() {
     // y establecer el estado de logued en consecuencia.
     // setLogued(false);
     // localStorage.clear();
-    if(localStorage.hasOwnProperty("user")) {
+    if (localStorage.hasOwnProperty("user")) {
       setLogued(true);
     }
   }, []);
@@ -132,6 +130,10 @@ function App() {
     } else {
       return (
         <>
+          <Routes>
+            <Route path="/home" element={<Home />} />
+            <Route path="/login-admin" element={<LoginAdmin />} />
+          </Routes>
           <Navbar>
             <img
               className="mr-4 responsive-image"
@@ -222,7 +224,7 @@ function App() {
                     </MDBTabsLink>
                   </MDBTabsItem>
                 </MDBTabs>
-                
+
                 <MDBTabsContent>
                   <MDBTabsPane show={justifyActive === "tab1"}>
                     <br></br>
@@ -248,9 +250,15 @@ function App() {
                       />
                       <a href="!#">Olvide mi contraseña</a>
                     </div>
-                    <div className="d-flex justify-content-center mx-4 mb-4">
-                      <a href="!#">Acceso administrador</a>
-                    </div>
+                    {!showLoginAdmin ? (
+                      <div className="d-flex justify-content-center mx-4 mb-4">
+                        <button onClick={handleClickAdmin}>
+                          Acceso administrador
+                        </button>
+                      </div>
+                    ) : (
+                      <LoginAdmin />
+                    )}
                     <Button
                       className="mb-4 w-100"
                       id="login-form"
