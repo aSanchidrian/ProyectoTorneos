@@ -1,4 +1,16 @@
 import React, { useState } from "react";
+import {
+  MDBContainer,
+  MDBTabs,
+  MDBTabsItem,
+  MDBTabsLink,
+  MDBTabsContent,
+  MDBTabsPane,
+  MDBBtn,
+  MDBIcon,
+  MDBInput,
+  MDBCheckbox,
+} from "mdb-react-ui-kit";
 
 function LoginAdmin() {
   const [username, setUsername] = useState("");
@@ -24,20 +36,15 @@ function LoginAdmin() {
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Usuario: </label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
+          <MDBInput wrapperClass="mb-3" label="" id="name" type="text" />
         </div>
         <div>
           <label htmlFor="password">Contraseña: </label>
-          <input
+          <MDBInput
+            wrapperClass="mb-3"
+            label=""
+            id="password_r"
             type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
       </form>

@@ -6,7 +6,7 @@ import web_icon from "./web-globe-icon-23.png";
 import Home from "./Home";
 import LoginAdmin from "./LoginAdmin";
 import axios from "axios";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+// import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
   MDBContainer,
@@ -130,10 +130,10 @@ function App() {
     } else {
       return (
         <>
-          <Routes>
+          {/* <Routes>
             <Route path="/home" element={<Home />} />
             <Route path="/login-admin" element={<LoginAdmin />} />
-          </Routes>
+          </Routes> */}
           <Navbar>
             <img
               className="mr-4 responsive-image"
