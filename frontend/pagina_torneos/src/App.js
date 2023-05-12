@@ -37,7 +37,7 @@ function App() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [showLoginAdmin, setShowLoginAdmin] = useState(false);
-  const [tokenString, setTokenString] = useState(false);
+  const [tokenString, setTokenString] = useState();
 
   const handleJustifyClick = (value) => {
     if (value === justifyActive) {
@@ -54,6 +54,22 @@ function App() {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
+
+    // axios
+    //   .get("http://localhost:3001/auth/getUser", {
+    //     headers: {
+    //       Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphdml2aSIsImlhdCI6MTY4MzMwNjg1MSwiZXhwIjoxNzE5MzAzMjUxfQ.-UadXGxOEaAGaPVd9BcFEQqBWHwtMx9KUkNhoSidLgQ`,
+    //     },
+    //   })
+    //   .then((response) => {
+    //     setName(response.data.name);
+    //     setNickname(response.data.nickname);
+    //     setSport(response.data.sport);
+    //     setUser(response.data.email);
+    //     // setName(response.data.image);
+    //     // setTeams(response.data.teams);
+    //   });
+
     try {
       const response = await axios.post("http://localhost:3001/auth/login", {
         username,
@@ -61,11 +77,14 @@ function App() {
       });
 
       let respUser = response.data;
+      console.log(respUser)
       let token = respUser.split(": ")[1];
       respUser = respUser.substring(0, respUser.indexOf("@"));
       localStorage.setItem("user", respUser);
       let test = JSON.stringify(token);
       setTokenString(test);
+      console.log(tokenString);
+
     } catch (error) {
       console.error(error);
     }
