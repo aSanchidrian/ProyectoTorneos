@@ -16,6 +16,7 @@ const User = sequelize.define('users', {
     schedule: DataTypes.STRING,
     role: DataTypes.TINYINT,
     password: DataTypes.STRING,
+    profilePic: DataTypes.STRING
 });
 
 User.sync()

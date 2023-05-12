@@ -45,6 +45,7 @@ const createUser = async (req, res) => {
       schedule: schedule,
       role: 0,
       password: hashedPassword,
+      profilePic: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
     },
   });
 //si no se ha podido crear el usuario ya existe y por lo tanto no se crea 
@@ -139,6 +140,7 @@ const update= async (req,res)=>{
           schedule,
           role,
           password,
+          profilePic
       } = req.body;
 
       await user.update({
@@ -149,6 +151,7 @@ const update= async (req,res)=>{
           schedule: schedule || user.schedule,
           role: role || user.role,
           password: password || user.password,
+          profilePic: profilePic || user.profilePic
       });
 
       return res.status(200).json({ message: 'Usuario actualizado correctamente', user });
@@ -178,6 +181,7 @@ const updateForAdmin= async (req,res)=>{
             schedule,
             role,
             password,
+            profilePic
         } = req.body;
 
         await user.update({
@@ -188,6 +192,7 @@ const updateForAdmin= async (req,res)=>{
             schedule: schedule || user.schedule,
             role: role || user.role,
             password: password || user.password,
+            profilePic: profilePic || user.profilePic
         });
 
         return res.status(200).json({ message: 'Usuario actualizado correctamente', user });
