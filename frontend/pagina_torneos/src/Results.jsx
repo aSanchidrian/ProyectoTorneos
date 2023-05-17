@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-function Results() {
+function Results(props) {
   const [results, setResults] = useState([]);
 
   const getResults = async () => {

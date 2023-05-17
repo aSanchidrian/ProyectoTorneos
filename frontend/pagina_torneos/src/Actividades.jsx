@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-function Actividades() {
+function Actividades(props) {
     const [activity, setActivity] = useState([]);
 
     useEffect(() => {
         axios.get("http://localhost:3001/activity/getActivitys", {
             headers: {
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUiLCJpYXQiOjE2ODIwNzc0MDYsImV4cCI6MTcxODA3MzgwNn0.vFpIRgcApHpNNrgA8oGRUSpfrdMR6NPb0jo_2ZhnSeQ`
+                Authorization: `Bearer ${props.sessionToken}`
             }
         }).then((response) => {
             setActivity(response.data);
