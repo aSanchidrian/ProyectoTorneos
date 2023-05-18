@@ -6,7 +6,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 
 const localizer = momentLocalizer(moment);
 
-const MyCalendar = () => {
+const MyCalendar = (props) => {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
@@ -16,7 +16,8 @@ const MyCalendar = () => {
           "http://localhost:3001/activity/getActivitys",
           {
             headers: {
-              Authorization: "Bearer your_token",
+              Authorization: `Bearer ${props.sessionToken}`
+
             },
           }
         );
