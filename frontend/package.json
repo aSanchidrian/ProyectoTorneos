@@ -5,6 +5,7 @@
     "@fullcalendar/react": "^6.1.7",
     "axios": "^1.4.0",
     "moment": "^2.29.4",
-    "react-big-calendar": "^1.6.9"
+    "react-big-calendar": "^1.6.9",
+    "react-router-dom": "^6.11.2"
   }
 }
