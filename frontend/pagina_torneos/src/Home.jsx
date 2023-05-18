@@ -28,19 +28,19 @@ function Home(props) {
         setShowContent(<h1>Contenido del botón 1</h1>);
         break;
       case "btn-2":
-        setShowContent(<Teams></Teams>);
+        setShowContent(<Teams sessionToken={props.token}></Teams>);
         break;
       case "btn-3":
-        setShowContent(<Tournaments></Tournaments>);
+        setShowContent(<Tournaments sessionToken={props.token}></Tournaments>);
         break;
        case "btn-4":
-         setShowContent(<Actividades></Actividades>);
+         setShowContent(<Actividades sessionToken={props.token}></Actividades>);
          break;
       case "btn-5":
-        setShowContent(<Results></Results>);
+        setShowContent(<Results sessionToken={props.token}></Results>);
         break;
       case "Profile":
-        setShowContent(<Profile></Profile>);
+        setShowContent(<Profile sessionToken={props.token}></Profile>);
         break;
       case "ajustes":
         setShowContent(<Ajustes></Ajustes>);

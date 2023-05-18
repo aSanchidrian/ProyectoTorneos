@@ -30,14 +30,13 @@ import Navbar from "react-bootstrap/Navbar";
 
 function App() {
   const [logued, setLogued] = useState(false);
-  const [pageState, setPageState] = useState(false);
   const [show, setShow] = useState(false);
   const [justifyActive, setJustifyActive] = useState("tab1");
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [showLoginAdmin, setShowLoginAdmin] = useState(false);
-  const [tokenString, setTokenString] = useState();
+  const [tokenString, setTokenString] = useState("");
 
   const handleJustifyClick = (value) => {
     if (value === justifyActive) {
@@ -54,39 +53,26 @@ function App() {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
-
-    // axios
-    //   .get("http://localhost:3001/auth/getUser", {
-    //     headers: {
-    //       Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphdml2aSIsImlhdCI6MTY4MzMwNjg1MSwiZXhwIjoxNzE5MzAzMjUxfQ.-UadXGxOEaAGaPVd9BcFEQqBWHwtMx9KUkNhoSidLgQ`,
-    //     },
-    //   })
-    //   .then((response) => {
-    //     setName(response.data.name);
-    //     setNickname(response.data.nickname);
-    //     setSport(response.data.sport);
-    //     setUser(response.data.email);
-    //     // setName(response.data.image);
-    //     // setTeams(response.data.teams);
-    //   });
-
     try {
-      const response = await axios.post("http://localhost:3001/auth/login", {
-        username,
-        password,
-      });
-
-      let respUser = response.data;
-      console.log(respUser)
-      let token = respUser.split(": ")[1];
-      respUser = respUser.substring(0, respUser.indexOf("@"));
-      localStorage.setItem("user", respUser);
-      let test = JSON.stringify(token);
-      setTokenString(test);
-      console.log(tokenString);
-
+      axios
+        .post("http://localhost:3001/auth/login", {
+          username,
+          password,
+        })
+        .then((response) => {
+          let respUser = response.data;
+          console.log(respUser);
+          let token = respUser.match(/token: (.*)$/)[1];
+          respUser = respUser.substring(0, respUser.indexOf("@"));
+          localStorage.setItem("user", respUser);
+          setTokenString(token);
+          // alert(tokenString);
+        })
+        .catch((error) => {
+          console.error("ERROR", error);
+        });
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 
@@ -118,10 +104,12 @@ function App() {
   };
 
   const handleStart = async (event) => {
-    if (localStorage.hasOwnProperty("user")) {
+    const user = localStorage.getItem("user");
+
+    if (user && user.trim() !== "") {
       setLogued(true);
     } else {
-      alert("Porfavor, inicie sesion.");
+      alert("Por favor, inicie sesión.");
     }
   };
 
@@ -134,16 +122,13 @@ function App() {
     // y establecer el estado de logued en consecuencia.
     // setLogued(false);
     // localStorage.clear();
-    if (localStorage.hasOwnProperty("user")) {
-      setLogued(true);
-    }
   }, []);
 
   const isLogued = () => {
     if (logued) {
       return (
         <>
-          <Home setLogued={setLogued} />
+          <Home setLogued={setLogued} token={tokenString} />
         </>
       );
     } else {

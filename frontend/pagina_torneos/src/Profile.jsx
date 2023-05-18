@@ -3,7 +3,8 @@ import axios from "axios";
 import web_icon from "./web-globe-icon-23.png";
 import Button from "react-bootstrap/Button";
 
-function Profile() {
+function Profile(props) {
+
   const [user, setUser] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState("");
@@ -16,7 +17,7 @@ function Profile() {
     axios
       .get("http://localhost:3001/auth/getUser", {
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphdml2aSIsImlhdCI6MTY4MzMwNjg1MSwiZXhwIjoxNzE5MzAzMjUxfQ.-UadXGxOEaAGaPVd9BcFEQqBWHwtMx9KUkNhoSidLgQ`,
+          Authorization: `Bearer ${props.sessionToken}`,
         },
       })
       .then((response) => {
