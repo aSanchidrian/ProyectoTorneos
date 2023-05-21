@@ -6,7 +6,7 @@ import web_icon from "./web-globe-icon-23.png";
 import Home from "./Home";
 import LoginAdmin from "./LoginAdmin";
 import axios from "axios";
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 // import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
@@ -378,11 +378,11 @@ function App() {
       <>{isLogued()}</>
       {/* parte de abajo */}
       <div id="holder">
-        <Link to="/calendar">
+        {/* <Link to="/calendar">
           <button>
             <img src="ruta_de_tu_imagen" alt="calendar_icon.jpg" />
           </button>
-        </Link>
+        </Link> */}
         <footer className="d-flex justify-content-center">
           <hr />
         </footer>

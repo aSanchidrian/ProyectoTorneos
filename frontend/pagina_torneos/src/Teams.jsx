@@ -1,10 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
-
 
 function Teams(props) {
   const [team, setTeam] = useState([]);
