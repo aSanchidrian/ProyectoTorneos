@@ -172,6 +172,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
   "max_players_team":8
 }
 
+####create team##########
+
+POST http://localhost:3001/team/createTeam HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyIiwiaWF0IjoxNjgyNTkyNzI3LCJleHAiOjE3MTg1ODkxMjd9.M1Eo2nlUXUOjQFttChUKBmEEytOtbfglxKnmRS8T_rc
+
+{
+  "name":"MedioPulmon",
+  "sport":"Football",
+  "logo":"logo512.png",
+  "max_players_team":8
+}
+
 ####create team 2##########
 
 POST http://localhost:3001/team/createTeam HTTP/1.1
@@ -221,10 +235,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 POST  http://localhost:3000/team/joinTeam
 Content-Type: application/json
 api_key: Api-publica-123
+<<<<<<< Updated upstream
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NDMzNjkyMSwiZXhwIjoxNzIwMzMzMzIxfQ.mP8E9wAuluzrtdap1_kFYP82Tj0aY75PCijLaRqFdHg
+=======
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyIiwiaWF0IjoxNjgyNTkyNzI3LCJleHAiOjE3MTg1ODkxMjd9.M1Eo2nlUXUOjQFttChUKBmEEytOtbfglxKnmRS8T_rc
+>>>>>>> Stashed changes
 
 {
- "id":2
+ "id":1
 }
 
 #####get my team####

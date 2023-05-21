@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 
 
 function Teams(props) {
@@ -73,9 +77,10 @@ function Teams(props) {
                       <div className="card-body">
                         <p style={{ color: "black" }} className="card-text">
                         {numPlayers.length && numPlayers.map((player) => (
-                          <div key={player.teamName}>
-                            <a style={{ color: "black" }}>{player.members}</a>    
-                          </div>
+                        
+                            <a style={{ color: "black" }}>{player.members}<br></br></a>
+                             
+                          
                         ))}
                         </p>
                       </div>
