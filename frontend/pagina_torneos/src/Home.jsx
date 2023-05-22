@@ -12,6 +12,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
 import Teams from "./Teams";
+import Calendar from "./calendario";
 import Tournaments from "./Tournaments";
 import Results from "./Results";
 import Profile from "./Profile";
@@ -25,7 +26,7 @@ function Home(props) {
   function handleButtonClick(buttonId) {
     switch (buttonId) {
       case "btn-1":
-        setShowContent(<h1>Contenido del botón 1</h1>);
+        setShowContent();
         break;
       case "btn-2":
         setShowContent(<Teams sessionToken={props.token}></Teams>);
@@ -45,6 +46,9 @@ function Home(props) {
       case "ajustes":
         setShowContent(<Ajustes></Ajustes>);
         break;
+      case "Calendar":
+        setShowContent(<Calendar sessionToken={props.token}></Calendar>);
+      break;
       case "cerrarsesion":
         
         break;
@@ -75,7 +79,9 @@ function Home(props) {
             >
               <img
                 src={calendar_logo}
-                style={{ maxWidth: "100%", maxHeight: "100%" }}
+                style={{ maxWidth: "100%", maxHeight: "100%" , cursor:"pointer"}}
+                onClick={() => handleButtonClick("Calendar")}
+
               ></img>
             </Navbar.Text>
             <Navbar.Text

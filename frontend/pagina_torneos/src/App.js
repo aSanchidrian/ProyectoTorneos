@@ -37,7 +37,6 @@ function App() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [showLoginAdmin, setShowLoginAdmin] = useState(false);
-  const [tokenString, setTokenString] = useState("");
 
   const handleJustifyClick = (value) => {
     if (value === justifyActive) {
@@ -55,6 +54,7 @@ function App() {
     const password = document.getElementById("password").value;
 
     try {
+
       axios
         .post("http://localhost:3001/auth/login", {
           username,
@@ -62,15 +62,17 @@ function App() {
         })
         .then((response) => {
           let respUser = response.data;
-          console.log(respUser);
-          let token = respUser.match(/token: (.*)$/)[1];
-          respUser = respUser.substring(0, respUser.indexOf("@"));
-          localStorage.setItem("user", respUser);
-          setTokenString(token);
-          // alert(tokenString);
+          var user = respUser.substring(0, respUser.indexOf("@"));
+          localStorage.setItem("user", user);
+          const comienzo = respUser.indexOf("Sesion token: ")+ "Sesion token: ".length;
+          const token = respUser.slice(comienzo);
+          localStorage.setItem("token", token);
+          window.location.href = "App.js";
+          alert("has iniciado sesion");
+          
         })
         .catch((error) => {
-          console.error("ERROR", error);
+          console.log("ERROR", error);
         });
     } catch (error) {
       console.log(error);
@@ -129,7 +131,7 @@ function App() {
     if (logued) {
       return (
         <>
-          <Home setLogued={setLogued} token={tokenString} />
+          <Home setLogued={setLogued} token={localStorage.getItem('token')} />
         </>
       );
     } else {
