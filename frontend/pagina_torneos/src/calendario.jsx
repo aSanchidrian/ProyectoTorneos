@@ -36,7 +36,7 @@ const MyCalendar = (props) => {
   }, []);
 
   return (
-    <div style={{ height: 700 }}>
+    <div style={{ height: 568 }}>
       <Calendar
         localizer={localizer}
         defaultDate={new Date()}
