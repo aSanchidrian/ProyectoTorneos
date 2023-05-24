@@ -5,7 +5,10 @@ import usports_logo from "./U-sports_logo.png";
 import web_icon from "./web-globe-icon-23.png";
 import Home from "./Home";
 import LoginAdmin from "./LoginAdmin";
+import AdminPanel from "./admin/AdminPanel";
 import axios from "axios";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
 // import { Link } from 'react-router-dom';
 // import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -54,7 +57,6 @@ function App() {
     const password = document.getElementById("password").value;
 
     try {
-
       axios
         .post("http://localhost:3001/auth/login", {
           username,
@@ -64,12 +66,12 @@ function App() {
           let respUser = response.data;
           var user = respUser.substring(0, respUser.indexOf("@"));
           localStorage.setItem("user", user);
-          const comienzo = respUser.indexOf("Sesion token: ")+ "Sesion token: ".length;
+          const comienzo =
+            respUser.indexOf("Sesion token: ") + "Sesion token: ".length;
           const token = respUser.slice(comienzo);
           localStorage.setItem("token", token);
           window.location.href = "App.js";
           alert("has iniciado sesion");
-          
         })
         .catch((error) => {
           console.log("ERROR", error);
@@ -131,7 +133,7 @@ function App() {
     if (logued) {
       return (
         <>
-          <Home setLogued={setLogued} token={localStorage.getItem('token')} />
+          <Home setLogued={setLogued} token={localStorage.getItem("token")} />
         </>
       );
     } else {
@@ -257,6 +259,13 @@ function App() {
                       />
                       <a href="!#">Olvide mi contraseña</a>
                     </div>
+                    <Button
+                      className="mb-4 w-100"
+                      id="login-form"
+                      onClick={handleLogin}
+                    >
+                      Sign in
+                    </Button>
                     {!showLoginAdmin ? (
                       <div className="d-flex justify-content-center mx-4 mb-4">
                         <button onClick={handleClickAdmin}>
@@ -266,13 +275,6 @@ function App() {
                     ) : (
                       <LoginAdmin />
                     )}
-                    <Button
-                      className="mb-4 w-100"
-                      id="login-form"
-                      onClick={handleLogin}
-                    >
-                      Sign in
-                    </Button>
                   </MDBTabsPane>
 
                   <MDBTabsPane show={justifyActive === "tab2"}>
@@ -376,6 +378,9 @@ function App() {
 
   return (
     <div className="App">
+      {/* <Router>
+        <Route exact path="/admin" component={AdminPanel} />
+      </Router> */}
       {/* Aqui va la mitad de la pagina: welcome, home... */}
       <>{isLogued()}</>
       {/* parte de abajo */}
@@ -394,5 +399,3 @@ function App() {
 }
 
 export default App;
-
-

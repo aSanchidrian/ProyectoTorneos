@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+// import { useNavigate } from "react-router-dom";
+import AdminPanel from "./admin/AdminPanel";
+import Button from "react-bootstrap/Button";
 import {
   MDBContainer,
   MDBTabs,
@@ -15,28 +18,39 @@ import {
 function LoginAdmin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
+  // const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
 
-    // Aquí puedes realizar la lógica para verificar los datos de inicio de sesión del administrador
     if (username === "admin" && password === "password") {
-      // Iniciar sesión exitosamente, puedes redirigir a la página de administrador
-      console.log("Inicio de sesión exitoso");
+      setLoggedIn(true);
     } else {
-      // Datos de inicio de sesión incorrectos, puedes mostrar un mensaje de error
       console.log("Datos de inicio de sesión incorrectos");
     }
   };
+
+  if (loggedIn) {
+    // setTimeout(() => {
+    //   navigate("/admin"); // Redirige a la ruta '/admin' tus muertos
+    // }, 0);
+  }
 
   return (
     <div>
       <br></br>
       <h2>Inicio de Sesión Administrador</h2>
-      <form onSubmit={handleSubmit}>
+      <form>
         <div>
           <label htmlFor="username">Usuario: </label>
-          <MDBInput wrapperClass="mb-3" label="" id="name" type="text" />
+          <MDBInput
+            wrapperClass="mb-3"
+            label=""
+            id="name"
+            type="text"
+            onChange={(e) => setUsername(e.target.value)}
+          />
         </div>
         <div>
           <label htmlFor="password">Contraseña: </label>
@@ -45,8 +59,16 @@ function LoginAdmin() {
             label=""
             id="password_r"
             type="password"
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
+        <Button
+          className="mb-4 w-100 btn btn-secondary btn-square"
+          id="login-form"
+          onClick={handleLogin}
+        >
+          Sign in
+        </Button>
       </form>
       <br></br>
       <br></br>
