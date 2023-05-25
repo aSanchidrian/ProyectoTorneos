@@ -1,11 +1,17 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Button, Modal, Form } from 'react-bootstrap';
+import { Button, Modal, Form, Dropdown, Alert } from 'react-bootstrap';
 import { Row, Col } from 'react-bootstrap';
 
 function Actividades(props) {
     const [activity, setActivity] = useState([]);
+    const [filteredActivity, setFilteredActivity] = useState([]);
+    const [filter, setFilter] = useState("");
+    const [sportFilter, setSportFilter] = useState("");
     const [showModal, setShowModal] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+    const [alertVariant, setAlertVariant] = useState("");
 
     useEffect(() => {
         axios.get("http://localhost:3001/activity/getActivitys", {
@@ -14,9 +20,25 @@ function Actividades(props) {
             }
         }).then((response) => {
             setActivity(response.data);
-            console.log(response.data);
         });
     }, []);
+
+    useEffect(() => {
+        let currentDateTime = new Date();
+        let filteredData = activity;
+        
+        if(filter === "finished") {
+            filteredData = filteredData.filter(a => new Date(a.date) < currentDateTime);
+        } else if(filter === "upcoming") {
+            filteredData = filteredData.filter(a => new Date(a.date) > currentDateTime);
+        }
+        
+        if (sportFilter !== "") {
+            filteredData = filteredData.filter(a => a.sport === sportFilter);
+        }
+
+        setFilteredActivity(filteredData);
+    }, [activity, filter, sportFilter]);
 
     const handleRegister = async (event) => {
         event.preventDefault();
@@ -53,26 +75,65 @@ function Actividades(props) {
                 }
             );
             console.log(response.data);
+            setShowAlert(true);
+            setAlertVariant("success");
+            setAlertMessage("Equipo creado exitosamente.");
         } catch (error) {
             console.error(error);
+            setShowAlert(true);
+            setAlertVariant("danger");
+            setAlertMessage("No se pudo crear el equipo.");
         }
     };
 
     const handleCloseModal = () => setShowModal(false);
     const handleShowModal = () => setShowModal(true);
 
+    const handleFilterChange = (value) => {
+        setFilter(value);
+    };
+
+    const handleSportFilterChange = (value) => {
+        setSportFilter(value);
+    };
+
+    const handleAlertClose = () => {
+        setShowAlert(false);
+    };
+
     return (
         <div>
-
-            <div className="d-flex justify-content-end bottom mr-4">
-                <Button variant="primary" onClick={handleShowModal}>
+            <div className="d-flex justify-content-around mt-4 ml-4">
+                <Dropdown>
+                    <Dropdown.Toggle variant="primary" id="filter-dropdown">
+                        Filtro
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                        <Dropdown.Item onClick={() => handleFilterChange("finished")}>Actividades Finalizadas</Dropdown.Item>
+                        <Dropdown.Item onClick={() => handleFilterChange("upcoming")}>Próximas Actividades</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+                <Form.Control
+                    as="select"
+                    className="mr-4 ml-4"
+                    value={sportFilter}
+                    onChange={(e) => handleSportFilterChange(e.target.value)}
+                >
+                    <option value="">Todos los deportes</option>
+                    <option value="Fútbol">Fútbol</option>
+                    <option value="Tenis">Tenis</option>
+                    <option value="Baloncesto">Baloncesto</option>
+                </Form.Control>
+                <Button variant="primary" onClick={handleShowModal} style={{textAlign:"center", width:"30%",height:"30%", marginRight:"3%"}}>
                     Crear Actividad
                 </Button>
             </div>
 
+            <hr className="hr2"></hr>
+
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Crear una actividad</Modal.Title>
+                    <Modal.Title className="mr-4">Crear una actividad</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={handleRegister}>
@@ -100,6 +161,7 @@ function Actividades(props) {
                             <Form.Label>Lugar</Form.Label>
                             <Form.Control type="text" id="place" required/>
                         </Form.Group>
+                        <br></br>
                         <Button variant="primary" type="submit">
                             Crear
                         </Button>
@@ -107,41 +169,45 @@ function Actividades(props) {
                 </Modal.Body>
             </Modal>
 
-            {activity.length > 0 ? (
-                activity.map((actividad) => {
-                  // Convertir fecha de la actividad a formato legible
-                  const date = new Date(actividad.date);
-                  const formattedDate = date.toLocaleString();
-                  return ( 
-                    <div className="d-flex justify-content-around flex-wrap mr-5 ml-5 mb-5 mt-5">
-                        <div style={{height: "100%",width: "100%",border: "1.5px solid #0066ef",borderRadius: "30px"}}>
-                            <br></br>
-                            <h4 className="text-center">{actividad.name}</h4>
-                            <hr className="hr2"></hr>
-                            <Row>
-                                <Col className="text-right font-weight-bold">Descripcion:</Col>
-                                <Col className="text-left">{actividad.description}</Col>
-                            </Row>
-                            <Row>
-                                <Col className="text-right font-weight-bold">Deporte:</Col>
-                                <Col className="text-left">{actividad.sport}</Col>
-                            </Row>
-                            <Row>
-                                <Col className="text-right font-weight-bold">Fecha:</Col>
-                                <Col className="text-left">{formattedDate}</Col>
-                            </Row>
-                            <Row>
-                                <Col className="text-right font-weight-bold">Maximo de Plazas:</Col>
-                                <Col className="text-left">{actividad.max_plazas}</Col>
-                            </Row>
-                            <Row>
-                                <Col className="text-right font-weight-bold">Lugar:</Col>
-                                <Col className="text-left">{actividad.place}</Col>
-                            </Row>
-                            <br></br>
+            <Alert variant={alertVariant} show={showAlert} onClose={handleAlertClose} dismissible>
+                {alertMessage}
+            </Alert>
+
+            {filteredActivity.length > 0 ? (
+                filteredActivity.map((actividad) => {
+                    // Convertir fecha de la actividad a formato legible
+                    const date = new Date(actividad.date);
+                    const formattedDate = date.toLocaleString();
+                    return ( 
+                        <div className="d-flex justify-content-around flex-wrap mr-5 ml-5 mb-5 mt-5">
+                            <div style={{height: "100%",width: "100%",border: "1.5px solid #0066ef",borderRadius: "30px"}}>
+                                <br></br>
+                                <h4 className="text-center">{actividad.name}</h4>
+                                <hr className="hr2"></hr>
+                                <Row>
+                                    <Col className="text-right font-weight-bold">Descripcion:</Col>
+                                    <Col className="text-left">{actividad.description}</Col>
+                                </Row>
+                                <Row>
+                                    <Col className="text-right font-weight-bold">Deporte:</Col>
+                                    <Col className="text-left">{actividad.sport}</Col>
+                                </Row>
+                                <Row>
+                                    <Col className="text-right font-weight-bold">Fecha:</Col>
+                                    <Col className="text-left">{formattedDate}</Col>
+                                </Row>
+                                <Row>
+                                    <Col className="text-right font-weight-bold">Maximo de Plazas:</Col>
+                                    <Col className="text-left">{actividad.max_plazas}</Col>
+                                </Row>
+                                <Row>
+                                    <Col className="text-right font-weight-bold">Lugar:</Col>
+                                    <Col className="text-left">{actividad.place}</Col>
+                                </Row>
+                                <br></br>
+                            </div>
                         </div>
-                    </div>
-                  );
+                    );
                 })
             ) : (
                 <p style={{color:"black"}}>No hay actividades disponibles...</p>
