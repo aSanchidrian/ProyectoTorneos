@@ -18,6 +18,7 @@ import Results from "./Results";
 import Profile from "./Profile";
 import Ajustes from "./Ajustes";
 import Actividades from "./Actividades";
+import Anuncios from "./Anuncios";
 
 function Home(props) {
   const [showContent, setShowContent] = useState(false);
@@ -30,7 +31,7 @@ function Home(props) {
           Authorization: `Bearer ${props.token}`,
         },
       });
-      
+
       setImage(response.data.profilePic); // Nueva línea para la imagen
     } catch (err) {
       console.error(err);
@@ -40,7 +41,7 @@ function Home(props) {
   function handleButtonClick(buttonId) {
     switch (buttonId) {
       case "btn-1":
-        setShowContent(<Calendar sessionToken={props.token}></Calendar>);
+        setShowContent(<Anuncios sessionToken={props.token}></Anuncios>);
         break;
       case "btn-2":
         setShowContent(<Teams sessionToken={props.token}></Teams>);
@@ -48,9 +49,9 @@ function Home(props) {
       case "btn-3":
         setShowContent(<Tournaments sessionToken={props.token}></Tournaments>);
         break;
-       case "btn-4":
-         setShowContent(<Actividades sessionToken={props.token}></Actividades>);
-         break;
+      case "btn-4":
+        setShowContent(<Actividades sessionToken={props.token}></Actividades>);
+        break;
       case "btn-5":
         setShowContent(<Results sessionToken={props.token}></Results>);
         break;
@@ -62,9 +63,8 @@ function Home(props) {
         break;
       case "Calendar":
         setShowContent(<Calendar sessionToken={props.token}></Calendar>);
-      break;
+        break;
       case "cerrarsesion":
-        
         break;
       default:
         setShowContent(null);
@@ -99,7 +99,6 @@ function Home(props) {
                 src={calendar_logo}
                 id="imgCalendar"
                 onClick={() => handleButtonClick("Calendar")}
-
               ></img>
             </Navbar.Text>
             <Navbar.Text
@@ -186,7 +185,7 @@ function Home(props) {
             onClick={() => handleButtonClick("btn-1")}
             style={{ width: "100%", height: "10%" }}
           >
-            <b>TIMELINE</b>
+            <b>ANUNCIOS</b>
           </Button>
           <Button
             className="rounded-blue-button btn btn-primary"
@@ -226,7 +225,7 @@ function Home(props) {
           style={{
             width: "80%",
             border: "1.5px solid #0066ef",
-            borderRadius: "30px"
+            borderRadius: "30px",
           }}
         >
           {/* cosas a cargar en el cuadrado grande*/}
