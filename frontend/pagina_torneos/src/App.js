@@ -5,9 +5,7 @@ import usports_logo from "./U-sports_logo.png";
 import web_icon from "./web-globe-icon-23.png";
 import Home from "./Home";
 import LoginAdmin from "./LoginAdmin";
-import AdminPanel from "./admin/AdminPanel";
 import axios from "axios";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 // import { Link } from 'react-router-dom';
 // import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
@@ -33,7 +31,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
 function App() {
-  const [logued, setLogued] = useState(false);
+  const [logued, setLogued] = useState(true);
   const [show, setShow] = useState(false);
   const [justifyActive, setJustifyActive] = useState("tab1");
 

@@ -26,9 +26,38 @@ function Teams(props) {
       })
       .then((response) => {
         setNumPlayers(response.data);
-        console.log(response.data)
+        console.log(response.data);
       });
   }, []);
+
+  const handleRegister = async (event) => {
+    event.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const sport = document.getElementById("sport").value;
+    const logo = document.getElementById("logo").value;
+    const max_players_team = document.getElementById("max_players_team").value;
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/team/createTeam",
+        {
+          name,
+          sport,
+          logo,
+          max_players_team,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${props.sessionToken}`,
+          },
+        }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div>
@@ -68,15 +97,16 @@ function Teams(props) {
                         <h5 style={{ color: "black" }} className="card-title">
                           Miembros
                         </h5>
-                      </div> 
+                      </div>
                       <div className="card-body">
                         <p style={{ color: "black" }} className="card-text">
-                        {numPlayers.length && numPlayers.map((player) => (
-                        
-                            <a style={{ color: "black" }}>{player.members}<br></br></a>
-                             
-                          
-                        ))}
+                          {numPlayers.length &&
+                            numPlayers.map((player) => (
+                              <a style={{ color: "black" }}>
+                                {player.members}
+                                <br></br>
+                              </a>
+                            ))}
                         </p>
                       </div>
                     </div>
