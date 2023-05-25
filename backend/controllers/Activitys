@@ -4,7 +4,7 @@ const router = express.Router();
 const mysql = require("mysql");
 const conection = require("../connection");
 const { handleHttpError } = require('../utils/handleError')
-const { Activity, ActivityPlayer } = require("../models/models");
+const { Activity, ActivityPlayer,Logs } = require("../models/models");
 const { Op } = require("sequelize");
 
 require("dotenv").config();
@@ -49,6 +49,9 @@ const createActivity = async (req, res) => {
     }
 
     // Si ha sido un exito devuelve esto
+    const logMessage = `${req.user.nickname} ha creado la actividad: ${name}`;
+    await Logs.create({ message: logMessage });
+
     res.status(201).json({
       message: "Activity created successfully",
     });
@@ -150,6 +153,9 @@ const submitResult = async (req, res) => {
     await activity.update({ result ,status});
 
     // Retorna un mensaje en el que dice que actividad se ha actualizado
+
+    const logMessage = ` ${req.user.nickname} ha actualizado el resultado del partido${activity.name} a ${result}`;
+    await Logs.create({ message: logMessage });
     return res.json({ message: `Result submitted for activity ${id}.`, activity });
   } catch (error) {
     //Su hay algin error retorna 500

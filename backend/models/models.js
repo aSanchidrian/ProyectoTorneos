@@ -3,6 +3,23 @@ const conection = require("../connection")
 
 sequelize = conection
 
+const Logs = sequelize.define('Logs', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    message: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    date: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
+    }
+  });
+Logs.sync()
+
 const User = sequelize.define('users', {
     id: {
         type: DataTypes.INTEGER,
@@ -120,4 +137,4 @@ Activity.belongsToMany(Tournament, { through: TournamentGroupActivities });
 Tournament.belongsToMany(Activity, { through: TournamentGroupActivities });
 TournamentGroupActivities.sync()
 
-module.exports = { User, Team, TeamMember, Activity, ActivityPlayer, Tournament, TournamentPlayers, TournamentTeams, TournamentGroupActivities }
+module.exports = { User, Team, TeamMember, Activity, ActivityPlayer, Tournament, TournamentPlayers, TournamentTeams, TournamentGroupActivities,Logs }

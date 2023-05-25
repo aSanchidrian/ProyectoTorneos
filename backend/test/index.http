@@ -4,13 +4,13 @@ Content-Type: application/json
 api_key: Api-publica-123
 
 {
-    "name": "jav23i",
-    "email": "javi23@u-tad.com",
-    "nickname":"javichu23",
+    "name": "jav23i2",
+    "email": "javi234@u-tad.com",
+    "nickname":"javichu234",
     "sport":"futbol,padel",
     "schedule":"11:00-12:00",
-    "password":"javiScript",
-    "conf_password":"javiScript"
+    "password":"javiScri2pt",
+    "conf_password":"javiScri2pt"
 }
 ### login usuario
 POST http://localhost:3001/auth/login HTTP/1.1
@@ -133,10 +133,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 POST http://localhost:3001/activity/createActivity HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMzQiLCJpYXQiOjE2ODUwNTMzNDgsImV4cCI6MTcyMTA0OTc0OH0.4sjiRgjMblEphLxbvR4NJEC-qOrWDpsR16RkEkALdIY
 
 {
-  "name": "Alex vs Pablo",
+  "name": "Alex23 vs Pablo2",
   "description": "Partido de tenis",
   "sport": "Tenis",
   "date": "2023-05-23T12:00:00Z",
@@ -168,10 +168,10 @@ GET http://localhost:3000/activity/getMyActivitys HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 ###sumbit result actibity####
-PUT http://localhost:3000/activity/submitResult/1 HTTP/1.1
+PUT http://localhost:3001/activity/submitResult/1 HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
-Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMzQiLCJpYXQiOjE2ODUwNTMzNDgsImV4cCI6MTcyMTA0OTc0OH0.4sjiRgjMblEphLxbvR4NJEC-qOrWDpsR16RkEkALdIY
 
 {
   "result":"1-0"
@@ -224,7 +224,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 POST http://localhost:3001/team/createTeam HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMzQiLCJpYXQiOjE2ODUwNTMzNDgsImV4cCI6MTcyMTA0OTc0OH0.4sjiRgjMblEphLxbvR4NJEC-qOrWDpsR16RkEkALdIY
 
 {
   "name":"LIONS",
@@ -272,4 +272,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 GET http://localhost:3001/team/teams-with-users
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
-
+##### get logs########
+GET http://localhost:3001/logs/getLogs
+Authorization: Brearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMzQiLCJpYXQiOjE2ODUwNTMzNDgsImV4cCI6MTcyMTA0OTc0OH0.4sjiRgjMblEphLxbvR4NJEC-qOrWDpsR16RkEkALdIY

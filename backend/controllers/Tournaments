@@ -3,7 +3,7 @@ const { matchedData } = require("express-validator");
 const router = express.Router();
 const mysql = require("mysql");
 const conection = require("../connection");
-const { Tournament, TournamentPlayers, Team, TeamMember } = require("../models/models");
+const { Tournament, TournamentPlayers, Team, TeamMember,Logs } = require("../models/models");
 const { Op } = require("sequelize");
 
 require("dotenv").config();
@@ -254,6 +254,8 @@ const createTournament = async (req, res) => {
             return res.status(409).json({ message: "Tournament already exists" });
 
         // Send response with success message
+        const logMessage = `${req.user.nickname} ha creado el torneo ${name}`;
+        await Logs.create({ message: logMessage });
         res.status(201).json({ message: "Tournament created successfully" });
     } catch (err) {
         console.error(err);
