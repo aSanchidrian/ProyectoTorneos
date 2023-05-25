@@ -6,9 +6,9 @@ function Results(props) {
 
   const getResults = async () => {
     const response = await axios.get("http://localhost:3001/activity/getActivitys", {
-        headers: {
-            Authorization: `Bearer ${props.sessionToken}`
-        }
+      headers: {
+        Authorization: `Bearer ${props.sessionToken}`
+      }
     });
     setActivity(response.data);
   };
@@ -24,27 +24,29 @@ function Results(props) {
           // Convertir fecha de la actividad a formato legible
           const date = new Date(actividad.date);
           const formattedDate = date.toLocaleString();
+
           return (
             (actividad.result !== "" && (
-              <div className="card" key={actividad._id}>
-                <div className="card-header">
-                  <h5 style={{ color: "black" }} className="card-title">
-                    {actividad.name}
-                  </h5>
-                </div>
-                <div className="card-body">
-                  <p style={{ color: "black" }} className="card-text">
-                    Resultado: {actividad.result}
-                    <br />
-                    Fecha: {formattedDate}
-                  </p>
+              
+              <div className="mr-5 ml-5 mb-5 mt-5">
+                <div style={{height: "100%",width: "100%",border: "1.5px solid #0066ef",borderRadius: "30px"}}>
+                  <div className="result-card" key={actividad._id}>
+                    <h2 className="activity-name">{actividad.name}</h2>
+                    <hr className="hr2"></hr>
+                    <div className="result">
+                      <h2 className="result-text">{actividad.result}</h2>
+                    </div>
+                    <div className="date-time">
+                      <span className="date">{formattedDate}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             )) || null
           );
         })
       ) : (
-        <p style={{color:"black"}}>No hay resultados disponibles...</p>
+        <p className="no-results">No hay resultados disponibles...</p>
       )}
     </div>
   );

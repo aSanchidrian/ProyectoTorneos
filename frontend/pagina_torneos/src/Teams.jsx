@@ -3,10 +3,10 @@ import axios from "axios";
 import { Button, Modal, Form } from 'react-bootstrap';
 
 function Teams(props) {
-  const [team, setTeam] = useState([]);
+  const [teams, setTeams] = useState([]);
+  const [selectedTeam, setSelectedTeam] = useState(null);
   const [numPlayers, setNumPlayers] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  
 
   useEffect(() => {
     axios
@@ -16,7 +16,7 @@ function Teams(props) {
         },
       })
       .then((response) => {
-        setTeam(response.data);
+        setTeams(response.data);
       });
   }, []);
 
@@ -57,6 +57,14 @@ function Teams(props) {
         }
       );
       console.log(response.data);
+      // Refrescar la lista de equipos
+      const responseTeams = await axios.get("http://localhost:3001/team/getTeams", {
+        headers: {
+          Authorization: `Bearer ${props.sessionToken}`,
+        },
+      });
+      setTeams(responseTeams.data);
+      setShowModal(false);
     } catch (error) {
       console.error(error);
     }
@@ -65,118 +73,87 @@ function Teams(props) {
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
 
+  const selectTeam = (team) => {
+    setSelectedTeam(team);
+  }
+
   return (
     <div>
-        <div className="d-flex justify-content-end bottom mr-4">
-          <Button variant="primary" onClick={handleShowModal}>
-            Crear Equipo
-          </Button>
-        </div>
-        <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Crear un equipo</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={handleRegister}>
-            <Form.Group>
-              <Form.Label>Nombre del equipo</Form.Label>
-              <Form.Control type="text" id="name" required/>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Deporte</Form.Label>
-              <Form.Control type="text" id="sport" required/>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Logo</Form.Label>
-              <Form.Control type="text" id="logo" required/>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Máximo de jugadores por equipo</Form.Label>
-              <Form.Control type="number" id="max_players_team" required/>
-            </Form.Group>
-            <Button variant="primary" type="submit">
-              Crear
-            </Button>
-          </Form>
-        </Modal.Body>
-      </Modal>
-        
-
-      {team.length > 0 ? (
-        team.map((equipo) => (
-          <div>
-            <div className="card" style={{ cursor: "pointer" }}>
-              <div
-                className="card-header"
-                data-toggle="collapse"
-                href={"#collapseExample" + equipo.id}
-                aria-expanded="false"
-                aria-controls="collapseExample"
-              >
-                <img
-                  className="d-flex justify-content-center"
-                  src={equipo.logo}
-                  width="100"
-                  height="100"
-                />
-                <h5>{equipo.name}</h5>
-              </div>
-
-              <div
-                className="collapse card-body"
-                id={"collapseExample" + equipo.id}
-              >
-                <div>
-                  <a>
-                    Modalidad: {equipo.sport}
-                    <br></br>
-                    Tamaño del equipo: {equipo.max_players_team}
-                    <br></br>
-                    <br></br>
-                    <div className="card">
-                      <div className="card-header">
-                        <h5 style={{ color: "black" }} className="card-title">
-                          Miembros
-                        </h5>
-                      </div>
-                      <div className="card-body">
-                        <p style={{ color: "black" }} className="card-text">
-                          {numPlayers.length &&
-                            numPlayers.map((player) => (
-                              <a style={{ color: "black" }}>
-                                {player.members}
-                                <br></br>
-                              </a>
-                            ))}
-                        </p>
-                      </div>
-                    </div>
-                    <br></br>
-                    <div className="card">
-                      <div className="card-header">
-                        <h5 style={{ color: "black" }} className="card-title">
-                          Torneos Activos
-                        </h5>
-                      </div>
-                      <div className="card-body">
-                        <p style={{ color: "black" }} className="card-text">
-                          Torneos activos del equipo
-                        </p>
-                      </div>
-                    </div>
-                    <br></br>
-                    <button class="btn btn-primary rounded">
-                      Solicitar unirme
-                    </button>
-                  </a>
-                </div>
-              </div>
+      <br></br>
+      <div className="d-flex justify-content-around flex-wrap">
+        {teams.length > 0 ? (
+          teams.map((team) => (
+            <div onClick={() => selectTeam(team)} style={{ cursor: "pointer", textAlign: "center" }}>
+              <img src={team.logo} style={{border:"1px solid #0066ef", width: "75px", height: "75px"}} className="rounded-circle"/>
+              <h6>{team.name}</h6>
             </div>
+          ))
+        ) : (
+          <p style={{ color: "black" }}>No hay equipos disponibles...</p>
+        )}
+        <Button variant="primary" onClick={handleShowModal} className="align-self-center rounded-circle" style={{width: "50px", height: "50px"}}>
+          +
+        </Button>
+        <hr className="hr"></hr>
+        <Modal show={showModal} onHide={handleCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Crear un equipo</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form onSubmit={handleRegister}>
+              <Form.Group>
+                <Form.Label>Nombre del equipo</Form.Label>
+                <Form.Control type="text" id="name" required/>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Deporte</Form.Label>
+                <Form.Control type="text" id="sport" required/>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Logo</Form.Label>
+                <Form.Control type="text" id="logo" required/>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Máximo de jugadores por equipo</Form.Label>
+                <Form.Control type="number" id="max_players_team" required/>
+              </Form.Group>
+              <br></br>
+              <Button variant="primary" type="submit">
+                Crear
+              </Button>
+            </Form>
+          </Modal.Body>
+        </Modal>
+      </div>
+      {selectedTeam ? (
+      <div className="w-100 mt-4">
+        <h1 style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>{selectedTeam.name}</h1>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <img src={selectedTeam.logo} style={{border:"1px solid #0066ef"}} width="200" height="200" className="rounded-circle"/>
+        </div>
+        <br></br>
+        <div className="mr-5 ml-5 mb-5">
+          <div style={{height: "100%",width: "100%",border: "1.5px solid #0066ef",borderRadius: "30px"}}>
+            <br></br>
+            <h4>Miembros:</h4>
+            <hr className="hr2"></hr>
+            <div className="d-flex justify-content-around flex-wrap">
+              {numPlayers.length && numPlayers.map((player) => (
+                <h5> @{player.members}</h5>
+              ))}
+            </div>
+            <br></br>
           </div>
-        ))
-      ) : (
-        <p style={{ color: "black" }}>No hay actividades disponibles...</p>
-      )}
+        </div>
+      </div>
+    ) : (
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <br></br>
+        <br></br>
+        <h2 className="font-italic" style={{color:"#0066ef"}}>Selecciona algun equipo para ver su informacion</h2>
+      </div>
+    )}
+
     </div>
   );
 }

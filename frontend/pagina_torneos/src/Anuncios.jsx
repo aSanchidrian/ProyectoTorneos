@@ -20,12 +20,18 @@ function Anuncios(props) {
   return (
     <div className="anuncios">
       <h2 className="anuncios-title">Anuncios U-Sports Instagram @u__sports</h2>
-      {posts.map((post) => (
-        <div key={post.id} className="post">
-          <img className="post-image" src={post.media_url} alt={post.caption} />
-          <p className="post-caption">{post.caption}</p>
+      <hr className="hr2"></hr>
+      <div className="d-flex justify-content-around flex-wrap mr-5 ml-5 mb-5 mt-5">
+        <div style={{height: "100%",width: "100%",border: "1.5px solid #0066ef"}}>
+          {posts.map((post) => (
+            <div key={post.id} className="post">
+              <img className="post-image" src={post.media_url} alt={post.caption} />
+              <br></br>
+              <p className="post-caption">{post.caption}</p>
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Button, Modal, Form } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 
 function Actividades(props) {
     const [activity, setActivity] = useState([]);
@@ -111,25 +112,33 @@ function Actividades(props) {
                   // Convertir fecha de la actividad a formato legible
                   const date = new Date(actividad.date);
                   const formattedDate = date.toLocaleString();
-                  return (
-                    <div className="card" key={actividad._id}>
-                        <div className="card-header">
-                            <h5 style={{ color: "black" }} className="card-title">
-                                {actividad.name}
-                            </h5>
-                        </div>
-                        <div className="card-body">
-                            <p style={{ color: "black" }} className="card-text">
-                                Descripcion: {actividad.description}
-                                <br />
-                                Deporte: {actividad.sport}
-                                <br />
-                                Fecha: {formattedDate}
-                                <br />
-                                Maximo de Plazas: {actividad.max_plazas}
-                                <br />
-                                Lugar: {actividad.place}
-                            </p>
+                  return ( 
+                    <div className="d-flex justify-content-around flex-wrap mr-5 ml-5 mb-5 mt-5">
+                        <div style={{height: "100%",width: "100%",border: "1.5px solid #0066ef",borderRadius: "30px"}}>
+                            <br></br>
+                            <h4 className="text-center">{actividad.name}</h4>
+                            <hr className="hr2"></hr>
+                            <Row>
+                                <Col className="text-right font-weight-bold">Descripcion:</Col>
+                                <Col className="text-left">{actividad.description}</Col>
+                            </Row>
+                            <Row>
+                                <Col className="text-right font-weight-bold">Deporte:</Col>
+                                <Col className="text-left">{actividad.sport}</Col>
+                            </Row>
+                            <Row>
+                                <Col className="text-right font-weight-bold">Fecha:</Col>
+                                <Col className="text-left">{formattedDate}</Col>
+                            </Row>
+                            <Row>
+                                <Col className="text-right font-weight-bold">Maximo de Plazas:</Col>
+                                <Col className="text-left">{actividad.max_plazas}</Col>
+                            </Row>
+                            <Row>
+                                <Col className="text-right font-weight-bold">Lugar:</Col>
+                                <Col className="text-left">{actividad.place}</Col>
+                            </Row>
+                            <br></br>
                         </div>
                     </div>
                   );
