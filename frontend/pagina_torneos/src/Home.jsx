@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Accordion, Card } from "react-bootstrap";
 import bell_logo from "./bell_icon.png";
 import usports_logo_mini from "./mini_usports.png";
@@ -10,7 +10,7 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-
+import axios from "axios";
 import Teams from "./Teams";
 import Calendar from "./calendario";
 import Tournaments from "./Tournaments";
@@ -21,12 +21,26 @@ import Actividades from "./Actividades";
 
 function Home(props) {
   const [showContent, setShowContent] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [image, setImage] = useState("");
+
+  const getUserDetails = async () => {
+    try {
+      const response = await axios.get("http://localhost:3001/auth/getUser", {
+        headers: {
+          Authorization: `Bearer ${props.token}`,
+        },
+      });
+      
+      setImage(response.data.profilePic); // Nueva línea para la imagen
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   function handleButtonClick(buttonId) {
     switch (buttonId) {
       case "btn-1":
-        setShowContent();
+        setShowContent(<Calendar sessionToken={props.token}></Calendar>);
         break;
       case "btn-2":
         setShowContent(<Teams sessionToken={props.token}></Teams>);
@@ -61,6 +75,10 @@ function Home(props) {
     localStorage.clear();
     props.setLogued(false);
   };
+  useEffect(() => {
+    setShowContent(<Calendar sessionToken={props.token}></Calendar>);
+    getUserDetails();
+  }, []);
 
   return (
     <>
@@ -79,7 +97,7 @@ function Home(props) {
             >
               <img
                 src={calendar_logo}
-                style={{ maxWidth: "100%", maxHeight: "100%" , cursor:"pointer"}}
+                id="imgCalendar"
                 onClick={() => handleButtonClick("Calendar")}
 
               ></img>
@@ -107,7 +125,7 @@ function Home(props) {
                       aria-expanded="false"
                     >
                       <img
-                        src={web_icon}
+                        src={image}
                         width="40"
                         height="40"
                         className="rounded-circle"

@@ -31,7 +31,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
 function App() {
-  const [logued, setLogued] = useState(true);
+  const [logued, setLogued] = useState(false);
   const [show, setShow] = useState(false);
   const [justifyActive, setJustifyActive] = useState("tab1");
 

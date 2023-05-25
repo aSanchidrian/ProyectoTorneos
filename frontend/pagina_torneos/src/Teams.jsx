@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Button, Modal, Form } from 'react-bootstrap';
 
 function Teams(props) {
   const [team, setTeam] = useState([]);
   const [numPlayers, setNumPlayers] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  
 
   useEffect(() => {
     axios
@@ -59,8 +62,46 @@ function Teams(props) {
     }
   };
 
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
+
   return (
     <div>
+        <div className="d-flex justify-content-end bottom mr-4">
+          <Button variant="primary" onClick={handleShowModal}>
+            Crear Equipo
+          </Button>
+        </div>
+        <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Crear un equipo</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleRegister}>
+            <Form.Group>
+              <Form.Label>Nombre del equipo</Form.Label>
+              <Form.Control type="text" id="name" required/>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Deporte</Form.Label>
+              <Form.Control type="text" id="sport" required/>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Logo</Form.Label>
+              <Form.Control type="text" id="logo" required/>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Máximo de jugadores por equipo</Form.Label>
+              <Form.Control type="number" id="max_players_team" required/>
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              Crear
+            </Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
+        
+
       {team.length > 0 ? (
         team.map((equipo) => (
           <div>
@@ -73,7 +114,7 @@ function Teams(props) {
                 aria-controls="collapseExample"
               >
                 <img
-                  className="d-flex-justify-content-center"
+                  className="d-flex justify-content-center"
                   src={equipo.logo}
                   width="100"
                   height="100"

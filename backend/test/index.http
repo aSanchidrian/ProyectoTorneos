@@ -28,10 +28,11 @@ api_key: Api-publica-123
 POST http://localhost:3001/auth/update  HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NDMzNjkyMSwiZXhwIjoxNzIwMzMzMzIxfQ.mP8E9wAuluzrtdap1_kFYP82Tj0aY75PCijLaRqFdHg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
 {
-"nickname": "nuevo_nickname"
+"nickname": "nuevo_nickname",
+"profilePic": "https://1.bp.blogspot.com/-sffTqPYtaHY/Xl5hm6h8CQI/AAAAAAAAcew/KPScjjXwwgkQT-5spxLURf01P7RPbke8ACLcBGAsYHQ/s1600/12.png"
 }
 
 
@@ -39,13 +40,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 
 ##eliminar usuario
 DELETE http://localhost:3001/auth/delete/javichu2
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NDMzNjkyMSwiZXhwIjoxNzIwMzMzMzIxfQ.mP8E9wAuluzrtdap1_kFYP82Tj0aY75PCijLaRqFdHg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
 ###actualizar usuario
 PUT http://localhost:3001/auth/update/1
 Content-Type: application/json
 api_key: Api-publica-123
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NDMzNjkyMSwiZXhwIjoxNzIwMzMzMzIxfQ.mP8E9wAuluzrtdap1_kFYP82Tj0aY75PCijLaRqFdHg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
 {
 "nickname": "javivi"
@@ -55,21 +56,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 ### todos usuario
 GET http://localhost:3001/auth/getUsers HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NDMzNjkyMSwiZXhwIjoxNzIwMzMzMzIxfQ.mP8E9wAuluzrtdap1_kFYP82Tj0aY75PCijLaRqFdHg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
 
 
 ####elimina el modelo deseado le especificas el modelo y el id del modelo
 DELETE http://localhost:3001/Auth/User/8 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NDMzNjkyMSwiZXhwIjoxNzIwMzMzMzIxfQ.mP8E9wAuluzrtdap1_kFYP82Tj0aY75PCijLaRqFdHg
+Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
 
 ################# FIN ADMIN ###################
 ### getUser usuario
 GET http://localhost:3001/auth/getUser HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NDMzNjkyMSwiZXhwIjoxNzIwMzMzMzIxfQ.mP8E9wAuluzrtdap1_kFYP82Tj0aY75PCijLaRqFdHg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
 
 
@@ -78,7 +79,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 POST http://localhost:3001/activity/createActivity HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NDMzNjkyMSwiZXhwIjoxNzIwMzMzMzIxfQ.mP8E9wAuluzrtdap1_kFYP82Tj0aY75PCijLaRqFdHg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
 {
   "name": "DAtas vs cyber",
@@ -91,12 +92,30 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
   "result": "",
   "place": "Futbol sala utad"
 }
+######crear actividades
+
+POST http://localhost:3001/activity/createActivity HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+{
+  "name": "result1 vs result2",
+  "description": "Partido de furbol",
+  "sport": "Fútbol",
+  "date": "2023-04-05T12:00:00Z",
+  "privacity": true,
+  "max_plazas": 20,
+  "status": true,
+  "result": "3-1",
+  "place": "Futbol sala utad"
+}
 
 ######crear actividades 2
 POST http://localhost:3001/activity/createActivity HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NDMzNjkyMSwiZXhwIjoxNzIwMzMzMzIxfQ.mP8E9wAuluzrtdap1_kFYP82Tj0aY75PCijLaRqFdHg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
 {
   "name": "SSH vs DAWE",
@@ -114,7 +133,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 POST http://localhost:3001/activity/createActivity HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NDMzNjkyMSwiZXhwIjoxNzIwMzMzMzIxfQ.mP8E9wAuluzrtdap1_kFYP82Tj0aY75PCijLaRqFdHg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
 {
   "name": "Alex vs Pablo",
@@ -131,13 +150,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 ### todos las actividades
 GET http://localhost:3001/activity/getActivitys HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NDc3MzU1MSwiZXhwIjoxNzIwNzY5OTUxfQ.PckZOqd-QyKM27cHwT2OGsQe335s97PUa4zf-tJ3TBY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
 ### todos las actividades
 POST http://localhost:3001/activity/suscribeActivity HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NDc3MzU1MSwiZXhwIjoxNzIwNzY5OTUxfQ.PckZOqd-QyKM27cHwT2OGsQe335s97PUa4zf-tJ3TBY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
 {
   
@@ -147,12 +166,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 ### todos las actividades de un usuario
 GET http://localhost:3000/activity/getMyActivitys HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NDc3MzU1MSwiZXhwIjoxNzIwNzY5OTUxfQ.PckZOqd-QyKM27cHwT2OGsQe335s97PUa4zf-tJ3TBY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 ###sumbit result actibity####
 PUT http://localhost:3000/activity/submitResult/1 HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
-Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NDMzNjkyMSwiZXhwIjoxNzIwMzMzMzIxfQ.mP8E9wAuluzrtdap1_kFYP82Tj0aY75PCijLaRqFdHg
+Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
 {
   "result":"1-0"
@@ -163,7 +182,7 @@ Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imph
 POST http://localhost:3001/team/createTeam HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NDc3NjkyNCwiZXhwIjoxNzIwNzczMzI0fQ.nS7ltX49OK-1aVVvXDY6lxfrkLcGWxStY7CaI_y3Bh0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
 {
   "name":"SSH",
@@ -177,7 +196,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 POST http://localhost:3001/team/createTeam HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyIiwiaWF0IjoxNjgyNTkyNzI3LCJleHAiOjE3MTg1ODkxMjd9.M1Eo2nlUXUOjQFttChUKBmEEytOtbfglxKnmRS8T_rc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
 {
   "name":"MedioPulmon",
@@ -191,7 +210,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 POST http://localhost:3001/team/createTeam HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NDMzNjkyMSwiZXhwIjoxNzIwMzMzMzIxfQ.mP8E9wAuluzrtdap1_kFYP82Tj0aY75PCijLaRqFdHg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
 {
   "name":"DAWE",
@@ -205,7 +224,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 POST http://localhost:3001/team/createTeam HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NDMzNjkyMSwiZXhwIjoxNzIwMzMzMzIxfQ.mP8E9wAuluzrtdap1_kFYP82Tj0aY75PCijLaRqFdHg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
 {
   "name":"LIONS",
@@ -219,7 +238,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 POST http://localhost:3001/team/createTeam HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NDMzNjkyMSwiZXhwIjoxNzIwMzMzMzIxfQ.mP8E9wAuluzrtdap1_kFYP82Tj0aY75PCijLaRqFdHg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
 {
   "name":"SecurityData",
@@ -229,16 +248,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 }
 #####get teams####
 GET http://localhost:3000/team/getTeams HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NDc3MzU1MSwiZXhwIjoxNzIwNzY5OTUxfQ.PckZOqd-QyKM27cHwT2OGsQe335s97PUa4zf-tJ3TBY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
 ##########inscribe into a team###########
 POST  http://localhost:3000/team/joinTeam
 Content-Type: application/json
 api_key: Api-publica-123
 <<<<<<< Updated upstream
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NDMzNjkyMSwiZXhwIjoxNzIwMzMzMzIxfQ.mP8E9wAuluzrtdap1_kFYP82Tj0aY75PCijLaRqFdHg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 =======
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyIiwiaWF0IjoxNjgyNTkyNzI3LCJleHAiOjE3MTg1ODkxMjd9.M1Eo2nlUXUOjQFttChUKBmEEytOtbfglxKnmRS8T_rc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 >>>>>>> Stashed changes
 
 {
@@ -247,10 +266,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 
 #####get my team####
 GET http://localhost:3001/team/myTeams HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NDMzNjkyMSwiZXhwIjoxNzIwMzMzMzIxfQ.mP8E9wAuluzrtdap1_kFYP82Tj0aY75PCijLaRqFdHg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
 #######get de teams with the useres######
 GET http://localhost:3001/team/teams-with-users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NDMzNjkyMSwiZXhwIjoxNzIwMzMzMzIxfQ.mP8E9wAuluzrtdap1_kFYP82Tj0aY75PCijLaRqFdHg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
 

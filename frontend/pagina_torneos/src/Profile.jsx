@@ -1,71 +1,87 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import web_icon from "./web-globe-icon-23.png";
 import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
 
 function Profile(props) {
-
   const [user, setUser] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [showModal, setShowModal] = useState(false); // Para el modal
   const [name, setName] = useState("");
   const [nickname, setNickname] = useState("");
   const [image, setImage] = useState("");
   const [teams, setTeams] = useState([]);
-  const [sport, setSport] = useState([]);
+  const [sport, setSport] = useState("");
 
-  const sendGetUser = async () => {
-    axios
-      .get("http://localhost:3001/auth/getUser", {
+  const getUserDetails = async () => {
+    try {
+      const response = await axios.get("http://localhost:3001/auth/getUser", {
         headers: {
           Authorization: `Bearer ${props.sessionToken}`,
         },
-      })
-      .then((response) => {
-        setName(response.data.name);
-        setNickname(response.data.nickname);
-        setSport(response.data.sport);
-        setUser(response.data.email);
-        // setName(response.data.image);
-        // setTeams(response.data.teams);
       });
+      setName(response.data.name);
+      setNickname(response.data.nickname);
+      setSport(response.data.sport);
+      setUser(response.data.email);
+      setImage(response.data.profilePic); // Nueva línea para la imagen
+    } catch (err) {
+      console.error(err);
+    }
   };
+
+  const getUserTeams = async () => {
+    try {
+      const response = await axios.get("http://localhost:3001/team/myTeams", {
+        headers: {
+          Authorization: `Bearer ${props.sessionToken}`,
+        },
+      });
+      setTeams(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleModal = () => { // Para manejar el modal
+    setShowModal(!showModal);
+  };
+
+  const updateProfile = async () => { // Función para actualizar el perfil
+    const body = {
+      name,
+      nickname,
+      profilePic: image,
+      sport
+    };
+    
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/auth/update",
+        body,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "api_key": "Api-publica-123",
+            "Authorization": `Bearer ${props.sessionToken}`
+          }
+        }
+      );
+      if(response.status === 200) {
+        handleModal();
+        getUserDetails();
+      }
+    } catch(err) {
+      console.error(err);
+    }
+  };
+
 
   useEffect(() => {
-    sendGetUser();
+    getUserDetails();
+    getUserTeams();
   }, []);
-
-  const handleNameChange = (event) => {
-    // setName(event.target.value);
-  };
-
-  const handleNicknameChange = (event) => {
-    // setNickname(event.target.value);
-  };
-
-  const handleImageChange = (event) => {
-    // setImage(event.target.value);
-  };
-
-  const handleTeamChange = (event) => {
-    // const selectedTeams = Array.from(
-    //   event.target.selectedOptions,
-    //   (option) => option.value
-    // );
-    // setTeams(selectedTeams);
-  };
-
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
-
-  const handleSaveClick = () => {
-    // axios
-    //   .put("http://localhost:3001/auth/update/1", { name, nickname, image, teams })
-    //   .then((response) => {
-    //     setUser(response.data);
-    //     setIsEditing(false);
-    //   });
-  };
 
   return (
     <>
@@ -81,9 +97,10 @@ function Profile(props) {
             }}
           >
             <img
-              src={web_icon}
+              src={image} // Imagen del usuario
               width="200"
               height="200"
+              style={{border:"1px solid #0066ef"}}
               className="rounded-circle"
             />
           </div>
@@ -93,16 +110,9 @@ function Profile(props) {
               width: "50%",
             }}
           >
-            {/* meter aqui la info del user */}
-            <h2>
-              <b>{nickname}</b>
-            </h2>
-            <br></br>
-            <h2>{name}</h2>
-            <br></br>
-            <br></br>
-            <h4>{sport}</h4>
-            <br></br>
+            <h2><b>Apodo:</b> {nickname}</h2>
+            <h2><b>Nombre:</b> {name}</h2>
+            <h2><b>Deporte(s):</b> {sport}</h2>
           </div>
           <div
             className="d-flex flex-column align-items-center mt-5"
@@ -110,42 +120,71 @@ function Profile(props) {
               width: "20%",
             }}
           >
-            <Button className="btn btn-primary">Editar</Button>
+            <Button className="btn btn-primary" onClick={handleModal}>Editar</Button>
+            <Modal show={showModal} onHide={handleModal}>
+              <Modal.Header closeButton>
+                <Modal.Title>Editar Perfil</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form>
+                  <Form.Group>
+                    <Form.Label>Nombre</Form.Label>
+                    <Form.Control type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Label>Apodo</Form.Label>
+                    <Form.Control type="text" value={nickname} onChange={(e) => setNickname(e.target.value)} />
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Label>Deportes</Form.Label>
+                    <Form.Control type="text" value={sport} onChange={(e) => setSport(e.target.value)} />
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Label>Foto de Perfil</Form.Label>
+                    <Form.Control type="text" value={image} onChange={(e) => setImage(e.target.value)} />
+                  </Form.Group>
+                </Form>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleModal}>
+                  Cerrar
+                </Button>
+                <Button variant="primary" onClick={updateProfile}>
+                  Guardar Cambios
+                </Button>
+              </Modal.Footer>
+            </Modal>
+
           </div>
         </div>
+        <hr className="hr"></hr><br></br>
         <div className="mr-5 ml-5 mb-5" style={{ height: "33.33vh"}}>
           <div
             className="d-flex justify-content-center"
             style={{
-              // minHeight: "100hv",
               height: "100%",
               width: "100%",
-              // minWidth: "100hv",
               border: "1.5px solid #0066ef",
               borderRadius: "30px",
             }}
           >
-            {/* parte de equipos */}
             <div style={{ minWidth: "100hv",}}>
-              <h2 style={{color: "#0066ef"}}>Equipos</h2>
-            </div>
-          </div>  
-        </div>
-        <div className="mr-5 ml-5 mb-5" style={{ height: "33.33vh"}}>
-          <div
-            className="d-flex justify-content-center"
-            style={{
-              // minHeight: "100hv",
-              height: "100%",
-              width: "100%",
-              // minWidth: "100hv",
-              border: "1.5px solid #0066ef",
-              borderRadius: "30px",
-            }}
-          >
-            {/* parte de equipos */}
-            <div style={{ minWidth: "100hv",}}>
-              <h2 style={{color: "#0066ef"}}>Publicaciones</h2>
+              <h2 style={{color: "#0066ef", paddingTop:"2%"}}>Mis equipos</h2>
+              <br></br>
+              <div className="d-flex justify-content-center">
+                {teams.map((team) => (
+                  <div key={team._id} style={{marginRight:"3%"}}>
+                    <img
+                      src={team.logo} // Imagen del equipo
+                      width="100"
+                      height="100"
+                      className="rounded-circle"
+                      style={{border:"1px solid #0066ef"}}
+                    />
+                    <h5>{team.name}</h5>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>  
         </div>
@@ -155,145 +194,3 @@ function Profile(props) {
 }
 
 export default Profile;
-
-{
-  /* <div className="d-flex justify-content-end mb-3">
-        {isEditing ? (
-          <button className="btn btn-primary mr-2" onClick={handleSaveClick}>
-            Guardar cambios
-          </button>
-        ) : (
-          <button className="btn btn-primary mr-2" onClick={handleEditClick}>
-            Editar perfil
-          </button>
-        )}
-      </div>
-      <h1>
-        {isEditing ? (
-          <input type="text" value={name} onChange={handleNameChange} />
-        ) : (
-          user.name
-        )}
-      </h1>
-      <div className="row">
-        <div className="col-md-4">
-          {isEditing ? (
-            <input type="text" value={image} onChange={handleImageChange} />
-          ) : (
-            <img src={user.image} alt="Foto de perfil" />
-          )}
-          {isEditing ? (
-            <input
-              type="text"
-              value={nickname}
-              onChange={handleNicknameChange}
-            />
-          ) : (
-            <p>Nickname: {user.nickname}</p>
-          )}
-          <p>Equipos:</p>
-          <select multiple={true} value={teams} onChange={handleTeamChange}>
-            {user.teams.map((team, index) => (
-              <option key={index} value={team}>
-                {team}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div> */
-}
-
-//  <div className="d-flex flex-column h-100 overflow-scroll">
-//         <div className="bg-red flex-grow-1 d-flex justify-content-center align-items-center" style={{flexShrink: 0}}>
-//           <div
-//             className="d-flex justify-content-center"
-//             style={{
-//               // minHeight: "50hv",
-//               // height: "100%",
-//               width: "100%",
-//               // minWidth: "100hv",
-//             }}
-//           >
-//             <div
-//               className="d-flex justify-content-center align-items-center mr-3"
-//               style={{
-//                 width: "20%",
-//               }}
-//             >
-//               <img
-//                 src={web_icon}
-//                 width="200"
-//                 height="200"
-//                 className="rounded-circle"
-//               />
-//             </div>
-//             <div
-//               className="mt-3 ml-2 d-flex flex-column align-items-start"
-//               style={{
-//                 width: "50%",
-//               }}
-//             >
-//               {/* meter aqui la info del user */}
-//               <h2>
-//                 <b>{nickname}</b>
-//               </h2>
-//               <br></br>
-//               <h2>{name}</h2>
-//               <br></br>
-//               <br></br>
-//               <h4>{sport}</h4>
-//               <br></br>
-//             </div>
-//             <div
-//               className="d-flex flex-column align-items-center mt-5"
-//               style={{
-//                 width: "20%",
-//               }}
-//             >
-//               <Button className="btn btn-primary">Editar</Button>
-//             </div>
-//           </div>
-//         </div>
-//         <div
-//           className="bg-red ml-5 mr-5 mb-1 flex-grow-1 d-flex justify-content-center align-items-center"
-//           style={{ border: "1.5px solid #0066ef", borderRadius: "30px", flexShrink: 0 }}
-//         >
-//           <div
-//             className="d-flex justify-content-center"
-//             style={{
-//               minHeight: "100hv",
-//               height: "100%",
-//               width: "100%",
-//               minWidth: "100hv",
-//               // border: "1.5px solid #0066ef",
-//               // borderRadius: "30px",
-//             }}
-//           >
-//             {/* parte de equipos */}
-//             <div style={{ minWidth: "100hv",}}>
-//               <h2 style={{color: "#0066ef"}}>Equipos</h2>
-//             </div>
-//           </div>
-//         </div>
-//          <div
-//           className="bg-red ml-5 mr-5 flex-grow-1 d-flex justify-content-center align-items-center"
-//           style={{ border: "1.5px solid #0066ef", borderRadius: "30px", flexShrink: 0 }}
-//         >
-//           <div
-//             className="d-flex justify-content-center"
-//             style={{
-//               // minHeight: "100hv",
-//               height: "100%",
-//               width: "100%",
-//               // minWidth: "100hv",
-//               // border: "1.5px solid #0066ef",
-//               // borderRadius: "30px",
-//             }}
-//           >
-//             {/* parte de equipos */}
-//             <div style={{ minWidth: "100hv",}}>
-//               <h2 style={{color: "#0066ef"}}>Equipos</h2>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
