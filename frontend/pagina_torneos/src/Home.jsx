@@ -12,7 +12,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import axios from "axios";
 import Teams from "./Teams";
-import Calendar from "./calendario";
+import Calendar from "./Calendar";
 import Tournaments from "./Tournaments";
 import Results from "./Results";
 import Profile from "./Profile";
