@@ -154,7 +154,7 @@ const submitResult = async (req, res) => {
 
     // Retorna un mensaje en el que dice que actividad se ha actualizado
 
-    const logMessage = ` ${req.user.nickname} ha actualizado el resultado del partido${activity.name} a ${result}`;
+    const logMessage = `@${req.user.nickname} ha actualizado el resultado del partido ${activity.name} a: ${result}`;
     await Logs.create({ message: logMessage });
     return res.json({ message: `Result submitted for activity ${id}.`, activity });
   } catch (error) {

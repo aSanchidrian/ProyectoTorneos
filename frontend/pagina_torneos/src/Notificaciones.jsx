@@ -35,7 +35,10 @@ const Notificaciones = (props) => {
       return "https://tecolotito.elsiglodetorreon.com.mx/i/2021/07/1456925.jpeg";
     } else if (message.includes("torneo")) {
       return "https://e7.pngegg.com/pngimages/918/40/png-clipart-sports-team-others-miscellaneous-sport.png";
-    } else {
+    } else if (message.includes("actualizado")) {
+      return "https://i.pinimg.com/originals/fd/3b/de/fd3bde6ba2d10e5395ad7ed2fdf76231.png";
+    }
+     else {
       return null;
     }
   }
