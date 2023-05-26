@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button, Modal, Form } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 
 function Tournaments(props) {
   const [tournaments, setTournaments] = useState([]);
   const [selectedTournament, setSelectedTournament] = useState(null);
   const [sportFilter, setSportFilter] = useState("");
+  const [formattedDateStart, setFormattedDateStart] = useState("");
+  const [formattedDateEnd, setFormattedDateEnd] = useState("");
   const [showModal, setShowModal] = useState(false);
 
   // State for form input values
@@ -46,7 +49,19 @@ function Tournaments(props) {
   };
 
   const selectTournament = (tournament) => {
-    setSelectedTournament(tournament);
+    if (selectedTournament && selectedTournament.id === tournament.id) {
+      setSelectedTournament(null);
+      setFormattedDateStart("");
+      setFormattedDateEnd("");
+    } else {
+      setSelectedTournament(tournament);
+  
+      // Update formatted dates
+      const date1 = new Date(tournament.date_start);
+      const date2 = new Date(tournament.date_end);
+      setFormattedDateStart(date1.toLocaleString());
+      setFormattedDateEnd(date2.toLocaleString());
+    }
   };
 
   const filteredTournaments = sportFilter 
@@ -92,56 +107,41 @@ function Tournaments(props) {
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
 
+
   return (
+    
+  <>  
     <div>
       <div className="filter-container">
-        <Form.Control
-          as="select"
-          value={sportFilter}
-          onChange={handleSportFilterChange}
-        >
-          <option value="">Select a sport</option>
-          <option value="Football">Football</option>
-          <option value="Basketball">Basketball</option>
-        </Form.Control>
+        <div className="d-flex justify-content-around ml-4 mt-4">
+          <Form.Control
+            as="select"
+            className="mr-4 ml-4"
+            value={sportFilter}
+            onChange={handleSportFilterChange}
+          >
+            <option value="">Todos los deportes</option>
+            <option value="Futbol">Fútbol</option>
+            <option value="Tenis">Tenis</option>
+            <option value="Baloncesto">Basketball</option>
+          </Form.Control>
+
+          <Button variant="primary" onClick={handleShowModal} style={{textAlign:"center", width:"30%",height:"30%", marginRight:"3%"}}>
+          Crear Torneo
+        </Button>
       </div>
+    </div>
 
-      {filteredTournaments.map((tournament) => (
-        <div
-          key={tournament.id}
-          onClick={() => selectTournament(tournament)}
-        >
-          {tournament.name}
-        </div>
-      ))}
+    <hr className="hr2"></hr>
 
-      {selectedTournament && (
-        <div>
-          <h2>{selectedTournament.name}</h2>
-          <p>{selectedTournament.description}</p>
-          <p>{selectedTournament.sport}</p>
-          <p>{selectedTournament.date_start}</p>
-          <p>{selectedTournament.date_end}</p>
-          <p>{selectedTournament.min_teams}</p>
-          <p>{selectedTournament.max_teams}</p>
-          <p>{selectedTournament.max_players_team}</p>
-          <p>{selectedTournament.type}</p>
-          <p>{selectedTournament.privacity}</p>
-        </div>
-      )}
-
-      <Button onClick={handleShowModal}>
-        Create New Tournament
-      </Button>
-
-      <Modal show={showModal} onHide={handleCloseModal}>
+    <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Create New Tournament</Modal.Title>
+          <Modal.Title>Crear nuevo torneo</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleCreateTournament}>
             <Form.Group controlId="formTournamentName">
-              <Form.Label>Tournament Name</Form.Label>
+              <Form.Label>Nombre del torneo: </Form.Label>
               <Form.Control
                 type="text"
                 name="name"
@@ -153,7 +153,7 @@ function Tournaments(props) {
 
             {/* Add additional form fields here */}
             <Form.Group controlId="formTournamentDescription">
-              <Form.Label>Description</Form.Label>
+              <Form.Label>Descripcion: </Form.Label>
               <Form.Control
                 type="text"
                 name="description"
@@ -164,7 +164,7 @@ function Tournaments(props) {
             </Form.Group>
 
             <Form.Group controlId="formTournamentSport">
-              <Form.Label>Sport</Form.Label>
+              <Form.Label>Deporte: </Form.Label>
               <Form.Control
                 type="text"
                 name="sport"
@@ -175,7 +175,7 @@ function Tournaments(props) {
             </Form.Group>
 
             <Form.Group controlId="formTournamentDateStart">
-              <Form.Label>Start Date</Form.Label>
+              <Form.Label>Fecha de Inicio: </Form.Label>
               <Form.Control
                 type="datetime-local"
                 name="date_start"
@@ -186,7 +186,7 @@ function Tournaments(props) {
             </Form.Group>
 
             <Form.Group controlId="formTournamentDateEnd">
-              <Form.Label>End Date</Form.Label>
+              <Form.Label>Fecha de Final: </Form.Label>
               <Form.Control
                 type="datetime-local"
                 name="date_end"
@@ -197,7 +197,7 @@ function Tournaments(props) {
             </Form.Group>
 
             <Form.Group controlId="formTournamentMinTeams">
-              <Form.Label>Min Teams</Form.Label>
+              <Form.Label>Numero minimo de Equipos: </Form.Label>
               <Form.Control
                 type="number"
                 name="min_teams"
@@ -208,7 +208,7 @@ function Tournaments(props) {
             </Form.Group>
 
             <Form.Group controlId="formTournamentMaxTeams">
-              <Form.Label>Max Teams</Form.Label>
+              <Form.Label>Numero maximo de Equipos: </Form.Label>
               <Form.Control
                 type="number"
                 name="max_teams"
@@ -219,7 +219,7 @@ function Tournaments(props) {
             </Form.Group>
 
             <Form.Group controlId="formTournamentMaxPlayersTeam">
-              <Form.Label>Max Players per Team</Form.Label>
+              <Form.Label>Maximo de jugadores por equipo: </Form.Label>
               <Form.Control
                 type="number"
                 name="max_players_team"
@@ -230,7 +230,7 @@ function Tournaments(props) {
             </Form.Group>
 
             <Form.Group controlId="formTournamentType">
-              <Form.Label>Type</Form.Label>
+              <Form.Label>Tipo: </Form.Label>
               <Form.Control
                 as="select"
                 name="type"
@@ -245,7 +245,7 @@ function Tournaments(props) {
             </Form.Group>
 
             <Form.Group controlId="formTournamentPrivacity">
-              <Form.Label>Privacy</Form.Label>
+              <Form.Label>Privacidad: </Form.Label>
               <Form.Control
                 as="select"
                 name="privacity"
@@ -260,13 +260,76 @@ function Tournaments(props) {
             </Form.Group>
 
             <Button variant="primary" type="submit">
-              Create Tournament
+              Crear torneo
             </Button>
           </Form>
         </Modal.Body>
       </Modal>
+      {filteredTournaments.map((tournament) => {
+        
+  return (
+    <>
+    <div className="d-flex justify-content-around flex-wrap mr-3 ml-3 mb-3 mt-3"> 
+      <div style={{height: "100%",width: "100%",border: "1.5px solid #0066ef",borderRadius: "30px"}}>
+        <div   style={{cursor:"pointer"}} className="font-weight-bold mr-3 ml-3 mb-3 mt-3" key={tournament.id} onClick={() => selectTournament(tournament)}>
+          {tournament.name}
+        </div>
+      </div>
     </div>
+    
+    </>
   );
+})}
+
+<hr className='hr2'></hr>
+
+{selectedTournament && (
+  <div className="d-flex justify-content-around flex-wrap mr-5 ml-5 mb-5 mt-5">
+    <div style={{height: "100%",width: "100%",border: "1.5px solid #0066ef",borderRadius: "30px"}}>
+      <br></br>
+      <h2 className="text-center font-weight-bold ">{selectedTournament.name}</h2>
+      <hr className="hr2"></hr>
+      
+      <Row>
+        <Col className="text-right font-weight-bold">Descripcion:</Col>
+        <Col className="text-left">{selectedTournament.description}</Col>
+      </Row>
+      <Row>
+        <Col className="text-right font-weight-bold">Deporte:</Col>
+        <Col className="text-left">{selectedTournament.sport}</Col>
+      </Row>
+      <Row>
+        <Col className="text-right font-weight-bold">Fecha de Inicio:</Col>
+        <Col className="text-left">{formattedDateStart}</Col>
+      </Row>
+      <Row>
+        <Col className="text-right font-weight-bold">Fecha de Final:</Col>
+        <Col className="text-left">{formattedDateEnd}</Col>
+      </Row>
+      <Row>
+        <Col className="text-right font-weight-bold">Minimo de equipos:</Col>
+        <Col className="text-left">{selectedTournament.min_teams}</Col>
+      </Row>
+      <Row>
+        <Col className="text-right font-weight-bold">Maximo de equipos:</Col>
+        <Col className="text-left">{selectedTournament.max_teams}</Col>
+      </Row>
+      <Row>
+        <Col className="text-right font-weight-bold">Maximo de jugadores por equipo:</Col>
+        <Col className="text-left">{selectedTournament.max_players_team}</Col>
+      </Row>
+      <Row>
+        <Col className="text-right font-weight-bold">Tipo:</Col>
+        <Col className="text-left">{selectedTournament.type}</Col>
+      </Row>
+      <br></br>
+    </div>
+  </div>
+)}
+    </div>
+    </>
+  );
+  
 }
 
 export default Tournaments;

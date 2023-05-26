@@ -121,9 +121,9 @@ function Actividades(props) {
                         onChange={(e) => handleSportFilterChange(e.target.value)}
                     >
                         <option value="">Todos los deportes</option>
-                        <option value="Futbol">Fútbol</option>
+                        <option value="Fútbol">Fútbol</option>
                         <option value="Tenis">Tenis</option>
-                        <option value="Baloncesto">Baloncesto</option>
+                        <option value="baloncesto">Baloncesto</option>
                     </Form.Control>
                     <Button variant="primary" onClick={handleShowModal} style={{textAlign:"center", width:"30%",height:"30%", marginRight:"3%"}}>
                         Crear Actividad
@@ -176,7 +176,7 @@ function Actividades(props) {
             </Alert>
 
             {filteredActivity.length > 0 ? (
-                filteredActivity.reverse().map((actividad) => {
+                filteredActivity.map((actividad) => {
                     // Convertir fecha de la actividad a formato legible
                     const date = new Date(actividad.date);
                     const formattedDate = date.toLocaleString();
