@@ -16,7 +16,7 @@ import Calendar from "./Calendar";
 import Tournaments from "./Tournaments";
 import Results from "./Results";
 import Profile from "./Profile";
-import Ajustes from "./Ajustes";
+import Notificaciones from "./Notificaciones";
 import Actividades from "./Actividades";
 import Anuncios from "./Anuncios";
 
@@ -58,8 +58,8 @@ function Home(props) {
       case "Profile":
         setShowContent(<Profile sessionToken={props.token}></Profile>);
         break;
-      case "ajustes":
-        setShowContent(<Ajustes></Ajustes>);
+      case "Logs":
+        setShowContent(<Notificaciones sessionToken={props.token}></Notificaciones>);
         break;
       case "Calendar":
         setShowContent(<Calendar sessionToken={props.token}></Calendar>);
@@ -107,7 +107,8 @@ function Home(props) {
             >
               <img
                 src={bell_logo}
-                style={{ maxWidth: "100%", maxHeight: "100%" }}
+                style={{ maxWidth: "100%", maxHeight: "100%", cursor:"pointer" }}
+                onClick={() => handleButtonClick("Logs")}
               ></img>
             </Navbar.Text>
             <Navbar.Text>
@@ -141,16 +142,7 @@ function Home(props) {
                       >
                         Mi perfil
                       </a>
-                      <a
-                        className="dropdown-item"
-                        href="#"
-                        onClick={() => handleButtonClick("ajustes")}
-                      >
-                        Ajustes
-                      </a>
-                      {/* <a className="dropdown-item" href="#">
-                        Mis actividades
-                      </a> */}
+                
                       <a
                         className="dropdown-item"
                         href="#"

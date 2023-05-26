@@ -18,7 +18,7 @@ Content-Type: application/json
 api_key: Api-publica-123
 
 {
-    "username": "javi234@u-tad.com",
+    "username": "pablo@live.u-tad.com",
     "password":"javiScri2pt"
 }
 
@@ -270,7 +270,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 
 ##### get logs########
 GET http://localhost:3001/logs/getLogs
-Authorization: Brearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMzQiLCJpYXQiOjE2ODUwNTMzNDgsImV4cCI6MTcyMTA0OTc0OH0.4sjiRgjMblEphLxbvR4NJEC-qOrWDpsR16RkEkALdIY
+Authorization: Brearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6InBhYmxvIiwiaWF0IjoxNjg1MTEzNDYyLCJleHAiOjE3MjExMDk4NjJ9.PrCE-tfUvCPmE1jwrf-prbzMZTl6UjokhiXo1p-seSw
 
 
 ##### CREAR UN TORNEOS 
