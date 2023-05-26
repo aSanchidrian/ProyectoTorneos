@@ -108,14 +108,6 @@ User.belongsToMany(Team, { through: TeamMember });
 Team.belongsToMany(User, { through: TeamMember });
 TeamMember.sync()
 
-const TournamentPlayers = sequelize.define('tournament_players', {
-    permission: DataTypes.INTEGER // 1: admin // 2: super-admin
-});
-
-User.belongsToMany(Tournament, { through: TournamentPlayers });
-Tournament.belongsToMany(User, { through: TournamentPlayers });
-TournamentPlayers.sync()
-
 const TournamentTeams = sequelize.define('tournament_teams', {
     position: DataTypes.INTEGER,
     victories: DataTypes.INTEGER,
@@ -137,4 +129,4 @@ Activity.belongsToMany(Tournament, { through: TournamentGroupActivities });
 Tournament.belongsToMany(Activity, { through: TournamentGroupActivities });
 TournamentGroupActivities.sync()
 
-module.exports = { User, Team, TeamMember, Activity, ActivityPlayer, Tournament, TournamentPlayers, TournamentTeams, TournamentGroupActivities,Logs }
+module.exports = { User, Team, TeamMember, Activity, ActivityPlayer, Tournament, TournamentTeams, TournamentGroupActivities,Logs }

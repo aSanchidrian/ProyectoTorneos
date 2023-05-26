@@ -18,8 +18,8 @@ Content-Type: application/json
 api_key: Api-publica-123
 
 {
-    "username": "javi23@u-tad.com",
-    "password":"javiScript"
+    "username": "javi234@u-tad.com",
+    "password":"javiScri2pt"
 }
 
 
@@ -254,11 +254,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 POST  http://localhost:3000/team/joinTeam
 Content-Type: application/json
 api_key: Api-publica-123
-<<<<<<< Updated upstream
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
-=======
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
->>>>>>> Stashed changes
 
 {
  "id":1
@@ -275,3 +271,58 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 ##### get logs########
 GET http://localhost:3001/logs/getLogs
 Authorization: Brearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMzQiLCJpYXQiOjE2ODUwNTMzNDgsImV4cCI6MTcyMTA0OTc0OH0.4sjiRgjMblEphLxbvR4NJEC-qOrWDpsR16RkEkALdIY
+
+
+##### CREAR UN TORNEOS 
+# privacity -> 1: torneo privado (admin elige a quien meter), 2: torneo público (cualquiera puede unirse) 
+# "type": -> 1: solo para equipos o 2: equipos + jugadores sueltos
+POST http://localhost:3001/tournament/createTournament HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+{
+  "name": "Torneito",
+  "description": "Champions League",
+  "sport": "Fútbol",
+  "date_start": "2023-05-05T12:00:00Z",
+  "date_end": "2023-05-30T12:00:00Z",
+  "min_teams": 1,
+  "max_teams": 10,
+  "max_players_team": 12,
+  "type": 1,
+  "privacity": 2
+}
+
+##### DEVUELVE TODOS LOS TORNEOS
+GET http://localhost:3001/tournament/getTournaments HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+##### DEVUELVE TORNEOS EN LOS QUE EL USUARIO ESTÁ INSCRITO
+GET http://localhost:3001/tournament/getMyTournaments HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+##### METER A UN EQUIPO AL TORNEO
+POST http://localhost:3001/tournament/subscribeTeamToTournament HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+{
+  "teamId": 1,
+  "tournamentId": 4
+}
+
+##### DEVOLVER EQUIPOS DEL TORNEO
+GET http://localhost:3001/tournament/getTeamsTournament HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+{
+  "tournamentId": 4
+}

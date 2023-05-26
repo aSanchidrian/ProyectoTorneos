@@ -3,36 +3,26 @@ const { matchedData } = require("express-validator");
 const router = express.Router();
 const mysql = require("mysql");
 const conection = require("../connection");
-const { Tournament, TournamentPlayers, Team, TeamMember,Logs } = require("../models/models");
+const { Tournament, Team, TournamentTeams, TeamMember, Logs } = require("../models/models");
 const { Op } = require("sequelize");
 
 require("dotenv").config();
 db = conection;
 
 async function f_getPlayersInTournament(tournamentId) {
-    const playersInTournament = await TournamentPlayers.findAll({
-        where: {
-            id: tournamentId,
-        },
-    });
+    // const playersInTournament = await TournamentPlayers.findAll({
+    //     where: {
+    //         id: tournamentId,
+    //     },
+    // });
 
-    return playersInTournament
+    return 0
 }
 
-async function f_getTeamsInTournament(tourPlayerIds) {
-    const teamsIDInTournament = await TeamMember.findAll({
+async function countTeamsInTournament(tournamentId) {
+    const teamsInTournament = await TournamentTeams.findAll({
         where: {
-            id: tourPlayerIds,
-        },
-    });
-
-    const teamIds = [];
-    for (let i = 0; i < teamsIDInTournament.length; i++)
-        teamIds.push(teamsIDInTournament[i].teamId);
-
-    const teamsInTournament = await Team.findAll({
-        where: {
-            id: teamIds,
+            tournamentId: tournamentId,
         },
     })
 
@@ -106,12 +96,12 @@ function generateGroups(teams) {
     let groupsCount = generateTeamsPerGroup(teamsCount)
     teams.sort(ordenamientoAleatorio)
     
-    let groups = []
+    let groups = new Object()
     for(let i=0; i<groupsCount.length; i++) {
-        groups[i] = new Object()
-        groups[i].teams = []
+        groups[`Grupo ${i+1}`] = new Object()
+        groups[`Grupo ${i+1}`].teams = []
         for(let j=0; j<groupsCount[i];j++)
-            groups[i].teams.push(teams.pop())
+            groups[`Grupo ${i+1}`].teams.push(teams.pop())
     }
     
     return groups
@@ -127,7 +117,6 @@ function generateMatchesImpar(group, numTeams, numJornadas) {
             let match = [group[j], group[numTeams - 1 - j]]
             matches.push(match)
         }
-        
         schedule[`Jornada ${i+1}`]=(matches)
         const firstTeam = group.shift()
         group.push(firstTeam)
@@ -173,18 +162,19 @@ function generateMatchesInGroup(group) {
     return schedule
 }
 
-function generateTournament(tournamentId, tournamentTeams) {
+function generateTournamentSchedule(tournamentId, tournamentTeams) {
     let groups = generateGroups(tournamentTeams)
+    let numGroups = Object.keys(groups).length
     
-    for(let i=0; i<groups.length; i++) {
-        groups[i].matches = {}
-        groups[i].matches = generateMatchesInGroup(groups[i].teams)
+    for(let i=0; i<numGroups; i++) {
+        groups[`Grupo ${i+1}`].matches = {}
+        groups[`Grupo ${i+1}`].matches = generateMatchesInGroup(groups[`Grupo ${i+1}`].teams)
     }
     
+    groups = JSON.stringify(groups)
     console.log(groups)
-    console.log(JSON.parse(groups))
 
-    return matches;
+    return groups;
 }
 
 // var equipos = ['Real Madrid', 'Barça', 'Atlético de Madrid', 'Sevilla', 'Betis', 'Cádiz', 'Valencia', 'Villareal', 'Osasuna', 'Real Sociedad', 'Celta', 'Athletic Bilbao', 'RCD Espanyol', ]
@@ -196,13 +186,22 @@ async function fixTeams() {
 }
 
 const getTeamsInTournament = async (req, res) => {
-    const playersInTournament = f_getPlayersInTournament(tournamentId)
+    try {
+        const { tournamentId } = req.body;
 
-    const tourPlayerIds = [];
-    for (let i = 0; i < playersInTournament.length; i++)
-        tourPlayerIds.push(playersInTournament[i].userId);
-
-    res.send(f_getTeamsInTournament(tourPlayerIds))
+        const teamsInTournament = await TournamentTeams.findAll({
+            where: {
+                tournamentId: tournamentId,
+            },
+        })
+    
+        console.log(teamsInTournament)
+    
+        res.send(teamsInTournament)
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Internal server error (Base de datos no encontrada?)" });
+    }
 };
 
 const getPlayersInTournament = async (req, res) => {
@@ -220,7 +219,7 @@ const generateTournament = async (req, res) => {
     for (let i = 0; i < playersInTournament.length; i++)
         tourPlayerIds.push(playersInTournament[i].userId);
 
-    const teamsInTournament = f_getTeamsInTournament(tourPlayerIds)
+    const teamsInTournament = countTeamsInTournament(tourPlayerIds)
     let teamsNumber = teamsInTournament.length
     // si es modo equipos
     // asignación de partidos
@@ -238,7 +237,10 @@ const generateTournament = async (req, res) => {
 const createTournament = async (req, res) => {
     try {
         // Extract data from request body
-        const { name, description, sport, date_start, date_end, min_teams, max_teams, max_players_team, rounds, type, privacity } = req.body;
+        const { name, description, sport, date_start, date_end, 
+            min_teams, max_teams, max_players_team, type, privacity } = req.body;
+
+        rounds = 5
 
         // Create tournament in database
         const [tournament, created] = await Tournament.findOrCreate({
@@ -259,7 +261,7 @@ const createTournament = async (req, res) => {
         res.status(201).json({ message: "Tournament created successfully" });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: "Internal server error (Base de datos no encontrada?)" });
     }
 };
 
@@ -274,22 +276,79 @@ const getTournaments = async (req, res) => {
     }
 };
 
-const suscribeTournament = async (req, res) => {
-    
+const suscribePlayerToTournament = async (req, res) => {
+    let userId = req.user.id;
+    let tournamentId = req.body.tournamentId;
+    const tournamentInfo = await Tournament.findOne({ where: { id: tournamentId } })
+    let freeTeam = tournamentInfo.name+"_free_"+tournamentInfo.id
+    let sport = tournamentInfo.sport
+    let max_players_team = tournamentInfo.max_players_team
+    let cero = 0
+
+    if (tournamentInfo.type != 2)
+        return res.status(409).json({ message: "To this tournament cannot join players" });
+
+    const [team, created] = await Team.findOrCreate({
+        where: {
+            name: freeTeam
+        },
+        defaults: {
+            freeTeam, sport, freeTeam, max_players_team
+        },
+    });
+
+    let teamId = team.teamId
+
+    const [player, created2] = await TeamMember.findOrCreate({
+        where: {
+            userId: userId, teamId: teamId
+        },
+        defaults: {
+            cero, userId, teamId
+        },
+    });
+
+    if (!created2)
+        return res.status(409).json({ message: "This player is already in this tournament" });
+
+    res.send(`¡Player joined!`);
 };
+
+const subscribeTeamToTournament = async (req, res) => {
+    let teamId = req.body.teamId
+    let tournamentId = req.body.tournamentId
+
+    let cero = 0
+
+    const [tournamentTeam, created] = await TournamentTeams.findOrCreate({
+        where: {
+            teamId: teamId, tournamentId: tournamentId
+        },
+        defaults: {
+            cero, cero, cero, cero, cero
+        },
+    });
+
+    if (!created)
+        return res.status(409).json({ message: "Already subscribe to this tournament" });
+
+    res.send(`Subscription to Tournament with success`);
+}
 
 const getMyTournaments = async (req, res) => {
     try {
-        var data = "";
-        data = await TournamentPlayers.findAll({
+        const playerTeams = await TeamMember.findAll({
             where: {
-                UserId: req.user.id,
+                userId: req.user.id,
             },
-        });
+        })
+
+        if(!playerTeams)
+            return res.status(409).json({ message: "Not in a tournament" })
 
         const tournamentIds = [];
-        for (let i = 0; i < data.length; i++)
-            tournamentIds.push(data[i].tournamentIds);
+        for (let i = 0; i < playerTeams.length; i++)
+            tournamentIds.push(playerTeams[i].tournamentId);
         
         const relatedRecords = await Tournament.findAll({
             where: {
@@ -297,6 +356,9 @@ const getMyTournaments = async (req, res) => {
             },
         });
 
+        if(!relatedRecords)
+            return res.status(409).json({ message: "Not in a tournament" })
+            
         res.send(relatedRecords);
     } catch (err) {
         console.log(err);
@@ -305,8 +367,13 @@ const getMyTournaments = async (req, res) => {
     }
 };
 
-
-
-
-
-module.exports = { createTournament, getTournaments, suscribeTournament, getMyTournaments, generateTournament, getPlayersInTournament, getTeamsInTournament };
+module.exports = { 
+    createTournament, 
+    getTournaments, 
+    suscribePlayerToTournament, 
+    subscribeTeamToTournament,
+    getMyTournaments, 
+    generateTournament, 
+    getPlayersInTournament, 
+    getTeamsInTournament 
+};
