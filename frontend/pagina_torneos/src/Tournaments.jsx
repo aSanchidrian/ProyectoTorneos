@@ -1,156 +1,272 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import web_icon from "./web-globe-icon-23.png";
-import Button from "react-bootstrap/Button";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Button, Modal, Form } from 'react-bootstrap';
 
-function Profile(props) {
-  const [user, setUser] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [name, setName] = useState("");
-  const [nickname, setNickname] = useState("");
-  const [image, setImage] = useState("");
-  const [teams, setTeams] = useState([]);
-  const [sport, setSport] = useState([]);
+function Tournaments(props) {
+  const [tournaments, setTournaments] = useState([]);
+  const [selectedTournament, setSelectedTournament] = useState(null);
+  const [sportFilter, setSportFilter] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
-  const sendGetUser = async () => {
+  // State for form input values
+  const [formValues, setFormValues] = useState({
+    name: "",
+    description: "",
+    sport: "",
+    date_start: "",
+    date_end: "",
+    min_teams: "",
+    max_teams: "",
+    max_players_team: "",
+    type: "",
+    privacity: ""
+  });
+  
+  useEffect(() => {
     axios
-      .get("http://localhost:3001/auth/getUser", {
+      .get("http://localhost:3001/tournament/getTournaments", {
         headers: {
           Authorization: `Bearer ${props.sessionToken}`,
         },
       })
       .then((response) => {
-        setName(response.data.name);
-        setNickname(response.data.nickname);
-        setSport(response.data.sport);
-        setUser(response.data.email);
-        // setName(response.data.image);
-        // setTeams(response.data.teams);
+        setTournaments(response.data);
       });
-  };
-
-  useEffect(() => {
-    sendGetUser();
   }, []);
 
-  const handleNameChange = (event) => {
-    // setName(event.target.value);
+  const handleSportFilterChange = (event) => {
+    setSportFilter(event.target.value);
   };
 
-  const handleNicknameChange = (event) => {
-    // setNickname(event.target.value);
+  const handleInputChange = (event) => {
+    setFormValues({
+      ...formValues,
+      [event.target.name]: event.target.value,
+    });
   };
 
-  const handleImageChange = (event) => {
-    // setImage(event.target.value);
+  const selectTournament = (tournament) => {
+    setSelectedTournament(tournament);
   };
 
-  const handleTeamChange = (event) => {
-    // const selectedTeams = Array.from(
-    //   event.target.selectedOptions,
-    //   (option) => option.value
-    // );
-    // setTeams(selectedTeams);
+  const filteredTournaments = sportFilter 
+    ? tournaments.filter(tournament => tournament.sport === sportFilter)
+    : tournaments;
+
+  const handleCreateTournament = async (event) => {
+    event.preventDefault();
+    const newTournamentData = {
+      ...formValues,
+      min_teams: Number(formValues.min_teams),
+      max_teams: Number(formValues.max_teams),
+      max_players_team: Number(formValues.max_players_team),
+      type: Number(formValues.type),
+      privacity: Number(formValues.privacity)
+    };
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/tournament/createTournament",
+        newTournamentData,
+        {
+          headers: {
+            Authorization: `Bearer ${props.sessionToken}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        const updatedTournaments = await axios.get("http://localhost:3001/tournament/getTournaments", {
+          headers: {
+            Authorization: `Bearer ${props.sessionToken}`,
+          },
+        });
+        setTournaments(updatedTournaments.data);
+        setShowModal(false);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
-
-  const handleSaveClick = () => {
-    // axios
-    //   .put("http://localhost:3001/auth/update/1", { name, nickname, image, teams })
-    //   .then((response) => {
-    //     setUser(response.data);
-    //     setIsEditing(false);
-    //   });
-  };
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
 
   return (
-    <>
-      <div className="scrollable" style={{ height: "auto", }}>
-        <div
-          className="d-flex justify-content-center align-items-center"
-          style={{ height: "30vh", }}
+    <div>
+      <div className="filter-container">
+        <Form.Control
+          as="select"
+          value={sportFilter}
+          onChange={handleSportFilterChange}
         >
-          <div
-            className=""
-            style={{
-              width: "20%",
-            }}
-          >
-            <img
-              src={web_icon}
-              width="200"
-              height="200"
-              className="rounded-circle"
-            />
-          </div>
-          <div
-            className="mt-3 ml-5 d-flex flex-column align-items-start"
-            style={{
-              width: "50%",
-            }}
-          >
-            {/* meter aqui la info del user */}
-            <h2>
-              <b>{nickname}</b>
-            </h2>
-            <br></br>
-            <h2>{name}</h2>
-            <br></br>
-            <br></br>
-            <h4>{sport}</h4>
-            <br></br>
-          </div>
-          <div
-            className="d-flex flex-column align-items-center mt-5"
-            style={{
-              width: "20%",
-            }}
-          >
-            <Button className="btn btn-primary">Editar</Button>
-          </div>
-        </div>
-        <div className="mr-5 ml-5 mb-5" style={{ height: "33.33vh"}}>
-          <div
-            className="d-flex justify-content-center"
-            style={{
-              // minHeight: "100hv",
-              height: "100%",
-              width: "100%",
-              // minWidth: "100hv",
-              border: "1.5px solid #0066ef",
-              borderRadius: "30px",
-            }}
-          >
-            {/* parte de equipos */}
-            <div style={{ minWidth: "100hv",}}>
-              <h2 style={{color: "#0066ef"}}>Equipos</h2>
-            </div>
-          </div>  
-        </div>
-        <div className="mr-5 ml-5 mb-5" style={{ height: "33.33vh"}}>
-          <div
-            className="d-flex justify-content-center"
-            style={{
-              // minHeight: "100hv",
-              height: "100%",
-              width: "100%",
-              // minWidth: "100hv",
-              border: "1.5px solid #0066ef",
-              borderRadius: "30px",
-            }}
-          >
-            {/* parte de equipos */}
-            <div style={{ minWidth: "100hv",}}>
-              <h2 style={{color: "#0066ef"}}>Publicaciones</h2>
-            </div>
-          </div>  
-        </div>
+          <option value="">Select a sport</option>
+          <option value="Football">Football</option>
+          <option value="Basketball">Basketball</option>
+        </Form.Control>
       </div>
-    </>
+
+      {filteredTournaments.map((tournament) => (
+        <div
+          key={tournament.id}
+          onClick={() => selectTournament(tournament)}
+        >
+          {tournament.name}
+        </div>
+      ))}
+
+      {selectedTournament && (
+        <div>
+          <h2>{selectedTournament.name}</h2>
+          <p>{selectedTournament.description}</p>
+          <p>{selectedTournament.sport}</p>
+          <p>{selectedTournament.date_start}</p>
+          <p>{selectedTournament.date_end}</p>
+          <p>{selectedTournament.min_teams}</p>
+          <p>{selectedTournament.max_teams}</p>
+          <p>{selectedTournament.max_players_team}</p>
+          <p>{selectedTournament.type}</p>
+          <p>{selectedTournament.privacity}</p>
+        </div>
+      )}
+
+      <Button onClick={handleShowModal}>
+        Create New Tournament
+      </Button>
+
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Create New Tournament</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleCreateTournament}>
+            <Form.Group controlId="formTournamentName">
+              <Form.Label>Tournament Name</Form.Label>
+              <Form.Control
+                type="text"
+                name="name"
+                value={formValues.name}
+                onChange={handleInputChange}
+                required
+              />
+            </Form.Group>
+
+            {/* Add additional form fields here */}
+            <Form.Group controlId="formTournamentDescription">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                type="text"
+                name="description"
+                value={formValues.description}
+                onChange={handleInputChange}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formTournamentSport">
+              <Form.Label>Sport</Form.Label>
+              <Form.Control
+                type="text"
+                name="sport"
+                value={formValues.sport}
+                onChange={handleInputChange}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formTournamentDateStart">
+              <Form.Label>Start Date</Form.Label>
+              <Form.Control
+                type="datetime-local"
+                name="date_start"
+                value={formValues.date_start}
+                onChange={handleInputChange}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formTournamentDateEnd">
+              <Form.Label>End Date</Form.Label>
+              <Form.Control
+                type="datetime-local"
+                name="date_end"
+                value={formValues.date_end}
+                onChange={handleInputChange}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formTournamentMinTeams">
+              <Form.Label>Min Teams</Form.Label>
+              <Form.Control
+                type="number"
+                name="min_teams"
+                value={formValues.min_teams}
+                onChange={handleInputChange}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formTournamentMaxTeams">
+              <Form.Label>Max Teams</Form.Label>
+              <Form.Control
+                type="number"
+                name="max_teams"
+                value={formValues.max_teams}
+                onChange={handleInputChange}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formTournamentMaxPlayersTeam">
+              <Form.Label>Max Players per Team</Form.Label>
+              <Form.Control
+                type="number"
+                name="max_players_team"
+                value={formValues.max_players_team}
+                onChange={handleInputChange}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formTournamentType">
+              <Form.Label>Type</Form.Label>
+              <Form.Control
+                as="select"
+                name="type"
+                value={formValues.type}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="">Select Type</option>
+                <option value="1">Teams only</option>
+                <option value="2">Teams + Individual Players</option>
+              </Form.Control>
+            </Form.Group>
+
+            <Form.Group controlId="formTournamentPrivacity">
+              <Form.Label>Privacy</Form.Label>
+              <Form.Control
+                as="select"
+                name="privacity"
+                value={formValues.privacity}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="">Select Privacy</option>
+                <option value="1">Private Tournament</option>
+                <option value="2">Public Tournament</option>
+              </Form.Control>
+            </Form.Group>
+
+            <Button variant="primary" type="submit">
+              Create Tournament
+            </Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
+    </div>
   );
 }
 
-export default Profile;
+export default Tournaments;
