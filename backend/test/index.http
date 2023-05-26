@@ -276,7 +276,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 
 ##### get logs########
 GET http://localhost:3001/logs/getLogs
-<<<<<<< Updated upstream
 Authorization: Brearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6InBhYmxvIiwiaWF0IjoxNjg1MTEzNDYyLCJleHAiOjE3MjExMDk4NjJ9.PrCE-tfUvCPmE1jwrf-prbzMZTl6UjokhiXo1p-seSw
 
 
@@ -333,6 +332,3 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 {
   "tournamentId": 4
 }
-=======
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMzQiLCJpYXQiOjE2ODUxMDA4OTMsImV4cCI6MTcyMTA5NzI5M30.5J4w80K_uAbaBKL2xIl4HMeacwTBZr3KV-4AIqmGdwY
->>>>>>> Stashed changes

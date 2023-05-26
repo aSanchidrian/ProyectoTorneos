@@ -13,6 +13,25 @@ function Profile(props) {
   const [image, setImage] = useState("");
   const [teams, setTeams] = useState([]);
   const [sport, setSport] = useState("");
+  const [publications, setPublications] = useState([]);
+
+  const getUserPublications = async (userNickname) => {
+    try {
+      const response = await axios.get("http://localhost:3001/logs/getLogs", {
+        headers: {
+          Authorization: `Bearer ${props.sessionToken}`,
+        },
+      });
+
+      const userPublications = response.data.filter((pub) => 
+        pub.message.includes(userNickname)
+      );
+
+      setPublications(userPublications);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const getUserDetails = async () => {
     try {
@@ -26,10 +45,12 @@ function Profile(props) {
       setSport(response.data.sport);
       setUser(response.data.email);
       setImage(response.data.profilePic); // Nueva línea para la imagen
+      getUserPublications(response.data.nickname);
     } catch (err) {
       console.error(err);
     }
-  };
+  };      
+
 
   const getUserTeams = async () => {
     try {
@@ -158,18 +179,14 @@ function Profile(props) {
           </div>
         </div>
         <hr className="hr"></hr><br></br>
-        <div className="mr-5 ml-5 mb-5" style={{ height: "33.33vh"}}>
-          <div
-            className="d-flex justify-content-center"
-            style={{
-              height: "100%",
-              width: "100%",
-              border: "1.5px solid #0066ef",
-              borderRadius: "30px",
-            }}
-          >
-            <div style={{ minWidth: "100hv",}}>
-              <h2 style={{color: "#0066ef", paddingTop:"2%"}}>Mis equipos</h2>
+          {/* 
+            MIS EQUIPOS */}
+
+        <div className="d-flex justify-content-around flex-wrap mr-5 ml-5 mb-5 mt-5">
+          <div style={{height: "100%",width: "100%",border: "1.5px solid #0066ef",borderRadius: "30px"}}>            
+            
+              <h2 style={{paddingTop:"2%"}}>Mis equipos</h2>
+              <hr className="hr2"></hr>
               <br></br>
               <div className="d-flex justify-content-center">
                 {teams.map((team) => (
@@ -185,10 +202,30 @@ function Profile(props) {
                   </div>
                 ))}
               </div>
-            </div>
           </div>  
         </div>
+
+                  {/* Mis Publicaciones */}
+                  <div className="d-flex justify-content-around flex-wrap mr-5 ml-5 mb-5 mt-5">
+          <div style={{height: "100%",width: "100%",border: "1.5px solid #0066ef",borderRadius: "30px"}}>            
+          
+            <h2 style={{ paddingTop:"2%"}}>Mis publicaciones</h2>
+            <hr className="hr2"></hr>
+            <br></br>
+            <div className="d-flex flex-column align-items-center">
+              {publications.map((pub) => (
+                <div key={pub._id}>
+                  <strong>{pub.message}</strong>
+                  <p>{new Date(pub.date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+
+                </div>
+              ))}
+            </div>
+        
+        </div>
       </div>
+    </div>
+
     </>
   );
 }
