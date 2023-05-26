@@ -46,7 +46,7 @@ function Results(props) {
           );
         })
       ) : (
-        <p className="no-results">No hay resultados disponibles...</p>
+        <h2>No hay resultados disponibles...</h2>
       )}
     </div>
   );
