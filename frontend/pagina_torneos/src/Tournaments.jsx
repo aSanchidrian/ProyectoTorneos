@@ -9,7 +9,40 @@ function Tournaments(props) {
   const [sportFilter, setSportFilter] = useState("");
   const [formattedDateStart, setFormattedDateStart] = useState("");
   const [formattedDateEnd, setFormattedDateEnd] = useState("");
+  const [teams, setTeams] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [teamId, setTeamId] = useState(1); // Suponiendo que el id del equipo es 1
+
+  const getTeams = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3001/tournament/getTeamsInTournament",
+        {
+          params: {
+            tournamentId: selectedTournament.id,
+          },
+          headers: {
+            Authorization: `Bearer ${props.sessionToken}`,
+            api_key: 'Api-publica-123',
+          },
+        }
+      );
+  
+      if (response.status === 200) {
+        setTeams(response.data);
+      }
+      console.log(response.data)
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+
+  useEffect(() => {
+    if (selectedTournament) {
+      getTeams();
+    }
+  }, [selectedTournament]);
 
   // State for form input values
   const [formValues, setFormValues] = useState({
@@ -24,6 +57,30 @@ function Tournaments(props) {
     type: "",
     privacity: ""
   });
+
+  const handleSubscribe = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/tournament/subscribeTeamToTournament",
+        {
+          teamId,
+          tournamentId: selectedTournament.id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${props.sessionToken}`,
+            api_key: 'Api-publica-123',
+            },
+        }
+      );
+
+      if (response.status === 200) {
+        alert("Inscripción exitosa!");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   
   useEffect(() => {
     axios
@@ -78,6 +135,7 @@ function Tournaments(props) {
       type: Number(formValues.type),
       privacity: Number(formValues.privacity)
     };
+    
 
     try {
       const response = await axios.post(
@@ -323,8 +381,21 @@ function Tournaments(props) {
         <Col className="text-left">{selectedTournament.type}</Col>
       </Row>
       <br></br>
+      <Button className="mb-4" variant="primary" onClick={handleSubscribe}>Inscribirse</Button>
+      <div className="d-flex justify-content-around flex-wrap mr-5 ml-5 mb-5 mt-5">
+        <div style={{height: "100%",width: "100%",border: "1.5px solid #0066ef",borderRadius: "30px"}}>
+          <h2 className='mt-3 mb-3'>Equipos Participantes</h2>
+          <hr className='hr2'></hr>
+          {teams.map((team, index) => (
+            <p style={{color:"black"}}>
+              {team.name} // Asegúrate de que "name" es la propiedad correcta para el nombre del equipo
+            </p>
+          ))}
+        </div>
+      </div>
     </div>
   </div>
+  
 )}
     </div>
     </>
