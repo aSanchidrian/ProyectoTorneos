@@ -31,7 +31,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
 function App() {
-  const [logued, setLogued] = useState(true);
+  const [logued, setLogued] = useState(false);
   const [show, setShow] = useState(false);
   const [justifyActive, setJustifyActive] = useState("tab1");
 
@@ -48,34 +48,42 @@ function App() {
   };
 
   const handleLogin = async (event) => {
-    //Evita que el formulario HTML se envíe automáticamente cuando se presiona el botón "submit"
     event.preventDefault();
-
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
-
+  
+    // Validación de los campos de inicio de sesión
+    if (!username || !password) {
+      alert("Por favor, rellene todos los campos.");
+      return;
+    }
+    if (!username.includes("@live.u-tad.com")) {
+      alert("Por favor, introduzca un correo electrónico válido de U-Tad.");
+      return;
+    }
+  
     try {
-      axios
-        .post("http://localhost:3001/auth/login", {
-          username,
-          password,
-        })
-        .then((response) => {
-          let respUser = response.data;
-          var user = respUser.substring(0, respUser.indexOf("@"));
-          localStorage.setItem("user", user);
-          const comienzo =
-            respUser.indexOf("Sesion token: ") + "Sesion token: ".length;
-          const token = respUser.slice(comienzo);
-          localStorage.setItem("token", token);
-          window.location.href = "App.js";
-          alert("has iniciado sesion");
-        })
-        .catch((error) => {
-          console.log("ERROR", error);
-        });
+      const response = await axios.post("http://localhost:3001/auth/login", {
+        username,
+        password,
+      });
+  
+      // Comprobamos si la respuesta es un mensaje de error
+      if (response.data === "User or Password incorrect") {
+        alert("Usuario o contraseña incorrectos. Por favor, intente nuevamente.");
+        return;
+      }
+  
+      const respUser = response.data;
+      var user = respUser.substring(0, respUser.indexOf("@"));
+      localStorage.setItem("user", user);
+      const comienzo = respUser.indexOf("Sesion token: ") + "Sesion token: ".length;
+      const token = respUser.slice(comienzo);
+      localStorage.setItem("token", token);
+      setLogued(true);
+      alert("Inicio de sesion correcto. Bienvenido");
     } catch (error) {
-      console.log(error);
+      console.error("ERROR", error);
     }
   };
 
@@ -90,6 +98,28 @@ function App() {
     const password = document.getElementById("password_r").value;
     const conf_password = document.getElementById("conf_password").value;
 
+    // Validación de los campos de registro
+    if (
+      !name ||
+      !email ||
+      !nickname ||
+      !sport ||
+      !schedule ||
+      !password ||
+      !conf_password
+    ) {
+      alert("Por favor, rellene todos los campos.");
+      return;
+    }
+    if (password !== conf_password) {
+      alert("Las contraseñas no coinciden.");
+      return;
+    }
+    if (!email.includes("@") || !email.endsWith("live.u-tad.com")) {
+      alert("Por favor, introduzca un correo electrónico válido de U-Tad.");
+      return;
+    }
+
     try {
       const response = await axios.post("http://localhost:3001/auth/register", {
         name,
@@ -100,9 +130,24 @@ function App() {
         password,
         conf_password,
       });
-      console.log(response.data);
+  
+      console.log(response.data)
+  
+      if (response.data === "Necesitas un correo corporativo de U-Tad") {
+        alert("Necesitas un correo corporativo de U-Tad");
+      } else if (response.data.startsWith("¡User created!")) {
+        const comienzo =
+            response.data.indexOf("token: ") + "token: ".length;
+        let token = response.data.slice(comienzo);
+        // Eliminar comillas dobles del token si existen
+        token = token.replace(/"/g, '');
+        localStorage.setItem("token", token);
+        setLogued(true);
+        alert("Usuario creado con exito");
+        console.log(token)
+      }
     } catch (error) {
-      console.error(error);
+      console.error("ERROR", error);
     }
   };
 

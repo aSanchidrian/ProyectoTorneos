@@ -103,30 +103,32 @@ function Actividades(props) {
 
     return (
         <div>
-            <div className="d-flex justify-content-around mt-4 ml-4">
-                <Dropdown>
-                    <Dropdown.Toggle variant="primary" id="filter-dropdown">
-                        Filtro
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => handleFilterChange("finished")}>Actividades Finalizadas</Dropdown.Item>
-                        <Dropdown.Item onClick={() => handleFilterChange("upcoming")}>Próximas Actividades</Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown>
-                <Form.Control
-                    as="select"
-                    className="mr-4 ml-4"
-                    value={sportFilter}
-                    onChange={(e) => handleSportFilterChange(e.target.value)}
-                >
-                    <option value="">Todos los deportes</option>
-                    <option value="Fútbol">Fútbol</option>
-                    <option value="Tenis">Tenis</option>
-                    <option value="Baloncesto">Baloncesto</option>
-                </Form.Control>
-                <Button variant="primary" onClick={handleShowModal} style={{textAlign:"center", width:"30%",height:"30%", marginRight:"3%"}}>
-                    Crear Actividad
-                </Button>
+            <div className="filter-container">
+                <div className="d-flex justify-content-around mt-4 ml-4">
+                    <Dropdown>
+                        <Dropdown.Toggle variant="primary" id="filter-dropdown">
+                            Filtro
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => handleFilterChange("finished")}>Actividades Finalizadas</Dropdown.Item>
+                            <Dropdown.Item onClick={() => handleFilterChange("upcoming")}>Próximas Actividades</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                    <Form.Control
+                        as="select"
+                        className="mr-4 ml-4"
+                        value={sportFilter}
+                        onChange={(e) => handleSportFilterChange(e.target.value)}
+                    >
+                        <option value="">Todos los deportes</option>
+                        <option value="Fútbol">Fútbol</option>
+                        <option value="Tenis">Tenis</option>
+                        <option value="baloncesto">Baloncesto</option>
+                    </Form.Control>
+                    <Button variant="primary" onClick={handleShowModal} style={{textAlign:"center", width:"30%",height:"30%", marginRight:"3%"}}>
+                        Crear Actividad
+                    </Button>
+                </div>
             </div>
 
             <hr className="hr2"></hr>

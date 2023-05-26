@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Button, Modal, Form } from 'react-bootstrap';
+import { Button, Modal, Form, Select } from 'react-bootstrap';
 
 function Teams(props) {
   const [teams, setTeams] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState(null);
+  const [sportFilter, setSportFilter] = useState("");
   const [numPlayers, setNumPlayers] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [filteredActivity, setFilteredActivity] = useState([]);
 
   useEffect(() => {
     axios
@@ -33,6 +35,19 @@ function Teams(props) {
       });
   }, []);
 
+  const handleSportFilterChange = (value) => {
+    setSportFilter(value);
+  };
+
+  const selectTeam = (team) => {
+    setSelectedTeam(team);
+    setFilteredActivity([team]);
+  }
+
+  const filteredTeams = sportFilter 
+    ? teams.filter(team => team.sport === sportFilter)
+    : teams;
+
   const handleRegister = async (event) => {
     event.preventDefault();
 
@@ -57,7 +72,6 @@ function Teams(props) {
         }
       );
       console.log(response.data);
-      // Refrescar la lista de equipos
       const responseTeams = await axios.get("http://localhost:3001/team/getTeams", {
         headers: {
           Authorization: `Bearer ${props.sessionToken}`,
@@ -73,28 +87,42 @@ function Teams(props) {
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
 
-  const selectTeam = (team) => {
-    setSelectedTeam(team);
-  }
-
   return (
     <div>
-      <br></br>
-      <div className="d-flex justify-content-around flex-wrap">
-        {teams.length > 0 ? (
-          teams.map((team) => (
-            <div onClick={() => selectTeam(team)} style={{ cursor: "pointer", textAlign: "center" }}>
-              <img src={team.logo} style={{border:"1px solid #0066ef", width: "75px", height: "75px"}} className="rounded-circle"/>
-              <h6>{team.name}</h6>
-            </div>
-          ))
-        ) : (
-          <p style={{ color: "black" }}>No hay equipos disponibles...</p>
-        )}
-        <Button variant="primary" onClick={handleShowModal} className="align-self-center rounded-circle" style={{width: "50px", height: "50px"}}>
-          +
-        </Button>
-        <hr className="hr"></hr>
+      <div className="filter-container">
+        <div className="d-flex justify-content-around ml-4 mt-4">
+          <Form.Control
+            as="select"
+            className="mr-4 ml-4"
+            value={sportFilter}
+            onChange={(e) => handleSportFilterChange(e.target.value)}
+          >
+            <option value="">Todos los deportes</option>
+            <option value="Futbol">Fútbol</option>
+            <option value="Tenis">Tenis</option>
+            <option value="Baloncesto">Baloncesto</option>
+          </Form.Control>
+          <Button variant="primary" onClick={handleShowModal} style={{textAlign:"center", width:"30%",height:"30%", marginRight:"3%"}}>
+            Crear Equipo
+          </Button>
+        </div>
+      </div>
+      <hr className="hr2"></hr>
+      <div className="d-flex justify-content-around flex-wrap mr-5 ml-5 mb-5 mt-5">
+          {filteredTeams.length > 0 ? (
+            filteredTeams.map((team) => (
+              <div onClick={() => selectTeam(team)} style={{ cursor: "pointer", textAlign: "center" }}>
+                <img src={team.logo} style={{border:"1px solid #0066ef", width: "75px", height: "75px"}} className="rounded-circle"/>
+                <h6>{team.name}</h6>
+              </div>
+            ))
+          ) : (
+            <p style={{ color: "black" }}>No hay equipos disponibles...</p>
+          )}
+      </div>
+        
+        
+        <hr className="hr2"></hr>
         <Modal show={showModal} onHide={handleCloseModal}>
           <Modal.Header closeButton>
             <Modal.Title>Crear un equipo</Modal.Title>
@@ -124,15 +152,14 @@ function Teams(props) {
             </Form>
           </Modal.Body>
         </Modal>
-      </div>
-      {selectedTeam ? (
+      {filteredActivity.length > 0 ? (
       <div className="w-100 mt-4">
         <h1 style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>{selectedTeam.name}</h1>
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <img src={selectedTeam.logo} style={{border:"1px solid #0066ef"}} width="200" height="200" className="rounded-circle"/>
+          <img src={filteredActivity[0].logo} style={{border:"1px solid #0066ef"}} width="200" height="200" className="rounded-circle"/>
         </div>
         <br></br>
-        <div className="mr-5 ml-5 mb-5">
+        <div className="mr-1 ml-1 mb-1">
           <div style={{height: "100%",width: "100%",border: "1.5px solid #0066ef",borderRadius: "30px"}}>
             <br></br>
             <h4>Miembros:</h4>
@@ -150,10 +177,9 @@ function Teams(props) {
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
         <br></br>
         <br></br>
-        <h2 className="font-italic" style={{color:"#0066ef"}}>Selecciona algun equipo para ver su informacion</h2>
+        <h2 className="font-italic" style={{color:"#0066ef"}}>Selecciona algún equipo para ver su información</h2>
       </div>
     )}
-
     </div>
   );
 }

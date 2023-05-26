@@ -78,7 +78,7 @@ function Home(props) {
   useEffect(() => {
     setShowContent(<Calendar sessionToken={props.token}></Calendar>);
     getUserDetails();
-  }, []);
+  }, [props.token]);
 
   return (
     <>
@@ -142,7 +142,20 @@ function Home(props) {
                       >
                         Mi perfil
                       </a>
+<<<<<<< Updated upstream
                 
+=======
+                      <a
+                        className="dropdown-item"
+                        href="#"
+                        onClick={() => handleButtonClick("ajustes")}
+                      >
+                        Ajustes
+                      </a>
+                      <a className="dropdown-item" href="#">
+                        Mis actividades
+                      </a>
+>>>>>>> Stashed changes
                       <a
                         className="dropdown-item"
                         href="#"
