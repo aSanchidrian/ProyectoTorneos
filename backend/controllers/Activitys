@@ -137,31 +137,32 @@ const getMyActivitys = async (req, res) => {
 
 
 const submitResult = async (req, res) => {
-  const { id } = req.params; // coge el id del parametro de la url
-  const { result } = req.body; // coge el result de el parametro del request
+  const { id } = req.params; 
+  const { result } = req.body; 
   const status=false;
+
   try {
-    // encuentra la actividad con el id dado 
-    const activity = await Activity.findOne({ _id:id});
+    // Encuentra la actividad con el id dado 
+    const activity = await Activity.findOne({ where: { id } });
 
     if (!activity) {
-      // si la actividad no se ha encotnrado retorna un 4o4
+      // Si la actividad no se encuentra, retorna un 404
       return res.status(404).json({ message: `Activity with ID ${id} not found.` });
     }
 
-    // actualiza el resultado de la base de datos
-    await activity.update({ result ,status});
+    // Actualiza el resultado en la base de datos
+    await activity.update({ result, status });
 
-    // Retorna un mensaje en el que dice que actividad se ha actualizado
-
+    // Retorna un mensaje que indica que la actividad se ha actualizado
     const logMessage = `@${req.user.nickname} ha actualizado el resultado del partido ${activity.name} a: ${result}`;
     await Logs.create({ message: logMessage });
     return res.json({ message: `Result submitted for activity ${id}.`, activity });
   } catch (error) {
-    //Su hay algin error retorna 500
+    // Si hay algún error, retorna 500
     return res.status(500).json({ message: error.message });
   }
 };
+
 
 module.exports = {
   createActivity,

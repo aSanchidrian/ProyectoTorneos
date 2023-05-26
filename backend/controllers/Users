@@ -59,25 +59,28 @@ const createUser = async (req, res) => {
 const login = async (req, res) => {
   let username = req.body.username;
   let password = req.body.password;
-//se busca un registro en el que conicida el nickname o el email
+  
+  //se busca un registro en el que conicida el nickname o el email
   const user = await User.findOne({
     where: {
       [Op.or]: [{ email: username }, { nickname: username }],
     },
   });
-//si no se ha encontrado user se deuvleve error
-  if (user === null) return res.send("User or Password incorrect");
-
+  
+  //si no se ha encontrado user se deuvleve error
+  if (user === null) return res.status(400).send("User or Password incorrect");
 
   let hashedPassword = user.password;
-//se comparan las contraseñas hasheadas
-  if (!bcrypt.compare(password, hashedPassword))
-    return res.send("User or Password incorrect");
+  
+  //se comparan las contraseñas hasheadas
+  const match = await bcrypt.compare(password, hashedPassword);
+  if (!match) return res.status(401).send("User or Password incorrect");
 
   //se crea el token
   const token = await tokenSign(user.nickname);
-  res.send(`${username} is logged in!, Sesion token: ${token}`);
+  res.status(200).send(`${username} is logged in!, Session token: ${token}`);
 };
+
 
 const deleteUser = async (req, res) => {
   try {

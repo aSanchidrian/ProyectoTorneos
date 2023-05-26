@@ -108,33 +108,34 @@ const myTeams = async (req, res) => {
 
 const getTeamUsers = async (req, res) => {
   try {
-    //se encarga de encontrar los mimebros  de un equipo
+    const teams = await Team.findAll({
+      attributes: ['name'], // solo se devuelven los nombres de los equipos
+      include: {
+        model: User, // debe de incluir los miembros del equipo
+        attributes: ['name', 'profilePic'], // se cogera solo el atriburo name y profilePic de user
+        through: {
+          model: TeamMember, // los miembros del equipo se buscaran en el team member
+          attributes: [] // No queremos mostrar información adicional del modelo intermedio
+        }
+      }
+    });
 
+    // estructuramos como queremos que nos de los datos, por cada instancia de teams nos devolvera el nombre y los miembros del equipo haciendo un map sobre todos los usuarios
+    const result = teams.map(team => ({
+      teamName: team.name,
+      members: team.users.map(user => ({
+        name: user.name,
+        profilePic: user.profilePic
+      }))
+    }));
 
-      const teams = await Team.findAll({
-          attributes: ['name'],//solo se devuelven los nombres de los equipos
-          include: {
-              model: User,//debe de incluir los miembros del equipo
-              attributes: ['name'],//se cogera solo el atriburo name de user
-              through: {
-                  model: TeamMember,//los mimebros del equipo se buscaran en el team member
-                  attributes: [] // No queremos mostrar información adicional del modelo intermedio
-              }
-          }
-      });
-      
-      //estrucutramos como queremos que nos de los datos, por cada instancia de teams nso devolvera el nombre y los miembros del equipo hacuendo un map sobre todos los usuarios
-      const result = teams.map(team => ({
-          teamName: team.name,
-          members: team.users.map(user => user.name)
-      }));
-
-      res.status(200).json(result);
+    res.status(200).json(result);
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Error al obtener los equipos y sus miembros' });
+    console.error(error);
+    res.status(500).json({ message: 'Error al obtener los equipos y sus miembros' });
   }
 };
+
 
 
 
