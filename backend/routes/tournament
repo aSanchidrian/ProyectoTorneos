@@ -10,7 +10,7 @@ router.post("/createTournament", authMiddleware, createTournament);
 router.get("/getTournaments", authMiddleware, getTournaments);
 router.get("/suscribePlayerToTournament", authMiddleware, suscribePlayerToTournament)
 router.post("/subscribeTeamToTournament", authMiddleware, subscribeTeamToTournament);
-router.put("/getMyTournaments", authMiddleware, getMyTournaments);
-router.put("/getTeamsTournament", authMiddleware, getTeamsInTournament);
+router.get("/getMyTournaments", authMiddleware, getMyTournaments);
+router.get("/getTeamsInTournament", authMiddleware, getTeamsInTournament);
 
 module.exports = router

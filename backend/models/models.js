@@ -110,11 +110,26 @@ Team.belongsToMany(User, { through: TeamMember });
 TeamMember.sync()
 
 const TournamentTeams = sequelize.define('tournament_teams', {
-    position: DataTypes.INTEGER,
-    victories: DataTypes.INTEGER,
-    defeats: DataTypes.INTEGER,
-    drawns: DataTypes.INTEGER,
-    group: DataTypes.INTEGER
+    position: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+    },
+    victories: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+    },
+    defeats: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+    },
+    drawns: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+    },
+    group: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+    }
 })
 
 Team.belongsToMany(Tournament, { through: TournamentTeams });
