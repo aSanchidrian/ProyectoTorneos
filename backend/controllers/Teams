@@ -18,8 +18,8 @@ async function createTeam(req, res) {
       max_players_team
     });
 
-    const teamId=team.id;
-    const captain=1;
+    const teamId = team.id;
+    const captain = 1;
     //crea un regustro donde asigna el usuario al equipo con el rango de capitan ya que lo ha creado
     const TeamPlayer = await TeamMember.create({
       userId: userId,
@@ -32,7 +32,7 @@ async function createTeam(req, res) {
     res.status(201).json(team);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: error });
+    res.status(500).json({ message: "Error: " + error });
   }
 }
 
