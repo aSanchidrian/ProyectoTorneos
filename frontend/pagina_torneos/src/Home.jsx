@@ -75,6 +75,7 @@ function Home(props) {
     localStorage.clear();
     props.setLogued(false);
   };
+  
   useEffect(() => {
     setShowContent(<Calendar sessionToken={props.token}></Calendar>);
     getUserDetails();

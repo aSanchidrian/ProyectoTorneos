@@ -316,7 +316,7 @@ function Tournaments(props) {
                 <option value="2">Public Tournament</option>
               </Form.Control>
             </Form.Group>
-
+            <br/>
             <Button variant="primary" type="submit">
               Crear torneo
             </Button>
@@ -388,7 +388,7 @@ function Tournaments(props) {
           <hr className='hr2'></hr>
           {teams.map((team, index) => (
             <p style={{color:"black"}}>
-              {team.name} // Asegúrate de que "name" es la propiedad correcta para el nombre del equipo
+              {team.name}
             </p>
           ))}
         </div>

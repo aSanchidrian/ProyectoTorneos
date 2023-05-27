@@ -321,6 +321,7 @@ function Actividades(props) {
                 onChange={(e) => setResult(e.target.value)}
               />
             </Form.Group>
+            <br/>
             <Button variant="primary" onClick={handleResultSubmit}>
               Añadir
             </Button>

@@ -10,7 +10,7 @@ function Results(props) {
         Authorization: `Bearer ${props.sessionToken}`
       }
     });
-    setActivity(response.data);
+    setActivity(response.data.reverse());
   };
 
   useEffect(() => {

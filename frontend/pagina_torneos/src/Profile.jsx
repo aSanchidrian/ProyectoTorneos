@@ -23,7 +23,7 @@ function Profile(props) {
         },
       });
 
-      const userPublications = response.data.filter((pub) => 
+      const userPublications = response.data.reverse().filter((pub) =>
         pub.message.includes(userNickname)
       );
 
@@ -49,8 +49,7 @@ function Profile(props) {
     } catch (err) {
       console.error(err);
     }
-  };      
-
+  };
 
   const getUserTeams = async () => {
     try {
@@ -65,18 +64,20 @@ function Profile(props) {
     }
   };
 
-  const handleModal = () => { // Para manejar el modal
+  const handleModal = () => {
+    // Para manejar el modal
     setShowModal(!showModal);
   };
 
-  const updateProfile = async () => { // Función para actualizar el perfil
+  const updateProfile = async () => {
+    // Función para actualizar el perfil
     const body = {
       name,
       nickname,
       profilePic: image,
-      sport
+      sport,
     };
-    
+
     try {
       const response = await axios.post(
         "http://localhost:3001/auth/update",
@@ -84,20 +85,19 @@ function Profile(props) {
         {
           headers: {
             "Content-Type": "application/json",
-            "api_key": "Api-publica-123",
-            "Authorization": `Bearer ${props.sessionToken}`
-          }
+            api_key: "Api-publica-123",
+            Authorization: `Bearer ${props.sessionToken}`,
+          },
         }
       );
-      if(response.status === 200) {
+      if (response.status === 200) {
         handleModal();
         getUserDetails();
       }
-    } catch(err) {
+    } catch (err) {
       console.error(err);
     }
   };
-
 
   useEffect(() => {
     getUserDetails();
@@ -106,10 +106,10 @@ function Profile(props) {
 
   return (
     <>
-      <div className="scrollable" style={{ height: "auto", }}>
+      <div className="scrollable" style={{ height: "auto" }}>
         <div
           className="d-flex justify-content-center align-items-center"
-          style={{ height: "30vh", }}
+          style={{ height: "30vh" }}
         >
           <div
             className=""
@@ -121,7 +121,7 @@ function Profile(props) {
               src={image} // Imagen del usuario
               width="200"
               height="200"
-              style={{border:"1px solid #0066ef"}}
+              style={{ border: "1px solid #0066ef" }}
               className="rounded-circle"
             />
           </div>
@@ -131,9 +131,15 @@ function Profile(props) {
               width: "50%",
             }}
           >
-            <h2><b>Apodo:</b> {nickname}</h2>
-            <h2><b>Nombre:</b> {name}</h2>
-            <h2><b>Deporte(s):</b> {sport}</h2>
+            <h2>
+              <b>Apodo:</b> {nickname}
+            </h2>
+            <h2>
+              <b>Nombre:</b> {name}
+            </h2>
+            <h2>
+              <b>Deporte(s):</b> {sport}
+            </h2>
           </div>
           <div
             className="d-flex flex-column align-items-center mt-5"
@@ -141,7 +147,9 @@ function Profile(props) {
               width: "20%",
             }}
           >
-            <Button className="btn btn-primary" onClick={handleModal}>Editar</Button>
+            <Button className="btn btn-primary" onClick={handleModal}>
+              Editar
+            </Button>
             <Modal show={showModal} onHide={handleModal}>
               <Modal.Header closeButton>
                 <Modal.Title>Editar Perfil</Modal.Title>
@@ -150,19 +158,35 @@ function Profile(props) {
                 <Form>
                   <Form.Group>
                     <Form.Label>Nombre</Form.Label>
-                    <Form.Control type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                    <Form.Control
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
                   </Form.Group>
                   <Form.Group>
                     <Form.Label>Apodo</Form.Label>
-                    <Form.Control type="text" value={nickname} onChange={(e) => setNickname(e.target.value)} />
+                    <Form.Control
+                      type="text"
+                      value={nickname}
+                      onChange={(e) => setNickname(e.target.value)}
+                    />
                   </Form.Group>
                   <Form.Group>
                     <Form.Label>Deportes</Form.Label>
-                    <Form.Control type="text" value={sport} onChange={(e) => setSport(e.target.value)} />
+                    <Form.Control
+                      type="text"
+                      value={sport}
+                      onChange={(e) => setSport(e.target.value)}
+                    />
                   </Form.Group>
                   <Form.Group>
                     <Form.Label>Foto de Perfil</Form.Label>
-                    <Form.Control type="text" value={image} onChange={(e) => setImage(e.target.value)} />
+                    <Form.Control
+                      type="text"
+                      value={image}
+                      onChange={(e) => setImage(e.target.value)}
+                    />
                   </Form.Group>
                 </Form>
               </Modal.Body>
@@ -175,57 +199,72 @@ function Profile(props) {
                 </Button>
               </Modal.Footer>
             </Modal>
-
           </div>
         </div>
-        <hr className="hr"></hr><br></br>
-          {/* 
+        <hr className="hr"></hr>
+        <br></br>
+        {/* 
             MIS EQUIPOS */}
 
         <div className="d-flex justify-content-around flex-wrap mr-5 ml-5 mb-5 mt-5">
-          <div style={{height: "100%",width: "100%",border: "1.5px solid #0066ef",borderRadius: "30px"}}>            
-            
-              <h2 style={{paddingTop:"2%"}}>Mis equipos</h2>
-              <hr className="hr2"></hr>
-              <br></br>
-              <div className="d-flex justify-content-center">
-                {teams.map((team) => (
-                  <div key={team._id} style={{marginRight:"3%"}}>
-                    <img
-                      src={team.logo} // Imagen del equipo
-                      width="100"
-                      height="100"
-                      className="rounded-circle"
-                      style={{border:"1px solid #0066ef"}}
-                    />
-                    <h5>{team.name}</h5>
-                  </div>
-                ))}
-              </div>
-          </div>  
+          <div
+            style={{
+              height: "100%",
+              width: "100%",
+              border: "1.5px solid #0066ef",
+              borderRadius: "30px",
+            }}
+          >
+            <h2 style={{ paddingTop: "2%" }}>Mis equipos</h2>
+            <hr className="hr2"></hr>
+            <br></br>
+            <div className="d-flex justify-content-center">
+              {teams.map((team) => (
+                <div key={team._id} style={{ padding: "2%" }}>
+                  <img
+                    src={team.logo} // Imagen del equipo
+                    width="100"
+                    height="100"
+                    className="rounded-circle"
+                    style={{ border: "1px solid #0066ef" }}
+                  />
+                  <h5>{team.name}</h5>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
-                  {/* Mis Publicaciones */}
-                  <div className="d-flex justify-content-around flex-wrap mr-5 ml-5 mb-5 mt-5">
-          <div style={{height: "100%",width: "100%",border: "1.5px solid #0066ef",borderRadius: "30px"}}>            
-          
-            <h2 style={{ paddingTop:"2%"}}>Mis publicaciones</h2>
+        {/* Mis Publicaciones */}
+        <div className="d-flex justify-content-around flex-wrap mr-5 ml-5 mb-5 mt-5">
+          <div
+            style={{
+              height: "100%",
+              width: "100%",
+              border: "1.5px solid #0066ef",
+              borderRadius: "30px",
+            }}
+          >
+            <h2 style={{ paddingTop: "2%" }}>Mis publicaciones</h2>
             <hr className="hr2"></hr>
             <br></br>
             <div className="d-flex flex-column align-items-center">
               {publications.map((pub) => (
                 <div key={pub._id}>
                   <strong>{pub.message}</strong>
-                  <p>{new Date(pub.date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-
+                  <p>
+                    {new Date(pub.date).toLocaleDateString(undefined, {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </p>
                 </div>
               ))}
             </div>
-        
+          </div>
         </div>
       </div>
-    </div>
-
     </>
   );
 }

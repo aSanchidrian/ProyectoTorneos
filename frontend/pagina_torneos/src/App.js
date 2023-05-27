@@ -166,9 +166,16 @@ function App() {
   };
 
   useEffect(() => {
-    // Aquí podríamos consultar si el usuario ya ha iniciado sesión en el servidor
-    // y establecer el estado de logued en consecuencia.
-    // setLogued(false);
+    // Aquí comprobamos si hay datos de usuario en el almacenamiento local.
+    const user = localStorage.getItem("user");
+    const token = localStorage.getItem("token");
+
+    if (user && token) {
+      // Si hay datos de usuario, consideramos que el usuario está autenticado.
+      setLogued(true);
+    } else {
+      setLogued(false);
+    }
     // localStorage.clear();
   }, []);
 

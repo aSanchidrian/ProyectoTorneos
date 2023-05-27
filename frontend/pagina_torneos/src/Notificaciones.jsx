@@ -14,7 +14,7 @@ const Notificaciones = (props) => {
             Authorization: `Bearer ${props.sessionToken}`
           }
         });
-        setNotificaciones(response.data);
+        setNotificaciones(response.data.reverse());
       } catch (error) {
         setError('Error al cargar las notificaciones');
       }
