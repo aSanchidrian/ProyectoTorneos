@@ -187,7 +187,7 @@ async function fixTeams() {
 
 const getTeamsInTournament = async (req, res) => {
     try {
-        const { tournamentId } = req.body;
+        const { tournamentId } = req.params;
 
         const teams = await Tournament.findAll({
             attributes: [], 
@@ -203,11 +203,13 @@ const getTeamsInTournament = async (req, res) => {
         });
 
         res.send(teams)
+        console.log(teams)
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: "Error " + err });
     }
 };
+
 
 const getPlayersInTournament = async (req, res) => {
     res.send(f_getPlayersInTournament(req.body.tournamentId))

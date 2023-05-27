@@ -9,42 +9,14 @@ function Tournaments(props) {
   const [sportFilter, setSportFilter] = useState("");
   const [formattedDateStart, setFormattedDateStart] = useState("");
   const [formattedDateEnd, setFormattedDateEnd] = useState("");
-  const [teams, setTeams] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [teamId, setTeamId] = useState(1); // Suponiendo que el id del equipo es 1
+  const [teams, setTeams] = useState([]);
 
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
 
-  const getTeams = async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:3001/tournament/getTeamsInTournament",
-        {
-          params: {
-            tournamentId: selectedTournament.id,
-          },
-          headers: {
-            Authorization: `Bearer ${props.sessionToken}`,
-            api_key: "Api-publica-123",
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        setTeams(response.data);
-      }
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    if (selectedTournament) {
-      getTeams();
-    }
-  }, [selectedTournament]);
+  
 
   // State for form input values
   const [formValues, setFormValues] = useState({
@@ -95,6 +67,25 @@ function Tournaments(props) {
         setTournaments(response.data);
       });
   }, []);
+
+  useEffect(() => {
+    if (selectedTournament) {
+      axios
+        .get(
+          `http://localhost:3001/tournament/getTeamsInTournament/${selectedTournament.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${props.sessionToken}`,
+              api_key: "Api-publica-123",
+            },
+          }
+        )
+        .then((response) => {
+          setTeams(response.data[0].teams);
+        })
+        .catch((error) => console.error(error));
+    }
+  }, [selectedTournament, props.sessionToken]);
 
   const handleSportFilterChange = (event) => {
     setSportFilter(event.target.value);
@@ -149,7 +140,7 @@ function Tournaments(props) {
         }
       );
 
-      if (response.status == 201) {
+      if (response.status === 201) {
         const updatedTournaments = await axios.get(
           "http://localhost:3001/tournament/getTournaments",
           {
@@ -440,9 +431,18 @@ function Tournaments(props) {
                 >
                   <h2 className="mt-3 mb-3">Equipos Participantes</h2>
                   <hr className="hr2"></hr>
-                  {teams.map((team, index) => (
-                    <p style={{ color: "black" }}>{team.name}</p>
+                  <div className="d-flex justify-content-around flex-wrap">
+                  {teams.map((team) => (
+                    <div key={team.id}>
+                    <img
+                      src={team.logo}
+                      style={{ borderRadius: "50%", width: "50px", height: "50px" }}
+                      alt={team.name}
+                    />
+                    <h5>{team.name}</h5>
+                  </div>
                   ))}
+                  </div>
                 </div>
               </div>
             </div>

@@ -11,6 +11,6 @@ router.get("/getTournaments", authMiddleware, getTournaments);
 router.get("/suscribePlayerToTournament", authMiddleware, suscribePlayerToTournament)
 router.post("/subscribeTeamToTournament", authMiddleware, subscribeTeamToTournament);
 router.get("/getMyTournaments", authMiddleware, getMyTournaments);
-router.get("/getTeamsInTournament", authMiddleware, getTeamsInTournament);
+router.get("/getTeamsInTournament/:tournamentId", authMiddleware, getTeamsInTournament);
 
 module.exports = router
