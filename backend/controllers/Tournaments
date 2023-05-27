@@ -373,7 +373,7 @@ const getMyTournaments = async (req, res) => {
     } catch (err) {
         console.log(err);
 
-        handleHttpError(res, "ERROR_GET_MY_TOURNAMENT " + err);
+        handleHttpError(res, "ERROR_GET_MY_TOURNAMENT ");
     }
 };
 
