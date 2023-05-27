@@ -67,7 +67,7 @@ function App() {
       console.log(response.data);
       setEmailUser(username);
       localStorage.setItem("email", username);
-      
+
       // Comprobamos si la respuesta es un mensaje de error
       if (response.data === "User or Password incorrect") {
         alert(
@@ -166,17 +166,16 @@ function App() {
   };
 
   useEffect(() => {
-    // Aquí comprobamos si hay datos de usuario en el almacenamiento local.
     const user = localStorage.getItem("user");
     const token = localStorage.getItem("token");
+    const email = localStorage.getItem("email");
 
     if (user && token) {
-      // Si hay datos de usuario, consideramos que el usuario está autenticado.
+      setEmailUser(email);
       setLogued(true);
     } else {
       setLogued(false);
     }
-    // localStorage.clear();
   }, []);
 
   const isLogued = () => {

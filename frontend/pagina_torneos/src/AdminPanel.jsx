@@ -27,18 +27,24 @@ function AdminPanel(props) {
           });
           break;
         case "Tournament":
-          response = await axios.get(`http://localhost:3001/tournament/getTournaments`, {
-            headers: {
-              Authorization: `Bearer ${props.sessionToken}`,
-            },
-          });
+          response = await axios.get(
+            `http://localhost:3001/tournament/getTournaments`,
+            {
+              headers: {
+                Authorization: `Bearer ${props.sessionToken}`,
+              },
+            }
+          );
           break;
         case "Activity":
-          response = await axios.get(`http://localhost:3001/activity/getActivitys`, {
-            headers: {
-              Authorization: `Bearer ${props.sessionToken}`,
-            },
-          });
+          response = await axios.get(
+            `http://localhost:3001/activity/getActivitys`,
+            {
+              headers: {
+                Authorization: `Bearer ${props.sessionToken}`,
+              },
+            }
+          );
           break;
         default:
           return;
@@ -61,7 +67,7 @@ function AdminPanel(props) {
           },
         }
       );
-      alert(`${entityType} with ID: ${entityId} has been deleted.`);
+      alert(`${entityType} con ID: ${entityId} ha sido borrado.`);
     } catch (err) {
       console.error(err);
     }
@@ -69,55 +75,77 @@ function AdminPanel(props) {
 
   return (
     <div>
-      <h2 style={{marginTop: "1%"}} >Panel de administrador</h2>
-      <hr className="hr2"/>
-      <div className="d-flex justify-content-center">
-        <Button style={{marginRight: "2%"}} onClick={() => handleSearch("User")}>Search Users</Button>
-        <Button style={{marginRight: "2%"}} onClick={() => handleSearch("Team")}>Search Teams</Button>
-        <Button style={{marginRight: "2%"}} onClick={() => handleSearch("Tournament")}>
-          Search Tournaments
-        </Button>
-        <Button onClick={() => handleSearch("Activity")}>
-          Search Activities
-        </Button>
-      </div>
+      <h2 className="mt-5" style={{ marginTop: "1%" }}>Panel de administrador</h2>
       <br />
+      <hr className="hr2" />
       <div className="d-flex justify-content-center">
+        <Button
+          style={{ marginRight: "1%" }}
+          onClick={() => handleSearch("User")}
+        >
+          Buscar usuarios
+        </Button>
+        <Button
+          style={{ marginRight: "1%" }}
+          onClick={() => handleSearch("Team")}
+        >
+          Buscar equipos
+        </Button>
+        <Button
+          style={{ marginRight: "1%" }}
+          onClick={() => handleSearch("Tournament")}
+        >
+          Buscar torneos
+        </Button>
+        <Button
+          style={{ marginRight: "15%" }}
+          onClick={() => handleSearch("Activity")}
+        >
+          Buscar actividades
+        </Button>
         <select
           value={entityType}
+          className="mr-2"
           onChange={(e) => setEntityType(e.target.value)}
         >
-          <option value="User">User</option>
-          <option value="Team">Team</option>
-          <option value="Tournament">Tournament</option>
-          <option value="Activity">Activity</option>
+          <option value="User">Usuario</option>
+          <option value="Team">Equipo</option>
+          <option value="Tournament">Torneo</option>
+          <option value="Activity">Actividad</option>
         </select>
         <input
           type="text"
           value={entityId}
           onChange={(e) => setEntityId(e.target.value)}
-          placeholder="Enter Entity ID"
+          placeholder="ID de la entidad"
         />
-        <Button onClick={handleAdminAction}>Delete Entity</Button>
+        <Button className="ml-2 btn btn-danger" onClick={handleAdminAction}>
+          Borrar entidad
+        </Button>
       </div>
-      <br />
-      <hr className="hr2"/>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          {results.map((result) => (
-            <tr key={result.id}>
-              <td>{result.id}</td>
-              <td>{result.name}</td>
+
+      {/* <div className="d-flex justify-content-end">
+        
+      </div> */}
+      <hr className="hr2" />
+      <div className="mr-4 ml-4 mt-4">
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {results.map((result) => (
+              <tr key={result.id}>
+                <td>{result.id}</td>
+                <td>{result.name}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
     </div>
   );
 }
