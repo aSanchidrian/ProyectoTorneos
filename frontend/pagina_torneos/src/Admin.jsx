@@ -4,13 +4,13 @@ import bell_logo from "./bell_icon.png";
 import usports_logo_mini from "./mini_usports.png";
 import calendar_logo from "./calendar_icon.jpg";
 import web_icon from "./web-globe-icon-23.png";
-
 import "@fontsource/montserrat";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import axios from "axios";
+
 import Teams from "./Teams";
 import Calendar from "./Calendar";
 import Tournaments from "./Tournaments";
@@ -19,6 +19,7 @@ import Profile from "./Profile";
 import Notificaciones from "./Notificaciones";
 import Actividades from "./Actividades";
 import Anuncios from "./Anuncios";
+import AdminPanel from "./AdminPanel";
 
 function Home(props) {
   const [showContent, setShowContent] = useState(false);
@@ -38,6 +39,8 @@ function Home(props) {
     }
   };
 
+  
+
   function handleButtonClick(buttonId) {
     switch (buttonId) {
       case "btn-1":
@@ -55,11 +58,16 @@ function Home(props) {
       case "btn-5":
         setShowContent(<Results sessionToken={props.token}></Results>);
         break;
+      case "Admin":
+        setShowContent(<AdminPanel sessionToken={props.token}></AdminPanel>);
+        break;
       case "Profile":
         setShowContent(<Profile sessionToken={props.token}></Profile>);
         break;
       case "Logs":
-        setShowContent(<Notificaciones sessionToken={props.token}></Notificaciones>);
+        setShowContent(
+          <Notificaciones sessionToken={props.token}></Notificaciones>
+        );
         break;
       case "Calendar":
         setShowContent(<Calendar sessionToken={props.token}></Calendar>);
@@ -73,9 +81,9 @@ function Home(props) {
 
   const handleLogout = async () => {
     localStorage.clear();
-    props.setLogued(false);
+    props.setAdminLogued(false);
   };
-  
+
   useEffect(() => {
     setShowContent(<Calendar sessionToken={props.token}></Calendar>);
     getUserDetails();
@@ -108,7 +116,11 @@ function Home(props) {
             >
               <img
                 src={bell_logo}
-                style={{ maxWidth: "100%", maxHeight: "100%", cursor:"pointer" }}
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: "100%",
+                  cursor: "pointer",
+                }}
                 onClick={() => handleButtonClick("Logs")}
               ></img>
             </Navbar.Text>
@@ -143,7 +155,7 @@ function Home(props) {
                       >
                         Mi perfil
                       </a>
-                
+
                       <a
                         className="dropdown-item"
                         href="#"
@@ -211,6 +223,14 @@ function Home(props) {
             style={{ width: "100%", height: "10%" }}
           >
             <b>ULTIMOS RESULTADOS</b>
+          </Button>
+          <Button
+            className="rounded-red-button btn btn-danger"
+            id="btn-5"
+            onClick={() => handleButtonClick("Admin")}
+            style={{ width: "100%", height: "10%" }}
+          >
+            <b>PANEL DE ADMINISTRADOR</b>
           </Button>
         </div>
         <div

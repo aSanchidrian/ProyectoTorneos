@@ -249,11 +249,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6InByd
   "max_players_team":8
 }
 #####get teams####
-GET http://localhost:3000/team/getTeams HTTP/1.1
+GET http://localhost:3001/team/getTeams HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6InBydWViYSIsImlhdCI6MTY4NTE4NzQ4MywiZXhwIjoxNzIxMTgzODgzfQ.blCodnU2MAJyowWxCQLlhkCokH49jyNNkHcQEsifm6Q
 
 ##########inscribe into a team###########
-POST  http://localhost:3000/team/joinTeam
+POST  http://localhost:3001/team/joinTeam
 Content-Type: application/json
 api_key: Api-publica-123
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6InBydWViYSIsImlhdCI6MTY4NTE4NzQ4MywiZXhwIjoxNzIxMTgzODgzfQ.blCodnU2MAJyowWxCQLlhkCokH49jyNNkHcQEsifm6Q

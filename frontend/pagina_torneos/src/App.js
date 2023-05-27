@@ -25,15 +25,18 @@ import Modal from "react-bootstrap/Modal";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import Admin from "./Admin";
 
 function App() {
   const [logued, setLogued] = useState(false);
+  const [adminLogued, setAdminLogued] = useState(false);
   const [show, setShow] = useState(false);
   const [justifyActive, setJustifyActive] = useState("tab1");
+  const [email, setEmail] = useState("");
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  
+
   const handleJustifyClick = (value) => {
     if (value === justifyActive) {
       return;
@@ -46,7 +49,7 @@ function App() {
     event.preventDefault();
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
-  
+
     // Validación de los campos de inicio de sesión
     if (!username || !password) {
       alert("Por favor, rellene todos los campos.");
@@ -56,29 +59,42 @@ function App() {
       alert("Por favor, introduzca un correo electrónico válido de U-Tad.");
       return;
     }
-  
+
     try {
       const response = await axios.post("http://localhost:3001/auth/login", {
         username,
         password,
       });
-  
+      console.log(response.data);
+      setEmail(username);
+
       // Comprobamos si la respuesta es un mensaje de error
       if (response.data === "User or Password incorrect") {
-        alert("Usuario o contraseña incorrectos. Por favor, intente nuevamente.");
+        alert(
+          "Usuario o contraseña incorrectos. Por favor, intente nuevamente."
+        );
         return;
       }
-  
+
       const respUser = response.data;
       var user = respUser.substring(0, respUser.indexOf("@"));
       localStorage.setItem("user", user);
-      const comienzo = respUser.indexOf("Sesion token: ") + "Sesion token: ".length;
+      const comienzo =
+        respUser.indexOf("Sesion token: ") + "Sesion token: ".length;
       const token = respUser.slice(comienzo);
       localStorage.setItem("token", token);
-      setLogued(true);
-      alert("Inicio de sesion correcto. Bienvenido");
+
+      if (email === "admin@live.u-tad.com") {
+        setAdminLogued(true);
+        setLogued(false);
+        localStorage.setItem("role", "admin");
+      } else {
+        setLogued(true);
+        setAdminLogued(false);
+      }
     } catch (error) {
       console.error("ERROR", error);
+      alert("Usuario o contraseña incorrectos. Por favor, intente nuevamente.");
     }
   };
 
@@ -125,21 +141,21 @@ function App() {
         password,
         conf_password,
       });
-  
-      console.log(response.data)
-  
+
+      console.log(response.data);
+      setEmail(email);
+
       if (response.data === "Necesitas un correo corporativo de U-Tad") {
         alert("Necesitas un correo corporativo de U-Tad");
       } else if (response.data.startsWith("¡User created!")) {
-        const comienzo =
-            response.data.indexOf("token: ") + "token: ".length;
+        const comienzo = response.data.indexOf("token: ") + "token: ".length;
         let token = response.data.slice(comienzo);
         // Eliminar comillas dobles del token si existen
-        token = token.replace(/"/g, '');
+        token = token.replace(/"/g, "");
         localStorage.setItem("token", token);
         setLogued(true);
         alert("Usuario creado con exito");
-        console.log(token)
+        console.log(token);
       }
     } catch (error) {
       console.error("ERROR", error);
@@ -160,10 +176,16 @@ function App() {
     // Aquí comprobamos si hay datos de usuario en el almacenamiento local.
     const user = localStorage.getItem("user");
     const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
 
     if (user && token) {
+      if(role) {
+        setAdminLogued(true);
+        setLogued(false);
+      } else {
+        setLogued(true);
+      }
       // Si hay datos de usuario, consideramos que el usuario está autenticado.
-      setLogued(true);
     } else {
       setLogued(false);
     }
@@ -173,11 +195,13 @@ function App() {
   const isLogued = () => {
     if (logued) {
       return (
-        <>
-          <Home setLogued={setLogued} token={localStorage.getItem("token")} />
-        </>
+        <Home setLogued={setLogued} token={localStorage.getItem("token")} />
       );
-    } else {
+    } else if (adminLogued) {
+      return (
+        <Admin setAdminLogued={setAdminLogued} token={localStorage.getItem("token")} />
+      );
+    } else if (!logued && !adminLogued) {
       return (
         <>
           <Navbar>
