@@ -316,15 +316,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 
 {
   "teamId": 1,
-  "tournamentId": 1
+  "tournamentId": 4
 }
 
 ##### DEVOLVER EQUIPOS DEL TORNEO
-GET http://localhost:3001/tournament/getTeamsInTournament HTTP/1.1
+GET http://localhost:3001/tournament/getTeamsTournament HTTP/1.1
 Content-Type: application/json
 api_key: Api-publica-123
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
 {
-  "tournamentId": 1
+  "tournamentId": 4
 }
