@@ -68,6 +68,7 @@ function Teams(props) {
       );
       if (response.status == 200) {
         alert("Te has unido al equipo con éxito.");
+        selectTeam(selectedTeam);
       }
     } catch (error) {
       console.error(error);

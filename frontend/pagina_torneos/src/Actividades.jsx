@@ -16,16 +16,24 @@ function Actividades(props) {
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [result, setResult] = useState("");
 
+  const getActivities = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3001/activity/getActivitys",
+        {
+          headers: {
+            Authorization: `Bearer ${props.sessionToken}`,
+          },
+        }
+      );
+      setActivity(response.data.reverse());
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/activity/getActivitys", {
-        headers: {
-          Authorization: `Bearer ${props.sessionToken}`,
-        },
-      })
-      .then((response) => {
-        setActivity(response.data.reverse()); // invertimos el orden de las actividades para mostrar la última primero
-      });
+    getActivities();
   }, []);
 
   useEffect(() => {
@@ -82,9 +90,13 @@ function Actividades(props) {
         }
       );
       console.log(response.data);
-      setShowAlert(true);
-      setAlertVariant("success");
-      setAlertMessage("Equipo creado exitosamente.");
+      alert("Actividad creada exitosamente.")
+      // setShowAlert(true);
+      // setAlertVariant("success");
+      // setAlertMessage("Equipo creado exitosamente.");
+
+      handleCloseModal(); // Cierra el modal
+      getActivities(); // Actualiza las actividades
     } catch (error) {
       console.error(error);
       setShowAlert(true);
@@ -92,7 +104,7 @@ function Actividades(props) {
       setAlertMessage("No se pudo crear el equipo.");
     }
   };
-
+  
   const handleResultModalClose = () => setShowResultModal(false);
 
   const handleResultModalShow = (activityId) => {
@@ -321,7 +333,7 @@ function Actividades(props) {
                 onChange={(e) => setResult(e.target.value)}
               />
             </Form.Group>
-            <br/>
+            <br />
             <Button variant="primary" onClick={handleResultSubmit}>
               Añadir
             </Button>

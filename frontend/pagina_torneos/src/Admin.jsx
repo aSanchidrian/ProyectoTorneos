@@ -23,7 +23,7 @@ import AdminPanel from "./AdminPanel";
 
 function Admin (props) {
   const [showContent, setShowContent] = useState(false);
-  const [image, setImage] = useState("");
+  const [userImage, setUserImage] = useState("");
 
   const getUserDetails = async () => {
     try {
@@ -33,7 +33,7 @@ function Admin (props) {
         },
       });
 
-      setImage(response.data.profilePic); // Nueva línea para la imagen
+      setUserImage(response.data.profilePic); // Nueva línea para la imagen
     } catch (err) {
       console.error(err);
     }
@@ -62,7 +62,7 @@ function Admin (props) {
         setShowContent(<AdminPanel sessionToken={props.token}></AdminPanel>);
         break;
       case "Profile":
-        setShowContent(<Profile sessionToken={props.token}></Profile>);
+        setShowContent(<Profile sessionToken={props.token} setUserImage={setUserImage}></Profile>);
         break;
       case "Logs":
         setShowContent(
@@ -138,7 +138,7 @@ function Admin (props) {
                       aria-expanded="false"
                     >
                       <img
-                        src={image}
+                        src={userImage}
                         width="40"
                         height="40"
                         className="rounded-circle"

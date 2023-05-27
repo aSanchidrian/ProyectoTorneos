@@ -104,6 +104,11 @@ function Profile(props) {
     getUserTeams();
   }, []);
 
+  const handleImageChange = (e) => {
+    setImage(e.target.value);
+    props.setUserImage(e.target.value);
+  }
+
   return (
     <>
       <div className="scrollable" style={{ height: "auto" }}>
@@ -185,7 +190,7 @@ function Profile(props) {
                     <Form.Control
                       type="text"
                       value={image}
-                      onChange={(e) => setImage(e.target.value)}
+                      onChange={handleImageChange}
                     />
                   </Form.Group>
                 </Form>

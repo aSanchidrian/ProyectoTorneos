@@ -22,7 +22,7 @@ import Anuncios from "./Anuncios";
 
 function Home(props) {
   const [showContent, setShowContent] = useState(false);
-  const [image, setImage] = useState("");
+  const [userImage, setUserImage] = useState('');
 
   const getUserDetails = async () => {
     try {
@@ -31,8 +31,7 @@ function Home(props) {
           Authorization: `Bearer ${props.token}`,
         },
       });
-
-      setImage(response.data.profilePic); // Nueva línea para la imagen
+      setUserImage(response.data.profilePic); // Nueva línea para la imagen
     } catch (err) {
       console.error(err);
     }
@@ -56,7 +55,7 @@ function Home(props) {
         setShowContent(<Results sessionToken={props.token}></Results>);
         break;
       case "Profile":
-        setShowContent(<Profile sessionToken={props.token}></Profile>);
+        setShowContent(<Profile setUserImage={setUserImage} sessionToken={props.token}></Profile>);
         break;
       case "Logs":
         setShowContent(<Notificaciones sessionToken={props.token}></Notificaciones>);
@@ -77,9 +76,10 @@ function Home(props) {
   };
 
   useEffect(() => {
-    setShowContent(<Calendar sessionToken={props.token}></Calendar>);
     getUserDetails();
+    setShowContent(<Calendar sessionToken={props.token}></Calendar>);
   }, [props.token]);
+  
 
   return (
     <>
@@ -126,7 +126,7 @@ function Home(props) {
                       aria-expanded="false"
                     >
                       <img
-                        src={image}
+                        src={userImage}
                         width="40"
                         height="40"
                         className="rounded-circle"
