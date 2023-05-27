@@ -68,6 +68,7 @@ function AdminPanel(props) {
         }
       );
       alert(`${entityType} con ID: ${entityId} ha sido borrado.`);
+      handleSearch(entityType);
     } catch (err) {
       console.error(err);
     }
