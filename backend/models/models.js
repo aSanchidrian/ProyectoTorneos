@@ -87,6 +87,7 @@ const Team = sequelize.define('teams', {
     name: DataTypes.STRING,
     sport: DataTypes.STRING,
     logo: DataTypes.STRING,
+    description: DataTypes.STRING,
     max_players_team: DataTypes.INTEGER,
 });
 

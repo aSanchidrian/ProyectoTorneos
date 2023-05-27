@@ -190,6 +190,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6InByd
   "name":"SSH",
   "sport":"Futbol",
   "logo":"logo512.png",
+  "description": "Un equipo perfecto formado por aaaaaaaa",
   "max_players_team":8
 }
 
@@ -204,6 +205,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6InByd
   "name":"MedioPulmon",
   "sport":"Football",
   "logo":"logo512.png",
+  "description": "Un equipo perfecto formado por aaaaaaaa",
   "max_players_team":8
 }
 
@@ -218,6 +220,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6InByd
   "name":"DAWE",
   "sport":"Football",
   "logo":"logo.png",
+  "description": "Un equipo perfecto formado por aaaaaaaa",
   "max_players_team":8
 }
 
@@ -232,6 +235,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6InByd
   "name":"LIONS",
   "sport":"Football",
   "logo":"logo.png",
+  "description": "Un equipo perfecto formado por aaaaaaaa",
   "max_players_team":8
 }
 
@@ -246,6 +250,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6InByd
   "name":"SecurityData",
   "sport":"Football",
   "logo":"logo.png",
+  "description": "Un equipo perfecto formado por aaaaaaaa",
   "max_players_team":8
 }
 #####get teams####
