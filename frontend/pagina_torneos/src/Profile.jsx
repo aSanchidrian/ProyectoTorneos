@@ -23,9 +23,9 @@ function Profile(props) {
         },
       });
 
-      const userPublications = response.data.reverse().filter((pub) =>
-        pub.message.includes(userNickname)
-      );
+      const userPublications = response.data
+        .reverse()
+        .filter((pub) => pub.message.includes(userNickname));
 
       setPublications(userPublications);
     } catch (err) {
@@ -252,13 +252,14 @@ function Profile(props) {
               {publications.map((pub) => (
                 <div key={pub._id}>
                   <strong>{pub.message}</strong>
-                  <p>
+                  <h6>
                     {new Date(pub.date).toLocaleDateString(undefined, {
                       year: "numeric",
                       month: "long",
                       day: "numeric",
                     })}
-                  </p>
+                  </h6>
+                  <br />
                 </div>
               ))}
             </div>

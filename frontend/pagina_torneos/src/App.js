@@ -4,11 +4,7 @@ import utad_logo from "./img.swapcard.png";
 import usports_logo from "./U-sports_logo.png";
 import web_icon from "./web-globe-icon-23.png";
 import Home from "./Home";
-import LoginAdmin from "./LoginAdmin";
 import axios from "axios";
-
-// import { Link } from 'react-router-dom';
-// import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
   MDBContainer,
@@ -37,8 +33,7 @@ function App() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const [showLoginAdmin, setShowLoginAdmin] = useState(false);
-
+  
   const handleJustifyClick = (value) => {
     if (value === justifyActive) {
       return;
@@ -161,10 +156,6 @@ function App() {
     }
   };
 
-  const handleClickAdmin = async (event) => {
-    setShowLoginAdmin(true);
-  };
-
   useEffect(() => {
     // Aquí comprobamos si hay datos de usuario en el almacenamiento local.
     const user = localStorage.getItem("user");
@@ -189,10 +180,6 @@ function App() {
     } else {
       return (
         <>
-          {/* <Routes>
-            <Route path="/home" element={<Home />} />
-            <Route path="/login-admin" element={<LoginAdmin />} />
-          </Routes> */}
           <Navbar>
             <img
               className="mr-4 responsive-image"
@@ -316,15 +303,6 @@ function App() {
                     >
                       Sign in
                     </Button>
-                    {!showLoginAdmin ? (
-                      <div className="d-flex justify-content-center mx-4 mb-4">
-                        <button onClick={handleClickAdmin}>
-                          Acceso administrador
-                        </button>
-                      </div>
-                    ) : (
-                      <LoginAdmin />
-                    )}
                   </MDBTabsPane>
 
                   <MDBTabsPane show={justifyActive === "tab2"}>
