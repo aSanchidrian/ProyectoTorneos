@@ -21,7 +21,7 @@ import Actividades from "./Actividades";
 import Anuncios from "./Anuncios";
 import AdminPanel from "./AdminPanel";
 
-function Home(props) {
+function Admin (props) {
   const [showContent, setShowContent] = useState(false);
   const [image, setImage] = useState("");
 
@@ -81,7 +81,7 @@ function Home(props) {
 
   const handleLogout = async () => {
     localStorage.clear();
-    props.setAdminLogued(false);
+    props.setLogued(false);
   };
 
   useEffect(() => {
@@ -249,4 +249,4 @@ function Home(props) {
   );
 }
 
-export default Home;
+export default Admin;

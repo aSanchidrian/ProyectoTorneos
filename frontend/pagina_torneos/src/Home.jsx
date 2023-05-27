@@ -44,7 +44,7 @@ function Home(props) {
         setShowContent(<Anuncios sessionToken={props.token}></Anuncios>);
         break;
       case "btn-2":
-        setShowContent(<Teams sessionToken={props.token}></Teams>);
+        setShowContent(<Teams sessionToken={props.token} userId={props}></Teams>);
         break;
       case "btn-3":
         setShowContent(<Tournaments sessionToken={props.token}></Tournaments>);
@@ -75,7 +75,7 @@ function Home(props) {
     localStorage.clear();
     props.setLogued(false);
   };
-  
+
   useEffect(() => {
     setShowContent(<Calendar sessionToken={props.token}></Calendar>);
     getUserDetails();

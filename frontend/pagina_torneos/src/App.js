@@ -29,10 +29,9 @@ import Admin from "./Admin";
 
 function App() {
   const [logued, setLogued] = useState(false);
-  const [adminLogued, setAdminLogued] = useState(false);
   const [show, setShow] = useState(false);
   const [justifyActive, setJustifyActive] = useState("tab1");
-  const [email, setEmail] = useState("");
+  const [emailUser, setEmailUser] = useState("");
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -66,8 +65,9 @@ function App() {
         password,
       });
       console.log(response.data);
-      setEmail(username);
-
+      setEmailUser(username);
+      localStorage.setItem("email", username);
+      
       // Comprobamos si la respuesta es un mensaje de error
       if (response.data === "User or Password incorrect") {
         alert(
@@ -83,15 +83,7 @@ function App() {
         respUser.indexOf("Sesion token: ") + "Sesion token: ".length;
       const token = respUser.slice(comienzo);
       localStorage.setItem("token", token);
-
-      if (email === "admin@live.u-tad.com") {
-        setAdminLogued(true);
-        setLogued(false);
-        localStorage.setItem("role", "admin");
-      } else {
-        setLogued(true);
-        setAdminLogued(false);
-      }
+      setLogued(true);
     } catch (error) {
       console.error("ERROR", error);
       alert("Usuario o contraseña incorrectos. Por favor, intente nuevamente.");
@@ -143,7 +135,8 @@ function App() {
       });
 
       console.log(response.data);
-      setEmail(email);
+      setEmailUser(email);
+      localStorage.setItem("email", email);
 
       if (response.data === "Necesitas un correo corporativo de U-Tad") {
         alert("Necesitas un correo corporativo de U-Tad");
@@ -176,16 +169,10 @@ function App() {
     // Aquí comprobamos si hay datos de usuario en el almacenamiento local.
     const user = localStorage.getItem("user");
     const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
 
     if (user && token) {
-      if(role) {
-        setAdminLogued(true);
-        setLogued(false);
-      } else {
-        setLogued(true);
-      }
       // Si hay datos de usuario, consideramos que el usuario está autenticado.
+      setLogued(true);
     } else {
       setLogued(false);
     }
@@ -194,14 +181,16 @@ function App() {
 
   const isLogued = () => {
     if (logued) {
-      return (
-        <Home setLogued={setLogued} token={localStorage.getItem("token")} />
-      );
-    } else if (adminLogued) {
-      return (
-        <Admin setAdminLogued={setAdminLogued} token={localStorage.getItem("token")} />
-      );
-    } else if (!logued && !adminLogued) {
+      if (emailUser === "admin@live.u-tad.com") {
+        return (
+          <Admin setLogued={setLogued} token={localStorage.getItem("token")} />
+        );
+      } else {
+        return (
+          <Home setLogued={setLogued} token={localStorage.getItem("token")} />
+        );
+      }
+    } else {
       return (
         <>
           <Navbar>

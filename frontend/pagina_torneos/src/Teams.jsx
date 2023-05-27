@@ -6,9 +6,10 @@ function Teams(props) {
   const [teams, setTeams] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [sportFilter, setSportFilter] = useState("");
-  const [numPlayers, setNumPlayers] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [filteredActivity, setFilteredActivity] = useState([]);
+  const [teamMembers, setTeamMembers] = useState([]);
+
 
   useEffect(() => {
     axios
@@ -22,27 +23,56 @@ function Teams(props) {
       });
   }, []);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:3001/team/teams-with-users", {
-        headers: {
-          Authorization: `Bearer ${props.sessionToken}`,
-        },
-      })
-      .then((response) => {
-        setNumPlayers(response.data);
-        console.log("NumPlayers: " + numPlayers);
-        console.log(response.data);
-      });
-  }, []);
-
   const handleSportFilterChange = (value) => {
     setSportFilter(value);
   };
 
   const selectTeam = (team) => {
-    setSelectedTeam(team);
-    setFilteredActivity([team]);
+  setSelectedTeam(team);
+  setFilteredActivity([team]);
+  
+  axios
+    .get("http://localhost:3001/team/teams-with-users", {
+      headers: {
+        Authorization: `Bearer ${props.sessionToken}`,
+      },
+    })
+    .then((response) => {
+      const teamWithUsers = response.data.find(t => t.teamName === team.name);
+      if (teamWithUsers) {
+        setTeamMembers(teamWithUsers.members);
+      } else {
+        setTeamMembers([]);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      alert("Hubo un problema al intentar obtener los miembros del equipo.");
+    });
+};
+
+
+  const handleJoinTeam = async (teamId) => {
+    console.log(teamId)
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/team/joinTeam",
+        { id: teamId },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "api_key": "Api-publica-123",
+            "Authorization": `Bearer ${props.sessionToken}`,
+          },
+        }
+      );
+      if (response.status == 200) {
+        alert("Te has unido al equipo con éxito.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Hubo un problema al intentar unirte al equipo.");
+    }
   };
 
   const filteredTeams = sportFilter
@@ -127,6 +157,7 @@ function Teams(props) {
             <div
               onClick={() => selectTeam(team)}
               style={{ cursor: "pointer", textAlign: "center" }}
+              key={team.name}
             >
               <img
                 src={team.logo}
@@ -202,7 +233,17 @@ function Teams(props) {
             />
           </div>
           <br></br>
-          <div className="mr-1 ml-1 mb-1">
+          <Button
+            variant="primary"
+            onClick={() => handleJoinTeam(selectedTeam.id)}  // Pasa el ID del equipo aquí
+            style={{
+              textAlign: "center",
+            }}
+          >
+            Unirte
+          </Button>
+          <br></br>
+          <div className="d-flex justify-content-around flex-wrap mr-4 mb-4 mt-4 ml-4">
             <div
               style={{
                 height: "100%",
@@ -215,26 +256,16 @@ function Teams(props) {
               <h4>Miembros:</h4>
               <hr className="hr2"></hr>
               <div className="d-flex justify-content-around flex-wrap">
-                {numPlayers.length &&
-                  numPlayers.map((team) => (
-                    <div key={team.teamName}>
-                      <h4>{team.teamName}</h4>
-                      {team.members.map((member) => (
-                        <div key={member.name}>
-                          <h5>@{member.name}</h5>
-                          <img
-                            src={member.profilePic}
-                            style={{
-                              border: "1px solid #0066ef",
-                              width: "75px",
-                              height: "75px",
-                            }}
-                            className="rounded-circle"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  ))}
+              {teamMembers.map(member => (
+                <div key={member.name}>
+                  <img
+                    src={member.profilePic}
+                    style={{ borderRadius: "50%", width: "50px", height: "50px" }}
+                    alt={member.name}
+                  />
+                  <h5>{member.name}</h5>
+                </div>
+              ))}
               </div>
               <br></br>
             </div>
