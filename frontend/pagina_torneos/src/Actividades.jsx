@@ -90,7 +90,7 @@ function Actividades(props) {
         }
       );
       console.log(response.data);
-      alert("Actividad creada exitosamente.")
+      alert("Actividad creada exitosamente.");
       // setShowAlert(true);
       // setAlertVariant("success");
       // setAlertMessage("Equipo creado exitosamente.");
@@ -104,7 +104,7 @@ function Actividades(props) {
       setAlertMessage("No se pudo crear el equipo.");
     }
   };
-  
+
   const handleResultModalClose = () => setShowResultModal(false);
 
   const handleResultModalShow = (activityId) => {
@@ -215,7 +215,7 @@ function Actividades(props) {
               <Form.Control type="text" id="description" required />
             </Form.Group>
             <Form.Group>
-              <Form.Label>Deporte</Form.Label>
+              <Form.Label>Deporte (Ej: Futbol, Baloncesto)</Form.Label>
               <Form.Control type="text" id="sport" required />
             </Form.Group>
             <Form.Group>
@@ -227,7 +227,7 @@ function Actividades(props) {
               <Form.Control type="number" id="max_plazas" required />
             </Form.Group>
             <Form.Group>
-              <Form.Label>Lugar</Form.Label>
+              <Form.Label>Lugar (Ej: Cancha de Futbol)</Form.Label>
               <Form.Control type="text" id="place" required />
             </Form.Group>
             <br></br>

@@ -10,7 +10,6 @@ function Teams(props) {
   const [filteredActivity, setFilteredActivity] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
 
-
   useEffect(() => {
     axios
       .get("http://localhost:3001/team/getTeams", {
@@ -28,32 +27,33 @@ function Teams(props) {
   };
 
   const selectTeam = (team) => {
-  setSelectedTeam(team);
-  setFilteredActivity([team]);
-  
-  axios
-    .get("http://localhost:3001/team/teams-with-users", {
-      headers: {
-        Authorization: `Bearer ${props.sessionToken}`,
-      },
-    })
-    .then((response) => {
-      const teamWithUsers = response.data.find(t => t.teamName === team.name);
-      if (teamWithUsers) {
-        setTeamMembers(teamWithUsers.members);
-      } else {
-        setTeamMembers([]);
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      alert("Hubo un problema al intentar obtener los miembros del equipo.");
-    });
-};
+    setSelectedTeam(team);
+    setFilteredActivity([team]);
 
+    axios
+      .get("http://localhost:3001/team/teams-with-users", {
+        headers: {
+          Authorization: `Bearer ${props.sessionToken}`,
+        },
+      })
+      .then((response) => {
+        const teamWithUsers = response.data.find(
+          (t) => t.teamName === team.name
+        );
+        if (teamWithUsers) {
+          setTeamMembers(teamWithUsers.members);
+        } else {
+          setTeamMembers([]);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        alert("Hubo un problema al intentar obtener los miembros del equipo.");
+      });
+  };
 
   const handleJoinTeam = async (teamId) => {
-    console.log(teamId)
+    console.log(teamId);
     try {
       const response = await axios.post(
         "http://localhost:3001/team/joinTeam",
@@ -61,8 +61,8 @@ function Teams(props) {
         {
           headers: {
             "Content-Type": "application/json",
-            "api_key": "Api-publica-123",
-            "Authorization": `Bearer ${props.sessionToken}`,
+            api_key: "Api-publica-123",
+            Authorization: `Bearer ${props.sessionToken}`,
           },
         }
       );
@@ -189,11 +189,11 @@ function Teams(props) {
               <Form.Control type="text" id="name" required />
             </Form.Group>
             <Form.Group>
-              <Form.Label>Deporte</Form.Label>
+              <Form.Label>Deporte (Ej: Futbol, Baloncesto)</Form.Label>
               <Form.Control type="text" id="sport" required />
             </Form.Group>
             <Form.Group>
-              <Form.Label>Logo</Form.Label>
+              <Form.Label>Logo (URL de la imagen)</Form.Label>
               <Form.Control type="text" id="logo" required />
             </Form.Group>
             <Form.Group>
@@ -236,7 +236,7 @@ function Teams(props) {
           <br></br>
           <Button
             variant="primary"
-            onClick={() => handleJoinTeam(selectedTeam.id)}  // Pasa el ID del equipo aquí
+            onClick={() => handleJoinTeam(selectedTeam.id)} // Pasa el ID del equipo aquí
             style={{
               textAlign: "center",
             }}
@@ -257,16 +257,20 @@ function Teams(props) {
               <h4>Miembros:</h4>
               <hr className="hr2"></hr>
               <div className="d-flex justify-content-around flex-wrap">
-              {teamMembers.map(member => (
-                <div key={member.name}>
-                  <img
-                    src={member.profilePic}
-                    style={{ borderRadius: "50%", width: "50px", height: "50px" }}
-                    alt={member.name}
-                  />
-                  <h5>{member.name}</h5>
-                </div>
-              ))}
+                {teamMembers.map((member) => (
+                  <div key={member.name}>
+                    <img
+                      src={member.profilePic}
+                      style={{
+                        borderRadius: "50%",
+                        width: "50px",
+                        height: "50px",
+                      }}
+                      alt={member.name}
+                    />
+                    <h5>{member.name}</h5>
+                  </div>
+                ))}
               </div>
               <br></br>
             </div>

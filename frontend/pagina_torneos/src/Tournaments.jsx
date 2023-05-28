@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Button, Modal, Form } from "react-bootstrap";
+import { Button, Modal, Form, Dropdown } from "react-bootstrap";
 import { Row, Col } from "react-bootstrap";
 
 function Tournaments(props) {
@@ -12,11 +12,12 @@ function Tournaments(props) {
   const [showModal, setShowModal] = useState(false);
   const [teamId, setTeamId] = useState(1); // Suponiendo que el id del equipo es 1
   const [teams, setTeams] = useState([]);
+  const [equipoSeleccionado, setEquipoSeleccionado] = useState(null);
+
+  const [equipos, setEquipos] = useState([]);
 
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
-
-  
 
   // State for form input values
   const [formValues, setFormValues] = useState({
@@ -31,6 +32,46 @@ function Tournaments(props) {
     type: "",
     privacity: "",
   });
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/team/myTeams", {
+        headers: {
+          Authorization: `Bearer ${props.sessionToken}`,
+        },
+      })
+      .then((res) => setEquipos(res.data))
+      .catch((error) => console.error(error));
+  }, []);
+
+  const handleSubscribeTeam = async () => {
+    if (!equipoSeleccionado) {
+      alert("Por favor selecciona un equipo primero");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/tournament/subscribeTeamToTournament",
+        {
+          teamId: equipoSeleccionado.id,
+          tournamentId: selectedTournament.id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${props.sessionToken}`,
+            api_key: "Api-publica-123",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        alert("Inscripción exitosa!");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleSubscribe = async () => {
     try {
@@ -112,6 +153,13 @@ function Tournaments(props) {
       setFormattedDateStart(date1.toLocaleString());
       setFormattedDateEnd(date2.toLocaleString());
     }
+  };
+
+  const handleSelect = (selectedKey) => {
+    const selectedTeam = equipos.find(
+      (equipo) => equipo.id === Number(selectedKey)
+    );
+    setEquipoSeleccionado(selectedTeam);
   };
 
   const filteredTournaments = sportFilter
@@ -221,7 +269,7 @@ function Tournaments(props) {
               </Form.Group>
 
               <Form.Group controlId="formTournamentSport">
-                <Form.Label>Deporte: </Form.Label>
+                <Form.Label>Deporte (Ej: Futbol, Baloncesto) </Form.Label>
                 <Form.Control
                   type="text"
                   name="sport"
@@ -416,10 +464,25 @@ function Tournaments(props) {
               <Button
                 className="mb-4"
                 variant="primary"
-                onClick={handleSubscribe}
+                onClick={handleSubscribeTeam}
               >
-                Inscribirse
+                Inscribir a el equipo
               </Button>
+              <Dropdown onSelect={handleSelect}>
+                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                  {equipoSeleccionado
+                    ? equipoSeleccionado.name
+                    : "Selecciona un equipo"}
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  {equipos.map((equipo) => (
+                    <Dropdown.Item eventKey={equipo.id}>
+                      {equipo.name}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
               <div className="d-flex justify-content-around flex-wrap mr-5 ml-5 mb-5 mt-5">
                 <div
                   style={{
@@ -432,16 +495,20 @@ function Tournaments(props) {
                   <h2 className="mt-3 mb-3">Equipos Participantes</h2>
                   <hr className="hr2"></hr>
                   <div className="d-flex justify-content-around flex-wrap">
-                  {teams.map((team) => (
-                    <div key={team.id}>
-                    <img
-                      src={team.logo}
-                      style={{ borderRadius: "50%", width: "50px", height: "50px" }}
-                      alt={team.name}
-                    />
-                    <h5>{team.name}</h5>
-                  </div>
-                  ))}
+                    {teams.map((team) => (
+                      <div key={team.id}>
+                        <img
+                          src={team.logo}
+                          style={{
+                            borderRadius: "50%",
+                            width: "50px",
+                            height: "50px",
+                          }}
+                          alt={team.name}
+                        />
+                        <h5>{team.name}</h5>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>

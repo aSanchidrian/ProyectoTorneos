@@ -136,12 +136,11 @@ function App() {
       // aaa@live.u-tad.com
       console.log(response.data);
       setEmailUser(email);
-      var userR = email.substring(0, email.indexOf("@"));      
+      var userR = email.substring(0, email.indexOf("@"));
       localStorage.setItem("email", email);
       localStorage.setItem("user", userR);
 
       if (response.data === "Necesitas un correo corporativo de U-Tad") {
-
         alert("Necesitas un correo corporativo de U-Tad");
       } else if (response.data.startsWith("¡User created!")) {
         // localStorage.setItem("user", userR);
@@ -317,7 +316,7 @@ function App() {
                       id="login-form"
                       onClick={handleLogin}
                     >
-                      Sign in
+                      Iniciar Sesion
                     </Button>
                   </MDBTabsPane>
 
@@ -343,13 +342,13 @@ function App() {
                     />
                     <MDBInput
                       wrapperClass="mb-3"
-                      label="Deporte"
+                      label="Deporte(s) (Ej: Futbol, Baloncesto)"
                       id="sport"
                       type="text"
                     />
                     <MDBInput
                       wrapperClass="mb-3"
-                      label="Horario"
+                      label="Horario (Ej: 14:00-15:00)"
                       id="schedule"
                       type="text"
                     />

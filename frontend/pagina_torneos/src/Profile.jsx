@@ -107,7 +107,7 @@ function Profile(props) {
   const handleImageChange = (e) => {
     setImage(e.target.value);
     props.setUserImage(e.target.value);
-  }
+  };
 
   return (
     <>
@@ -178,7 +178,7 @@ function Profile(props) {
                     />
                   </Form.Group>
                   <Form.Group>
-                    <Form.Label>Deportes</Form.Label>
+                    <Form.Label>Deporte(s) (Ej: Futbol, Baloncesto)</Form.Label>
                     <Form.Control
                       type="text"
                       value={sport}
@@ -186,7 +186,7 @@ function Profile(props) {
                     />
                   </Form.Group>
                   <Form.Group>
-                    <Form.Label>Foto de Perfil</Form.Label>
+                    <Form.Label>Foto de Perfil (URL de la imagen)</Form.Label>
                     <Form.Control
                       type="text"
                       value={image}
