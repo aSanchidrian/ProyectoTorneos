@@ -133,14 +133,18 @@ function App() {
         password,
         conf_password,
       });
-
+      // aaa@live.u-tad.com
       console.log(response.data);
       setEmailUser(email);
+      var userR = email.substring(0, email.indexOf("@"));      
       localStorage.setItem("email", email);
+      localStorage.setItem("user", userR);
 
       if (response.data === "Necesitas un correo corporativo de U-Tad") {
+
         alert("Necesitas un correo corporativo de U-Tad");
       } else if (response.data.startsWith("¡User created!")) {
+        // localStorage.setItem("user", userR);
         const comienzo = response.data.indexOf("token: ") + "token: ".length;
         let token = response.data.slice(comienzo);
         // Eliminar comillas dobles del token si existen

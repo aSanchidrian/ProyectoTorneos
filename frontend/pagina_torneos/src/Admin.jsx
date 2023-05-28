@@ -39,8 +39,6 @@ function Admin (props) {
     }
   };
 
-  
-
   function handleButtonClick(buttonId) {
     switch (buttonId) {
       case "btn-1":
