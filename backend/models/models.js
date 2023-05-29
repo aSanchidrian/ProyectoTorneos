@@ -3,6 +3,28 @@ const conection = require("../connection")
 
 sequelize = conection
 
+
+const ChatMessage = sequelize.define('chat_messages', {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    userId: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: 'users',
+            key: 'id'
+        }
+    },
+    message: DataTypes.STRING,
+    timestamp: DataTypes.DATE
+});
+
+ChatMessage.sync()
+
+
+
 const Logs = sequelize.define('Logs', {
     id: {
       type: DataTypes.INTEGER,
@@ -109,6 +131,9 @@ User.belongsToMany(Team, { through: TeamMember });
 Team.belongsToMany(User, { through: TeamMember });
 TeamMember.sync()
 
+User.hasMany(ChatMessage, { foreignKey: 'userId' });
+ChatMessage.belongsTo(User, { foreignKey: 'userId' });
+
 const TournamentTeams = sequelize.define('tournament_teams', {
     position: {
         type: DataTypes.INTEGER,
@@ -145,4 +170,6 @@ Activity.belongsToMany(Tournament, { through: TournamentGroupActivities });
 Tournament.belongsToMany(Activity, { through: TournamentGroupActivities });
 TournamentGroupActivities.sync()
 
-module.exports = { User, Team, TeamMember, Activity, ActivityPlayer, Tournament, TournamentTeams, TournamentGroupActivities,Logs }
+
+
+module.exports = { User, Team, TeamMember, Activity, ActivityPlayer, Tournament, TournamentTeams, TournamentGroupActivities,Logs,ChatMessage }

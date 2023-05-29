@@ -49,7 +49,7 @@ const createActivity = async (req, res) => {
     }
 
     // Si ha sido un exito devuelve esto
-    const logMessage = `@${req.user.nickname} ha creado la actividad: ${name}`;
+    const logMessage = `@${req.user.nickname} ha creado una actividad de ${sport} llamada : ${name}`;
     await Logs.create({ message: logMessage });
 
     res.status(201).json({
