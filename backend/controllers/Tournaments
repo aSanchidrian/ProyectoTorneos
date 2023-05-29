@@ -264,7 +264,7 @@ const createTournament = async (req, res) => {
 
         // Send response with success message
         const logMessage = `@${req.user.nickname} ha creado el torneo de ${sport} llamado ${name}`;
-        await Logs.create({ message: logMessage });
+        await Logs.create({ message: logMessage, category: sport });
         res.status(201).json({ message: "Tournament created successfully" });
     } catch (err) {
         console.error(err);

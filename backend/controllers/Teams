@@ -27,7 +27,7 @@ async function createTeam(req, res) {
       captain: captain,
     });
     const logMessage = `El equipo de ${sport} llamado ${name} ha sido creado por @${req.user.nickname}`;
-    await Logs.create({ message: logMessage });
+    await Logs.create({ message: logMessage, category: sport });
 
     res.status(201).json(team);
   } catch (error) {

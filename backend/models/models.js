@@ -38,8 +38,15 @@ const Logs = sequelize.define('Logs', {
     date: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW
+    },
+    category: {
+      type: DataTypes.STRING,
+      defaultValue: 'general'
     }
   });
+  
+  
+  
 Logs.sync()
 
 const User = sequelize.define('users', {
