@@ -71,15 +71,6 @@ const MyCalendar = (props) => {
     fetchEvents();
   }, []);
 
-  const handleEventClick = (event) => {
-    // revisa el tipo de evento y cambia la vista en Home.jsx
-    if (event.type === 'activity') {
-      props.handleButtonClick('btn-4');
-    } else if (event.type === 'tournament') {
-      props.handleButtonClick('btn-3');
-    }
-  }
-
   const eventStyleGetter = (event, start, end, isSelected) => {
     var backgroundColor = event.color;
     var style = {
@@ -105,7 +96,6 @@ const MyCalendar = (props) => {
         events={events}
         messages={messages}
         eventPropGetter={eventStyleGetter}
-        onSelectEvent={handleEventClick} // añade esta línea
       />
     </div>
   );

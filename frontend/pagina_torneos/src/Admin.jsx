@@ -70,7 +70,7 @@ function Admin (props) {
         setShowContent(<Chat sessionToken={props.token}></Chat>);
         break;
       case "Calendar":
-        setShowContent(<Calendar sessionToken={props.token} handleButtonClick={handleButtonClick}></Calendar>);
+        setShowContent(<Calendar sessionToken={props.token}></Calendar>);
         break;
       case "cerrarsesion":
         break;
