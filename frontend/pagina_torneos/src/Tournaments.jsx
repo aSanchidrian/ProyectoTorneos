@@ -25,7 +25,6 @@ function Tournaments(props) {
   const handleCloseMatchesModal = () => setShowMatchesModal(false);
   const [currentGroup, setCurrentGroup] = useState(0);
 
-
   // State for form input values
   const [formValues, setFormValues] = useState({
     name: "",
@@ -517,56 +516,74 @@ function Tournaments(props) {
                 )}
               </div>
               <Modal show={showMatchesModal} onHide={handleCloseMatchesModal}>
-  <Modal.Header closeButton>
-    <Modal.Title>Enfrentamientos</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-    {Object.keys(matches).map((grupo, index) => {
-      if (index === currentGroup) {
-        return (
-          <div key={index}>
-            <h5>{grupo}</h5>
-            <h6>Equipos:</h6>
-            <ul>
-              {matches[grupo].teams.map((team, i) => (
-                <li key={i}>{team}</li>
-              ))}
-            </ul>
-            <h6>Partidos:</h6>
-            {Object.keys(matches[grupo].matches).map(jornada => (
-              <div key={jornada}>
-                <h5>{jornada}</h5>
-                {matches[grupo].matches[jornada].map((match, i) => (
-                  <p key={i}>{match[0]} vs {match[1]}</p>
-                ))}
-              </div>
-            ))}
-          </div>
-        );
-      } else {
-        return null;
-      }
-    })}
-    <div className="d-flex justify-content-between">
-      <Button 
-        onClick={() => setCurrentGroup((currentGroup - 1 + Object.keys(matches).length) % Object.keys(matches).length)}
-        disabled={Object.keys(matches).length === 1}>
-        Anterior
-      </Button>
-      <Button 
-        onClick={() => setCurrentGroup((currentGroup + 1) % Object.keys(matches).length)}
-        disabled={Object.keys(matches).length === 1}>
-        Siguiente
-      </Button>
-    </div>
-  </Modal.Body>
-  <Modal.Footer>
-    <Button variant="secondary" onClick={handleCloseMatchesModal}>
-      Close
-    </Button>
-  </Modal.Footer>
-</Modal>
-
+                <Modal.Header closeButton>
+                  <Modal.Title>Enfrentamientos</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  {Object.keys(matches).map((grupo, index) => {
+                    if (index === currentGroup) {
+                      return (
+                        <div key={index}>
+                          <h5>{grupo}</h5>
+                          <h6>Equipos:</h6>
+                          <ul>
+                            {matches[grupo].teams.map((team, i) => (
+                              <li key={i}>{team}</li>
+                            ))}
+                          </ul>
+                          <h6>Partidos:</h6>
+                          {Object.keys(matches[grupo].matches).map(
+                            (jornada) => (
+                              <div key={jornada}>
+                                <h5>{jornada}</h5>
+                                <ul>
+                                {matches[grupo].matches[jornada].map(
+                                  (match, i) => (
+                                    <li style={{color : "black"}} key={i}>
+                                      {match[0]} vs {match[1]}
+                                    </li>
+                                  )
+                                )}
+                                </ul>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      );
+                    } else {
+                      return null;
+                    }
+                  })}
+                  <div className="d-flex justify-content-between">
+                    <Button
+                      onClick={() =>
+                        setCurrentGroup(
+                          (currentGroup - 1 + Object.keys(matches).length) %
+                            Object.keys(matches).length
+                        )
+                      }
+                      disabled={Object.keys(matches).length === 1}
+                    >
+                      Anterior
+                    </Button>
+                    <Button
+                      onClick={() =>
+                        setCurrentGroup(
+                          (currentGroup + 1) % Object.keys(matches).length
+                        )
+                      }
+                      disabled={Object.keys(matches).length === 1}
+                    >
+                      Siguiente
+                    </Button>
+                  </div>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={handleCloseMatchesModal}>
+                    Close
+                  </Button>
+                </Modal.Footer>
+              </Modal>
 
               <div className="d-flex justify-content-around flex-wrap mr-5 ml-5 mb-5 mt-5">
                 <div
