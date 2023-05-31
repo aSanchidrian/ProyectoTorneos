@@ -83,6 +83,45 @@ if (TeamPlayer) {
 //return res.send("Already susbscribe")
 }
 
+const leaveTeam = async (req, res) => {
+  const {  teamId } = req.body; // Obtén los ids desde el cuerpo de la solicitud
+  let userId = req.user.id;
+  try {
+      // Busca la relación entre el usuario y el equipo
+      const membership = await TeamMember.findOne({ 
+          where: { 
+              teamId: teamId, 
+              userId: userId 
+          } 
+      });
+
+      // Si no se encontró la relación, envía un error
+      if (!membership) {
+          return res.status(404).json({
+              error: "No se encontró el usuario en el equipo especificado."
+          });
+      }
+
+      // Verificar si el usuario es el capitán del equipo
+      if(membership.captain) {
+          return res.status(400).json({
+              error: "El capitán del equipo no puede abandonar el equipo."
+          });
+      }
+
+      // Elimina la relación del equipo
+      await membership.destroy();
+
+      return res.status(200).json({
+          message: "El usuario ha dejado el equipo exitosamente."
+      });
+  } catch (error) {
+      return res.status(500).json({
+          error: "Error al intentar que el usuario abandone el equipo."
+      });
+  }
+}
+
 
 const myTeams = async (req, res) => {
   try {
@@ -138,4 +177,4 @@ const getTeamUsers = async (req, res) => {
 
 
 
-module.exports={createTeam,getTeams,joinTeam,myTeams,getTeamUsers}
+module.exports={createTeam,leaveTeam,getTeams,joinTeam,myTeams,getTeamUsers}

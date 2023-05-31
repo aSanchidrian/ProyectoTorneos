@@ -46,3 +46,34 @@ exports.updateMessage = async (req, res) => {
         res.status(500).json({ error: 'There was an error.' });
     }
 };
+
+// ChatController.js
+
+
+ exports.getUserMessages = async (req, res) => {
+    const userId =req.user.id;; // Obtén el userId desde los parámetros de la ruta
+
+    try {
+        // Busca los mensajes del usuario
+        const messages = await ChatMessage.findAll({ 
+            where: { 
+                userId: userId 
+            } 
+        });
+
+        // Si no se encontraron mensajes, envía una respuesta vacía
+        if (!messages) {
+            return res.status(404).json({
+                error: "No se encontraron mensajes para el usuario especificado."
+            });
+        }
+
+        return res.status(200).json(messages);
+    } catch (error) {
+        return res.status(500).json({
+            error: "Error al intentar obtener los mensajes del usuario."
+        });
+    }
+}
+
+
