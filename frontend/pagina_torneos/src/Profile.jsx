@@ -156,8 +156,11 @@ function Profile(props) {
               Editar
             </Button>
             <Modal show={showModal} onHide={handleModal}>
-              <Modal.Header closeButton>
+              <Modal.Header>
                 <Modal.Title>Editar Perfil</Modal.Title>
+                <button type="button" className="close" onClick={handleModal}>
+                  <span aria-hidden="true">&times;</span>
+                </button>
               </Modal.Header>
               <Modal.Body>
                 <Form>

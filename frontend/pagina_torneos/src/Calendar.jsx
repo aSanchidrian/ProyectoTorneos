@@ -30,7 +30,7 @@ const MyCalendar = (props) => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await axios.get(
+        const res1 = await axios.get(
           "http://localhost:3001/activity/getActivitys",
           {
             headers: {
@@ -38,12 +38,31 @@ const MyCalendar = (props) => {
             },
           }
         );
-        const events = res.data.map((e) => ({
+        const activities = res1.data.map((e) => ({
           start: new Date(e.date),
-          end: new Date(e.date), // se supone que la fecha de inicio y de fin son la misma
+          end: new Date(e.date),
           title: e.name,
+          type: 'activity',
+          color: '#0066ef'  // color para las actividades
         }));
-        setEvents(events);
+
+        const res2 = await axios.get(
+          "http://localhost:3001/tournament/getTournaments",
+          {
+            headers: {
+              Authorization: `Bearer ${props.sessionToken}`,
+            },
+          }
+        );
+        const tournaments = res2.data.map((e) => ({
+          start: new Date(e.date_start),
+          end: new Date(e.date_end),
+          title: e.name,
+          type: 'tournament',
+          color: '#ff834d '  // color para los torneos
+        }));
+
+        setEvents([...activities, ...tournaments]);
       } catch (err) {
         console.error(err);
       }
@@ -51,6 +70,22 @@ const MyCalendar = (props) => {
 
     fetchEvents();
   }, []);
+
+  const eventStyleGetter = (event, start, end, isSelected) => {
+    var backgroundColor = event.color;
+    var style = {
+        backgroundColor: backgroundColor,
+        borderRadius: '5px',
+        opacity: 1,
+        color: 'black',
+        border: '0px',
+        display: 'block',
+        fontWeight: 'bold'
+    };
+    return {
+        style: style
+    };
+  }
 
   return (
     <div style={{ height: "100%" }}>
@@ -60,6 +95,7 @@ const MyCalendar = (props) => {
         defaultView="month"
         events={events}
         messages={messages}
+        eventPropGetter={eventStyleGetter} // añade esta línea
       />
     </div>
   );

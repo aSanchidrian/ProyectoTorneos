@@ -22,7 +22,7 @@ function Anuncios(props) {
       <h2 className="anuncios-title">Anuncios U-Sports Instagram @u__sports</h2>
       <hr className="hr2"></hr>
       <div className="d-flex justify-content-around flex-wrap mr-5 ml-5 mb-5 mt-5">
-        <div style={{height: "100%",width: "100%",border: "1.5px solid #0066ef"}}>
+        <div style={{height: "100%",width: "100%"}}>
           {posts.map((post) => (
             <div key={post.id} className="post">
               <img className="post-image" src={post.media_url} alt={post.caption} />
