@@ -15,10 +15,15 @@ function Tournaments(props) {
   const [equipoSeleccionado, setEquipoSeleccionado] = useState(null);
   const [refreshTeams, setRefreshTeams] = useState(false);
   const [equipos, setEquipos] = useState([]);
+  const [matches, setMatches] = useState({});
+  const [showMatchesModal, setShowMatchesModal] = useState(false);
+
 
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
-
+  const handleShowMatchesModal = () => setShowMatchesModal(true);
+  const handleCloseMatchesModal = () => setShowMatchesModal(false);
+  
   // State for form input values
   const [formValues, setFormValues] = useState({
     name: "",
@@ -34,6 +39,7 @@ function Tournaments(props) {
   });
 
   useEffect(() => {
+    console.log(matches)
     axios
       .get("http://localhost:3001/team/myTeams", {
         headers: {
@@ -181,6 +187,36 @@ function Tournaments(props) {
       console.error(error);
     }
   };
+
+  const handleGenerateTournament = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/tournament/generateTournament",
+        {
+          tournamentId: selectedTournament.id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${props.sessionToken}`,
+            api_key: "Api-publica-123",
+          },
+        }
+      );
+
+      if (response.status === 201) {
+        const mensaje = response.data.message
+        const jsonTexto = mensaje.replace('Equipos: ', '');
+        const generatedMatches = JSON.parse(jsonTexto);
+        setMatches(generatedMatches);
+        
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    console.log(matches);
+}, [matches]);
 
   return (
     <>
@@ -438,13 +474,7 @@ function Tournaments(props) {
                 <Col className="text-left">{selectedTournament.type}</Col>
               </Row>
               <br></br>
-              <Button
-                className="mb-4"
-                variant="primary"
-                onClick={handleSubscribeTeam}
-              >
-                Inscribir a el equipo
-              </Button>
+              <div className="d-flex justify-content-center">
               <Dropdown onSelect={handleSelect}>
                 <Dropdown.Toggle variant="success" id="dropdown-basic">
                   {equipoSeleccionado
@@ -460,6 +490,75 @@ function Tournaments(props) {
                   ))}
                 </Dropdown.Menu>
               </Dropdown>
+              <Button
+                className="mb-3 ml-3"
+                variant="primary"
+                onClick={handleSubscribeTeam}
+              >
+                Inscribir a el equipo
+              </Button>
+              </div>
+              <br></br>
+              <div className="d-flex justify-content-center">
+              <Button
+                className="mb-4"
+                variant="primary"
+                onClick={handleGenerateTournament}
+              >
+                Generar Enfrentamientos
+              </Button>
+              {Object.keys(matches).length !== 0 && (
+                <Button
+                  className="mb-4 ml-2"
+                  variant="primary"
+                  onClick={handleShowMatchesModal}
+                >
+                  Mostrar Enfrentamientos
+                </Button>
+              )}
+              </div>
+              <Modal show={showMatchesModal} onHide={handleCloseMatchesModal}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Enfrentamientos</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <pre>{JSON.stringify(matches, null, 2)}</pre>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={handleCloseMatchesModal}>
+                    Close
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+
+              {/* <Modal show={showMatchesModal} onHide={() => setShowMatchesModal(false)}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Enfrentamientos</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  {Object.keys(matches).map((grupo) => (
+                    <div key={grupo}>
+                      <h5>{grupo}</h5>
+                      {Object.keys(matches[grupo].matches).map((jornada) => (
+                        <div key={jornada}>
+                          <h6>{jornada}</h6>
+                          {matches[grupo].matches[jornada].map((partido, i) => (
+                            <p key={i}>{`${partido[0]} vs ${partido[1]}`}</p>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={() => setShowMatchesModal(false)}>
+                    Cerrar
+                  </Button>
+                </Modal.Footer> 
+              </Modal>*/}
+
+
+
               <div className="d-flex justify-content-around flex-wrap mr-5 ml-5 mb-5 mt-5">
                 <div
                   style={{
@@ -492,6 +591,39 @@ function Tournaments(props) {
             </div>
           </div>
         )}
+        <div>
+        
+        {/* {matches && Object.entries(matches).map(([grupo, datosGrupo]) => {
+          return (
+            <div key={grupo}>
+              <h2>{grupo}</h2>
+              <h3>Equipos:</h3>
+              <ul>
+                {datosGrupo.teams.map((team) => (
+                  <li key={team}>{team}</li>
+                ))}
+              </ul>
+              <h3>Partidos:</h3>
+              {Object.entries(datosGrupo.matches).map(([jornada, partidos]) => {
+                return (
+                  <div key={jornada}>
+                    <h4>{jornada}</h4>
+                    <ul>
+                      {partidos.map((partido, index) => (
+                        <li key={index}>
+                          {partido[0]} vs {partido[1]}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })} */}
+
+
+    </div>
       </div>
     </>
   );
