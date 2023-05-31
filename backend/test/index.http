@@ -190,6 +190,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Ikx1Y
   "name":"SSH",
   "sport":"Futbol",
   "logo":"logo512.png",
+  "description": "saddasads",
   "max_players_team":8
 }
 
@@ -204,6 +205,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Ikx1Y
   "name":"MedioPulmon",
   "sport":"Football",
   "logo":"logo512.png",
+  "description": "saddasads",
   "max_players_team":8
 }
 
@@ -218,6 +220,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
   "name":"DAWE",
   "sport":"Football",
   "logo":"logo.png",
+  "description": "saddasads",
   "max_players_team":8
 }
 
@@ -232,6 +235,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
   "name":"LIONS",
   "sport":"Football",
   "logo":"logo.png",
+  "description": "saddasads",
   "max_players_team":8
 }
 
@@ -315,8 +319,8 @@ api_key: Api-publica-123
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
 {
-  "teamId": 1,
-  "tournamentId": 4
+  "teamId": 6,
+  "tournamentId": 1
 }
 
 ##### DEVOLVER EQUIPOS DEL TORNEO
@@ -326,10 +330,18 @@ api_key: Api-publica-123
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
 {
-  "tournamentId": 4
+  "tournamentId": 1
 }
 
+##### GENERAR TORNEO
+POST http://localhost:3001/tournament/generateTournament HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
+{
+  "tournamentId": 1
+}
 
 ######CHAT##
 

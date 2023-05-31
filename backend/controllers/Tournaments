@@ -162,7 +162,7 @@ function generateMatchesInGroup(group) {
     return schedule
 }
 
-function generateTournamentSchedule(tournamentId, tournamentTeams) {
+async function generateTournamentSchedule(tournamentId, tournamentTeams) {
     let groups = generateGroups(tournamentTeams)
     let numGroups = Object.keys(groups).length
     
@@ -203,7 +203,6 @@ const getTeamsInTournament = async (req, res) => {
         });
 
         res.send(teams)
-        console.log(teams)
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: "Error " + err });
@@ -216,28 +215,41 @@ const getPlayersInTournament = async (req, res) => {
 };
 
 const generateTournament = async (req, res) => {
-    const { tournamentId } = req.body;
-    const tournamentInfo = await Tournament.findOne({ where: { id: tournamentId } })
+    try {
+        const { tournamentId } = req.body;
+        const tournament = await Tournament.findOne({
+            where: {
+                id: tournamentId,
+            },
+        }) 
 
-    // Recopilar todos los equipos y jugadores disponibles en el torneo
-    const playersInTournament = f_getPlayersInTournament(tournamentId)
+        const teams = await Tournament.findAll({
+            attributes: [], 
+            where: {
+                id: tournamentId
+            },
+            include: {
+              model: Team,
+              attributes: ['id', 'name'],
+              through: {
+                attributes: [], 
+                model: TournamentTeams
+              }
+            }
+        });
 
-    const tourPlayerIds = [];
-    for (let i = 0; i < playersInTournament.length; i++)
-        tourPlayerIds.push(playersInTournament[i].userId);
+        const teamsArray = []
+        for(let team of teams[0].teams)
+            teamsArray.push(team.name)
 
-    const teamsInTournament = countTeamsInTournament(tourPlayerIds)
-    let teamsNumber = teamsInTournament.length
-    // si es modo equipos
-    // asignación de partidos
-    if (tournamentInfo.type == 1) {
-        generateTournamentSchedule(tournamentId, teamsInTournament)
-    }
-    // si es modo equipos y jugadores
-    // ver jugadores sin equipo y asignarles a un equipo
-    else if (tournamentInfo.type == 2) {
-        fixTeams() // mete a jugadores sin equipo en equipos sin mucha gente o crea nuevos equipos si necesario
-        generateTournamentSchedule(tournamentId, teamsInTournament)   
+        if (teamsArray.length < tournament.min_teams)
+             return res.status(403).json({ message: "No se ha cumplido el mínimo de equipos necesarios." })
+
+        const schedule = await generateTournamentSchedule(tournamentId, teamsArray)
+        res.status(201).json({ message: "Equipos: "+JSON.stringify(schedule) })
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Error " + err });
     }
 }
 
@@ -325,7 +337,11 @@ const subscribeTeamToTournament = async (req, res) => {
     try {
         let teamId = req.body.teamId
         let tournamentId = req.body.tournamentId
+        const tournamentInfo = await Tournament.findOne({ where: { id: tournamentId } })
 
+        if(2 >= tournamentInfo.max_teams)
+            return res.status(406).json({ message: "Número maximo de equipos en el torneo sobrepasado." })
+        
         let cero = 0
 
         const [tournamentTeam, created] = await TournamentTeams.findOrCreate({
@@ -338,7 +354,7 @@ const subscribeTeamToTournament = async (req, res) => {
         });
 
         if (!created)
-            return res.status(409).json({ message: "Already subscribe to this tournament" });
+            return res.status(409).json({ message: "Este equipo ya está suscrito al torneo." });
 
         res.send(`Subscription to Tournament with success`);
     } catch(err) {
