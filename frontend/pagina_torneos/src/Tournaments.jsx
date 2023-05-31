@@ -13,7 +13,7 @@ function Tournaments(props) {
   const [teamId, setTeamId] = useState(1); // Suponiendo que el id del equipo es 1
   const [teams, setTeams] = useState([]);
   const [equipoSeleccionado, setEquipoSeleccionado] = useState(null);
-
+  const [refreshTeams, setRefreshTeams] = useState(false);
   const [equipos, setEquipos] = useState([]);
 
   const handleCloseModal = () => setShowModal(false);
@@ -67,30 +67,7 @@ function Tournaments(props) {
 
       if (response.status === 200) {
         alert("Inscripción exitosa!");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleSubscribe = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:3001/tournament/subscribeTeamToTournament",
-        {
-          teamId,
-          tournamentId: selectedTournament.id,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${props.sessionToken}`,
-            api_key: "Api-publica-123",
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        alert("Inscripción exitosa!");
+        setRefreshTeams(!refreshTeams);
       }
     } catch (error) {
       console.error(error);
@@ -126,7 +103,7 @@ function Tournaments(props) {
         })
         .catch((error) => console.error(error));
     }
-  }, [selectedTournament, props.sessionToken]);
+  }, [selectedTournament, props.sessionToken, refreshTeams]);
 
   const handleSportFilterChange = (event) => {
     setSportFilter(event.target.value);
