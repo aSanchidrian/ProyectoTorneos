@@ -22,7 +22,10 @@ function Tournaments(props) {
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
   const handleShowMatchesModal = () => setShowMatchesModal(true);
-  const handleCloseMatchesModal = () => setShowMatchesModal(false);
+  const handleCloseMatchesModal = () => {
+    setCurrentGroup(0);
+    setShowMatchesModal(false);
+  };
   const [currentGroup, setCurrentGroup] = useState(0);
 
   // State for form input values
@@ -537,13 +540,13 @@ function Tournaments(props) {
                               <div key={jornada}>
                                 <h5>{jornada}</h5>
                                 <ul>
-                                {matches[grupo].matches[jornada].map(
-                                  (match, i) => (
-                                    <li style={{color : "black"}} key={i}>
-                                      {match[0]} vs {match[1]}
-                                    </li>
-                                  )
-                                )}
+                                  {matches[grupo].matches[jornada].map(
+                                    (match, i) => (
+                                      <li style={{ color: "black" }} key={i}>
+                                        {match[0]} vs {match[1]}
+                                      </li>
+                                    )
+                                  )}
                                 </ul>
                               </div>
                             )
