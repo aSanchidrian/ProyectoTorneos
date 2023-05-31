@@ -347,14 +347,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
 
 ### Get todos los mensajes
 GET http://localhost:3001/chat/messages HTTP/1.1
-Authorization: Bearer {token}
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Ikx1Y3MycyIsImlhdCI6MTY4NTU0NzU0MywiZXhwIjoxNzIxNTQzOTQzfQ.c54-sok4k0TNlV4AS93Fhs1PNB7F2gW_IgARvzjuFgA
 ###
 
 ### Post un mensaje
-POST http://localhost:3000/messages HTTP/1.1
+POST http://localhost:3001/messages HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer {token}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Ikx1Y3MycyIsImlhdCI6MTY4NTU0NzU0MywiZXhwIjoxNzIxNTQzOTQzfQ.c54-sok4k0TNlV4AS93Fhs1PNB7F2gW_IgARvzjuFgA
 
 {
     "message": "Hola mundo"
@@ -363,9 +362,9 @@ Authorization: Bearer {token}
 
 
 ### actualiza mensaje
-PUT http://localhost:3000/messages/1 HTTP/1.1
+PUT http://localhost:3001/messages/1 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer {token}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
 
 {
     "message": "Hola mundo, actualizado"

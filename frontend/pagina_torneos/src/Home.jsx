@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Accordion, Card } from "react-bootstrap";
 import bell_logo from "./bell_icon.png";
+import chat from "./chat.png";
 import usports_logo_mini from "./mini_usports.png";
 import calendar_logo from "./calendar_icon.jpg";
 import web_icon from "./web-globe-icon-23.png";
@@ -17,12 +18,13 @@ import Tournaments from "./Tournaments";
 import Results from "./Results";
 import Profile from "./Profile";
 import Notificaciones from "./Notificaciones";
+import Chat from "./Chat";
 import Actividades from "./Actividades";
 import Anuncios from "./Anuncios";
 
 function Home(props) {
   const [showContent, setShowContent] = useState(false);
-  const [userImage, setUserImage] = useState('');
+  const [userImage, setUserImage] = useState("");
 
   const getUserDetails = async () => {
     try {
@@ -43,7 +45,9 @@ function Home(props) {
         setShowContent(<Anuncios sessionToken={props.token}></Anuncios>);
         break;
       case "btn-2":
-        setShowContent(<Teams sessionToken={props.token} userId={props}></Teams>);
+        setShowContent(
+          <Teams sessionToken={props.token} userId={props}></Teams>
+        );
         break;
       case "btn-3":
         setShowContent(<Tournaments sessionToken={props.token}></Tournaments>);
@@ -55,10 +59,20 @@ function Home(props) {
         setShowContent(<Results sessionToken={props.token}></Results>);
         break;
       case "Profile":
-        setShowContent(<Profile setUserImage={setUserImage} sessionToken={props.token}></Profile>);
+        setShowContent(
+          <Profile
+            setUserImage={setUserImage}
+            sessionToken={props.token}
+          ></Profile>
+        );
         break;
       case "Logs":
-        setShowContent(<Notificaciones sessionToken={props.token}></Notificaciones>);
+        setShowContent(
+          <Notificaciones sessionToken={props.token}></Notificaciones>
+        );
+        break;
+      case "Chat":
+        setShowContent(<Chat sessionToken={props.token}></Chat>);
         break;
       case "Calendar":
         setShowContent(<Calendar sessionToken={props.token}></Calendar>);
@@ -79,7 +93,6 @@ function Home(props) {
     getUserDetails();
     setShowContent(<Calendar sessionToken={props.token}></Calendar>);
   }, [props.token]);
-  
 
   return (
     <>
@@ -108,8 +121,26 @@ function Home(props) {
             >
               <img
                 src={bell_logo}
-                style={{ maxWidth: "100%", maxHeight: "100%", cursor:"pointer" }}
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: "100%",
+                  cursor: "pointer",
+                }}
                 onClick={() => handleButtonClick("Logs")}
+              ></img>
+            </Navbar.Text>
+            <Navbar.Text
+              className="mr-4"
+              style={{ maxWidth: "3%", maxHeight: "3%" }}
+            >
+              <img
+                src={chat}
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: "100%",
+                  cursor: "pointer",
+                }}
+                onClick={() => handleButtonClick("Chat")}
               ></img>
             </Navbar.Text>
             <Navbar.Text>
@@ -143,7 +174,7 @@ function Home(props) {
                       >
                         Mi perfil
                       </a>
-                
+
                       <a
                         className="dropdown-item"
                         href="#"
