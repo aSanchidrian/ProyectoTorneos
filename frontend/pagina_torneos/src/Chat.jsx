@@ -5,19 +5,19 @@ import "./Chat.css";
 const Chat = (props) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const currentUser = "Lucs2s"; // Reemplazar con el usuario actual
+  const currentUser = localStorage.getItem("user"); // Reemplazar con el usuario actual
+
+  const fetchData = async () => {
+    const result = await axios.get("http://localhost:3001/chat/messages", {
+      headers: {
+        Authorization: `Bearer ${props.sessionToken}`,
+      },
+    });
+
+    setMessages(result.data);
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios.get("http://localhost:3001/chat/messages", {
-        headers: {
-          Authorization: `Bearer ${props.sessionToken}`,
-        },
-      });
-
-      setMessages(result.data);
-    };
-
     fetchData();
   }, []);
 
@@ -35,15 +35,16 @@ const Chat = (props) => {
     );
 
     setNewMessage("");
+    fetchData();
   };
 
   return (
-    <div className="chat-container">
+    <div className="chat-container p-3">
       <div className="chat-messages">
         {messages.map((message) => (
           <div
             className={`chat-message ${
-              message.user.nickname === currentUser ? "left" : "right"
+              message.user.nickname === currentUser ? "right" : "left"
             }`}
             key={message.id}
           >

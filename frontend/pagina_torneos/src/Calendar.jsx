@@ -59,7 +59,7 @@ const MyCalendar = (props) => {
           end: new Date(e.date_end),
           title: e.name,
           type: 'tournament',
-          color: '#ff834d '  // color para los torneos
+          color: '#ff6c00'  // color para los torneos
         }));
 
         setEvents([...activities, ...tournaments]);
@@ -71,13 +71,22 @@ const MyCalendar = (props) => {
     fetchEvents();
   }, []);
 
+  const handleEventClick = (event) => {
+    // revisa el tipo de evento y cambia la vista en Home.jsx
+    if (event.type === 'activity') {
+      props.handleButtonClick('btn-4');
+    } else if (event.type === 'tournament') {
+      props.handleButtonClick('btn-3');
+    }
+  }
+
   const eventStyleGetter = (event, start, end, isSelected) => {
     var backgroundColor = event.color;
     var style = {
         backgroundColor: backgroundColor,
         borderRadius: '5px',
         opacity: 1,
-        color: 'black',
+        color: 'white',
         border: '0px',
         display: 'block',
         fontWeight: 'bold'
@@ -95,7 +104,8 @@ const MyCalendar = (props) => {
         defaultView="month"
         events={events}
         messages={messages}
-        eventPropGetter={eventStyleGetter} // añade esta línea
+        eventPropGetter={eventStyleGetter}
+        onSelectEvent={handleEventClick} // añade esta línea
       />
     </div>
   );

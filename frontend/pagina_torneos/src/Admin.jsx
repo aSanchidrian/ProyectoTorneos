@@ -4,13 +4,14 @@ import bell_logo from "./bell_icon.png";
 import usports_logo_mini from "./mini_usports.png";
 import calendar_logo from "./calendar_icon.jpg";
 import web_icon from "./web-globe-icon-23.png";
+import chat from "./chat.png";
 import "@fontsource/montserrat";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import axios from "axios";
-
+import Chat from "./Chat";
 import Teams from "./Teams";
 import Calendar from "./Calendar";
 import Tournaments from "./Tournaments";
@@ -60,15 +61,16 @@ function Admin (props) {
         setShowContent(<AdminPanel sessionToken={props.token}></AdminPanel>);
         break;
       case "Profile":
-        setShowContent(<Profile sessionToken={props.token} setUserImage={setUserImage}></Profile>);
+        setShowContent(<Profile setUserImage={setUserImage} sessionToken={props.token}></Profile>);
         break;
       case "Logs":
-        setShowContent(
-          <Notificaciones sessionToken={props.token}></Notificaciones>
-        );
+        setShowContent(<Notificaciones sessionToken={props.token}></Notificaciones>);
+        break;
+      case "Chat":
+        setShowContent(<Chat sessionToken={props.token}></Chat>);
         break;
       case "Calendar":
-        setShowContent(<Calendar sessionToken={props.token}></Calendar>);
+        setShowContent(<Calendar sessionToken={props.token} handleButtonClick={handleButtonClick}></Calendar>);
         break;
       case "cerrarsesion":
         break;
@@ -120,6 +122,20 @@ function Admin (props) {
                   cursor: "pointer",
                 }}
                 onClick={() => handleButtonClick("Logs")}
+              ></img>
+            </Navbar.Text>
+            <Navbar.Text
+              className="mr-4"
+              style={{ maxWidth: "3%", maxHeight: "3%" }}
+            >
+              <img
+                src={chat}
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: "100%",
+                  cursor: "pointer",
+                }}
+                onClick={() => handleButtonClick("Chat")}
               ></img>
             </Navbar.Text>
             <Navbar.Text>
