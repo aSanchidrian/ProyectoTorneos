@@ -45,7 +45,7 @@ function Profile(props) {
       setSport(response.data.sport);
       setUser(response.data.email);
       setImage(response.data.profilePic); // Nueva línea para la imagen
-      getUserPublications(response.data.nickname);
+      getUserPublications(response.data.sport);
     } catch (err) {
       console.error(err);
     }
