@@ -179,8 +179,15 @@ function Teams(props) {
 
       <hr className="hr2"></hr>
       <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title>Crear un equipo</Modal.Title>
+          <button
+            type="button"
+            className="close"
+            onClick={handleCloseModal}
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleCreateTeam}>

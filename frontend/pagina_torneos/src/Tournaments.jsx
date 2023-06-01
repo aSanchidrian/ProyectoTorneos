@@ -254,8 +254,11 @@ function Tournaments(props) {
         <hr className="hr2"></hr>
 
         <Modal show={showModal} onHide={handleCloseModal}>
-          <Modal.Header closeButton>
+          <Modal.Header>
             <Modal.Title>Crear nuevo torneo</Modal.Title>
+            <button type="button" className="close" onClick={handleCloseModal}>
+              <span aria-hidden="true">&times;</span>
+            </button>
           </Modal.Header>
           <Modal.Body>
             <Form onSubmit={handleCreateTournament}>
@@ -519,8 +522,15 @@ function Tournaments(props) {
                 )}
               </div>
               <Modal show={showMatchesModal} onHide={handleCloseMatchesModal}>
-                <Modal.Header closeButton>
+                <Modal.Header>
                   <Modal.Title>Enfrentamientos</Modal.Title>
+                  <button
+                    type="button"
+                    className="close"
+                    onClick={handleCloseMatchesModal}
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
                 </Modal.Header>
                 <Modal.Body>
                   {Object.keys(matches).map((grupo, index) => {

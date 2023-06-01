@@ -201,8 +201,11 @@ function Actividades(props) {
       <hr className="hr2"></hr>
 
       <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title className="mr-4">Crear una actividad</Modal.Title>
+          <button type="button" className="close" onClick={handleCloseModal}>
+            <span aria-hidden="true">&times;</span>
+          </button>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleRegister}>
@@ -320,8 +323,11 @@ function Actividades(props) {
         <p style={{ color: "black" }}>No hay actividades disponibles...</p>
       )}
       <Modal show={showResultModal} onHide={handleResultModalClose}>
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title>Añadir Resultado</Modal.Title>
+          <button type="button" className="close" onClick={handleResultModalClose}>
+            <span aria-hidden="true">&times;</span>
+          </button>
         </Modal.Header>
         <Modal.Body>
           <Form>
