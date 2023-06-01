@@ -234,7 +234,7 @@ function Tournaments(props) {
               <option value="">Todos los deportes</option>
               <option value="Futbol">Fútbol</option>
               <option value="Tenis">Tenis</option>
-              <option value="Baloncesto">Basketball</option>
+              <option value="Baloncesto">Baloncesto</option>
             </Form.Control>
 
             <Button
@@ -473,10 +473,6 @@ function Tournaments(props) {
                 <Col className="text-left">
                   {selectedTournament.max_players_team}
                 </Col>
-              </Row>
-              <Row>
-                <Col className="text-right font-weight-bold">Tipo:</Col>
-                <Col className="text-left">{selectedTournament.type}</Col>
               </Row>
               <br></br>
               <div className="d-flex justify-content-center">

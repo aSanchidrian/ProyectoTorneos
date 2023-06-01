@@ -253,7 +253,7 @@ function Profile(props) {
               borderRadius: "30px",
             }}
           >
-            <h2 style={{ paddingTop: "2%" }}>Mis publicaciones</h2>
+            <h2 style={{ paddingTop: "2%" }}>Mis notificaciones</h2>
             <hr className="hr2"></hr>
             <br></br>
             <div className="d-flex flex-column align-items-center">
