@@ -5,7 +5,8 @@ import "./Chat.css";
 const Chat = (props) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const currentUser = localStorage.getItem("user"); // Reemplazar con el usuario actual
+  const [userMessagesIds, setUserMessagesIds] = useState([]);
+  const currentUser = localStorage.getItem("user");
 
   const fetchData = async () => {
     const result = await axios.get("http://localhost:3001/chat/messages", {
@@ -17,8 +18,23 @@ const Chat = (props) => {
     setMessages(result.data);
   };
 
+  const fetchUserMessages = async () => {
+    const result = await axios.get(
+      "http://localhost:3001/chat/getMessagesById",
+      {
+        headers: {
+          Authorization: `Bearer ${props.sessionToken}`,
+        },
+      }
+    );
+
+    const messageIds = result.data.map((message) => message.id);
+    setUserMessagesIds(messageIds);
+  };
+
   useEffect(() => {
     fetchData();
+    fetchUserMessages();
   }, []);
 
   const postMessage = async () => {
@@ -36,15 +52,19 @@ const Chat = (props) => {
 
     setNewMessage("");
     fetchData();
+    fetchUserMessages();
   };
 
   return (
     <div className="chat-container p-3">
+      <div className="chat-header">
+        <h2>Chat U-Sports</h2>
+      </div>
       <div className="chat-messages">
         {messages.map((message) => (
           <div
             className={`chat-message ${
-              message.user.nickname === currentUser ? "right" : "left"
+              userMessagesIds.includes(message.id) ? "right" : "left"
             }`}
             key={message.id}
           >
@@ -54,8 +74,11 @@ const Chat = (props) => {
               alt={message.user.nickname}
             />
             <div className="message-content">
+              <h2>{message.user.nickname}</h2>
               <p>{message.message}</p>
-              <small>{new Date(message.createdAt).toLocaleString()}</small>
+              <small className="date-right">
+                {new Date(message.createdAt).toLocaleString()}
+              </small>
             </div>
           </div>
         ))}
