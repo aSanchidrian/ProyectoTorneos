@@ -298,22 +298,24 @@ function Actividades(props) {
                     {actividad.result ? actividad.result : "Aun no concluido"}
                   </Col>
                 </Row>
-                <Button
-                  style={{
-                    textAlign: "center",
-                    width: "15%",
-                    height: "30%",
-                    marginLeft: "auto",
-                    marginRight: "0",
-                    marginBottom: "2%",
-                    marginTop: "1%",
-                  }}
-                  className="ml-auto"
-                  variant="primary"
-                  onClick={() => handleResultModalShow(actividad.id)} // Pasa actividad.id directamente
-                >
-                  Añadir Resultado
-                </Button>
+                {actividad.result === "" && ( // Solo mostrar el botón si el resultado de la actividad es ""
+                  <Button
+                    style={{
+                      textAlign: "center",
+                      width: "15%",
+                      height: "30%",
+                      marginLeft: "auto",
+                      marginRight: "0",
+                      marginBottom: "2%",
+                      marginTop: "1%",
+                    }}
+                    className="ml-auto"
+                    variant="primary"
+                    onClick={() => handleResultModalShow(actividad.id)} // Pasa actividad.id directamente
+                  >
+                    Añadir Resultado
+                  </Button>
+                )}
                 <br></br>
               </div>
             </div>
@@ -325,7 +327,11 @@ function Actividades(props) {
       <Modal show={showResultModal} onHide={handleResultModalClose}>
         <Modal.Header>
           <Modal.Title>Añadir Resultado</Modal.Title>
-          <button type="button" className="close" onClick={handleResultModalClose}>
+          <button
+            type="button"
+            className="close"
+            onClick={handleResultModalClose}
+          >
             <span aria-hidden="true">&times;</span>
           </button>
         </Modal.Header>

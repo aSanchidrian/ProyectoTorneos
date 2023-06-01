@@ -86,6 +86,7 @@ function Teams(props) {
     const name = document.getElementById("name").value;
     const sport = document.getElementById("sport").value;
     const logo = document.getElementById("logo").value;
+    const description = document.getElementById("description").value;
     const max_players_team = document.getElementById("max_players_team").value;
 
     try {
@@ -95,7 +96,8 @@ function Teams(props) {
           name,
           sport,
           logo,
-          max_players_team,
+          description,
+          max_players_team
         },
         {
           headers: {
@@ -196,6 +198,10 @@ function Teams(props) {
               <Form.Control type="text" id="name" required />
             </Form.Group>
             <Form.Group>
+              <Form.Label>Descripcion</Form.Label>
+              <Form.Control type="text" id="description" required />
+            </Form.Group>
+            <Form.Group>
               <Form.Label>Deporte (Ej: Futbol, Baloncesto)</Form.Label>
               <Form.Control type="text" id="sport" required />
             </Form.Group>
@@ -216,15 +222,6 @@ function Teams(props) {
       </Modal>
       {filteredActivity.length > 0 ? (
         <div className="w-100 mt-4">
-          <h1
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            {selectedTeam.name}
-          </h1>
           <div
             style={{
               display: "flex",
@@ -239,7 +236,29 @@ function Teams(props) {
               height="200"
               className="rounded-circle"
             />
+            
           </div>
+          <h1
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {selectedTeam.name}
+          </h1>
+          <div style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              color: "#0066ef",
+              fontWeight: "bold"
+            }}>{selectedTeam.sport}</div>
+          <div style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}> <l><b>Descripcion: </b>{selectedTeam.description}</l></div>
           <br></br>
           <Button
             variant="primary"

@@ -60,6 +60,7 @@ const Chat = (props) => {
       <div className="chat-header">
         <h2>Chat U-Sports</h2>
       </div>
+      <hr className="hr2"></hr>
       <div className="chat-messages">
         {messages.map((message) => (
           <div
@@ -74,7 +75,7 @@ const Chat = (props) => {
               alt={message.user.nickname}
             />
             <div className="message-content">
-              <h2>{message.user.nickname}</h2>
+              <h5 style={{color:"black"}} className="font-weight-bold ">{message.user.nickname}</h5>
               <p>{message.message}</p>
               <small className="date-right">
                 {new Date(message.createdAt).toLocaleString()}
