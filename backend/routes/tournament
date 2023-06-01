@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router()
 
-const {createTournament, getTournaments, suscribePlayerToTournament, subscribeTeamToTournament, generateTournament, getMyTournaments, tournamentSchedule, getTeamsInTournament } = require("../controllers/Tournaments")
+const {createTournament, getTournaments, suscribePlayerToTournament, subscribeTeamToTournament, generateTournament, getMyTournaments, getTeamsInTournament } = require("../controllers/Tournaments")
 const authMiddleware = require("../middleware/session")
 
 
@@ -13,6 +13,5 @@ router.post("/subscribeTeamToTournament", authMiddleware, subscribeTeamToTournam
 router.get("/getMyTournaments", authMiddleware, getMyTournaments);
 router.get("/getTeamsInTournament/:tournamentId", authMiddleware, getTeamsInTournament);
 router.post("/generateTournament", authMiddleware, generateTournament)
-router.post("/tournamentSchedule", authMiddleware, tournamentSchedule)
 
 module.exports = router

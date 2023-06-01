@@ -343,16 +343,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Imphd
   "tournamentId": 1
 }
 
-##### RECIBIR EL HORARIO DE UN TORNEO (mismo formato que devuelve arriba) ¡¡en progresoooo!!!
-POST http://localhost:3001/tournament/tournamentSchedule HTTP/1.1
-Content-Type: application/json
-api_key: Api-publica-123
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
-
-{
-  "tournamentId": 1
-}
-
 ######CHAT##
 
 ### Get todos los mensajes
