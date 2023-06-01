@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Button, Modal, Form, Dropdown } from "react-bootstrap";
 import { Row, Col } from "react-bootstrap";
-import Carousel from "react-bootstrap/Carousel";
 
 function Tournaments(props) {
   const [tournaments, setTournaments] = useState([]);
@@ -80,6 +79,7 @@ function Tournaments(props) {
         setRefreshTeams(!refreshTeams);
       }
     } catch (error) {
+      alert("Número maximo de equipos en el torneo sobrepasado.");
       console.error(error);
     }
   };
@@ -211,6 +211,7 @@ function Tournaments(props) {
         setMatches(response.data);
       }
     } catch (error) {
+      alert("No se ha cumplido el mínimo de equipos necesarios.");
       console.error(error);
     }
   };
@@ -503,25 +504,11 @@ function Tournaments(props) {
                 </Button>
               </div>
               <br></br>
-              <div className="d-flex justify-content-center">
-                <Button
-                  className="mb-4"
-                  variant="primary"
-                  onClick={handleGenerateTournament}
-                >
-                  Generar Enfrentamientos
-                </Button>
-                {Object.keys(matches).length !== 0 && (
-                  <Button
-                    className="mb-4 ml-2"
-                    variant="primary"
-                    onClick={handleShowMatchesModal}
-                  >
-                    Mostrar Enfrentamientos
-                  </Button>
-                )}
-              </div>
-              <Modal show={showMatchesModal} onHide={handleCloseMatchesModal}>
+              <Modal
+                show={showMatchesModal}
+                size="lg"
+                onHide={handleCloseMatchesModal}
+              >
                 <Modal.Header>
                   <Modal.Title>Enfrentamientos</Modal.Title>
                   <button
@@ -533,63 +520,87 @@ function Tournaments(props) {
                   </button>
                 </Modal.Header>
                 <Modal.Body>
-                  {Object.keys(matches).map((grupo, index) => {
+                  {Object.keys(matches).map((group, index) => {
                     if (index === currentGroup) {
                       return (
                         <div key={index}>
-                          <h5>{grupo}</h5>
-                          <h6>Equipos:</h6>
-                          <ul>
-                            {matches[grupo].teams.map((team, i) => (
-                              <li key={i}>{team}</li>
-                            ))}
-                          </ul>
-                          <h6>Partidos:</h6>
-                          {Object.keys(matches[grupo].matches).map(
-                            (jornada) => (
-                              <div key={jornada}>
-                                <h5>{jornada}</h5>
-                                <ul>
-                                  {matches[grupo].matches[jornada].map(
-                                    (match, i) => (
-                                      <li style={{ color: "black" }} key={i}>
-                                        {match[0]} vs {match[1]}
-                                      </li>
-                                    )
-                                  )}
-                                </ul>
-                              </div>
-                            )
-                          )}
+                          <div className="d-flex justify-content-between">
+                            <Button
+                              variant="secondary"
+                              onClick={() =>
+                                setCurrentGroup(
+                                  (currentGroup -
+                                    1 +
+                                    Object.keys(matches).length) %
+                                    Object.keys(matches).length
+                                )
+                              }
+                              disabled={Object.keys(matches).length === 1}
+                            >
+                              ◀
+                            </Button>
+                            <h5>
+                              <b>{group}</b>
+                            </h5>
+                            <Button
+                              variant="secondary"
+                              onClick={() =>
+                                setCurrentGroup(
+                                  (currentGroup + 1) %
+                                    Object.keys(matches).length
+                                )
+                              }
+                              disabled={Object.keys(matches).length === 1}
+                            >
+                              ▶
+                            </Button>
+                          </div>
+                          <div className="card mt-3 text-center">
+                            <div className="card-header font-weight-bold h2">
+                              Equipos
+                            </div>
+                            <ul className="list-group list-group-flush">
+                              {matches[group].teams.map((team, i) => (
+                                <li key={i} className="list-group-item">
+                                  {team}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                          <div className="card mt-3 text-center">
+                            <div className="card-header font-weight-bold h2">
+                              Partidos
+                            </div>
+                            {Object.keys(matches[group].matches).map(
+                              (jornada) => (
+                                <div key={jornada} className="card-body">
+                                  <div className="media">
+                                    <h5 className="mr-3 mt-custom">{jornada}</h5>
+                                    <div className="media-body">
+                                      <ul className="list-group list-group-flush">
+                                        {matches[group].matches[jornada].map(
+                                          (match, i) => (
+                                            <li
+                                              key={i}
+                                              className="list-group-item"
+                                            >
+                                              {match[0]} vs {match[1]}
+                                            </li>
+                                          )
+                                        )}
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              )
+                            )}
+                          </div>
                         </div>
                       );
                     } else {
                       return null;
                     }
                   })}
-                  <div className="d-flex justify-content-between">
-                    <Button
-                      onClick={() =>
-                        setCurrentGroup(
-                          (currentGroup - 1 + Object.keys(matches).length) %
-                            Object.keys(matches).length
-                        )
-                      }
-                      disabled={Object.keys(matches).length === 1}
-                    >
-                      Anterior
-                    </Button>
-                    <Button
-                      onClick={() =>
-                        setCurrentGroup(
-                          (currentGroup + 1) % Object.keys(matches).length
-                        )
-                      }
-                      disabled={Object.keys(matches).length === 1}
-                    >
-                      Siguiente
-                    </Button>
-                  </div>
                 </Modal.Body>
                 <Modal.Footer>
                   <Button variant="secondary" onClick={handleCloseMatchesModal}>
@@ -627,39 +638,27 @@ function Tournaments(props) {
                   </div>
                 </div>
               </div>
+              <div className="d-flex justify-content-center">
+                <Button
+                  className="mb-4 btn-secondary"
+                  variant="primary"
+                  onClick={handleGenerateTournament}
+                >
+                  Generar Enfrentamientos
+                </Button>
+                {Object.keys(matches).length !== 0 && (
+                  <Button
+                    className="mb-4 ml-2"
+                    variant="primary"
+                    onClick={handleShowMatchesModal}
+                  >
+                    Mostrar Enfrentamientos
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         )}
-        <div>
-          {/* {matches && Object.entries(matches).map(([grupo, datosGrupo]) => {
-          return (
-            <div key={grupo}>
-              <h2>{grupo}</h2>
-              <h3>Equipos:</h3>
-              <ul>
-                {datosGrupo.teams.map((team) => (
-                  <li key={team}>{team}</li>
-                ))}
-              </ul>
-              <h3>Partidos:</h3>
-              {Object.entries(datosGrupo.matches).map(([jornada, partidos]) => {
-                return (
-                  <div key={jornada}>
-                    <h4>{jornada}</h4>
-                    <ul>
-                      {partidos.map((partido, index) => (
-                        <li key={index}>
-                          {partido[0]} vs {partido[1]}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })} */}
-        </div>
       </div>
     </>
   );
