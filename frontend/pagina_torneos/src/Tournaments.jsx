@@ -258,7 +258,7 @@ function Tournaments(props) {
           <Modal.Header>
             <Modal.Title>Crear nuevo torneo</Modal.Title>
             <button type="button" className="close" onClick={handleCloseModal}>
-              <span aria-hidden="true">&times;</span>
+              <span aria-hidden="true">✕</span>
             </button>
           </Modal.Header>
           <Modal.Body>
@@ -481,12 +481,11 @@ function Tournaments(props) {
               <br></br>
               <div className="d-flex justify-content-center">
                 <Dropdown onSelect={handleSelect}>
-                  <Dropdown.Toggle variant="success" id="dropdown-basic">
+                  <Dropdown.Toggle variant="light" style={{border: "1px solid #0066ef"}} id="dropdown-basic">
                     {equipoSeleccionado
                       ? equipoSeleccionado.name
                       : "Selecciona un equipo"}
                   </Dropdown.Toggle>
-
                   <Dropdown.Menu>
                     {equipos.map((equipo) => (
                       <Dropdown.Item eventKey={equipo.id}>
@@ -497,13 +496,13 @@ function Tournaments(props) {
                 </Dropdown>
                 <Button
                   className="mb-3 ml-3"
+                  style={{ borderRadius: "50px" }}
                   variant="primary"
                   onClick={handleSubscribeTeam}
                 >
-                  Inscribir a el equipo
+                  ✚
                 </Button>
               </div>
-              <br></br>
               <Modal
                 show={showMatchesModal}
                 size="lg"
@@ -516,7 +515,7 @@ function Tournaments(props) {
                     className="close"
                     onClick={handleCloseMatchesModal}
                   >
-                    <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">✕</span>
                   </button>
                 </Modal.Header>
                 <Modal.Body>
@@ -575,7 +574,9 @@ function Tournaments(props) {
                               (jornada) => (
                                 <div key={jornada} className="card-body">
                                   <div className="media">
-                                    <h5 className="mr-3 mt-custom">{jornada}</h5>
+                                    <h5 className="mr-3 mt-custom">
+                                      {jornada}
+                                    </h5>
                                     <div className="media-body">
                                       <ul className="list-group list-group-flush">
                                         {matches[group].matches[jornada].map(
@@ -609,7 +610,7 @@ function Tournaments(props) {
                 </Modal.Footer>
               </Modal>
 
-              <div className="d-flex justify-content-around flex-wrap mr-5 ml-5 mb-5 mt-5">
+              <div className="d-flex justify-content-around flex-wrap mr-5 ml-5 mb-5 mt-4">
                 <div
                   style={{
                     height: "100%",
@@ -640,7 +641,7 @@ function Tournaments(props) {
               </div>
               <div className="d-flex justify-content-center">
                 <Button
-                  className="mb-4 btn-secondary"
+                  className="mb-4"
                   variant="primary"
                   onClick={handleGenerateTournament}
                 >
@@ -648,7 +649,7 @@ function Tournaments(props) {
                 </Button>
                 {Object.keys(matches).length !== 0 && (
                   <Button
-                    className="mb-4 ml-2"
+                    className="mb-4 ml-2 btn-secondary"
                     variant="primary"
                     onClick={handleShowMatchesModal}
                   >

@@ -164,6 +164,9 @@ function Actividades(props) {
               Filtro
             </Dropdown.Toggle>
             <Dropdown.Menu>
+              <Dropdown.Item onClick={() => handleFilterChange("")}>
+                Todas las actividades
+              </Dropdown.Item>
               <Dropdown.Item onClick={() => handleFilterChange("finished")}>
                 Actividades Finalizadas
               </Dropdown.Item>
@@ -204,7 +207,7 @@ function Actividades(props) {
         <Modal.Header>
           <Modal.Title className="mr-4">Crear una actividad</Modal.Title>
           <button type="button" className="close" onClick={handleCloseModal}>
-            <span aria-hidden="true">&times;</span>
+            <span aria-hidden="true">✕</span>
           </button>
         </Modal.Header>
         <Modal.Body>
@@ -332,7 +335,7 @@ function Actividades(props) {
             className="close"
             onClick={handleResultModalClose}
           >
-            <span aria-hidden="true">&times;</span>
+            <span aria-hidden="true">✕</span>
           </button>
         </Modal.Header>
         <Modal.Body>

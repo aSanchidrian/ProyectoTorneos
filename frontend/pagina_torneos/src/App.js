@@ -260,7 +260,7 @@ function App() {
             <Modal.Header>
               <Modal.Title>Inicia sesion</Modal.Title>
               <button type="button" className="close" onClick={handleClose}>
-                <span aria-hidden="true">&times;</span>
+                <span aria-hidden="true">✕</span>
               </button>
             </Modal.Header>
             <Modal.Body>

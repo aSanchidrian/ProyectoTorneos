@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Button from "react-bootstrap/Button";
 import "./Chat.css";
 
 const Chat = (props) => {
@@ -7,6 +8,7 @@ const Chat = (props) => {
   const [newMessage, setNewMessage] = useState("");
   const [userMessagesIds, setUserMessagesIds] = useState([]);
   const currentUser = localStorage.getItem("user");
+  const endOfMessagesRef = React.useRef(null);
 
   const fetchData = async () => {
     const result = await axios.get("http://localhost:3001/chat/messages", {
@@ -32,9 +34,13 @@ const Chat = (props) => {
     setUserMessagesIds(messageIds);
   };
 
+  const scrollToBottom = () => {
+    endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   useEffect(() => {
-    fetchData();
-    fetchUserMessages();
+    fetchData().then(scrollToBottom);
+    fetchUserMessages().then(scrollToBottom);
   }, []);
 
   const postMessage = async () => {
@@ -53,6 +59,13 @@ const Chat = (props) => {
     setNewMessage("");
     fetchData();
     fetchUserMessages();
+    scrollToBottom();
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      postMessage();
+    }
   };
 
   return (
@@ -75,7 +88,9 @@ const Chat = (props) => {
               alt={message.user.nickname}
             />
             <div className="message-content">
-              <h5 style={{color:"black"}} className="font-weight-bold ">{message.user.nickname}</h5>
+              <h5 style={{ color: "black" }} className="font-weight-bold ">
+                @{message.user.nickname}
+              </h5>
               <p>{message.message}</p>
               <small className="date-right">
                 {new Date(message.createdAt).toLocaleString()}
@@ -83,14 +98,20 @@ const Chat = (props) => {
             </div>
           </div>
         ))}
+        <div ref={endOfMessagesRef} />
       </div>
       <div className="chat-input">
         <input
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
+          onKeyPress={handleKeyPress} // Agregamos este evento
         />
-        <button onClick={postMessage}>Enviar</button>
+        <Button style={{ borderRadius: "100px" }} onClick={postMessage}>
+          <b>
+            <h2>➤</h2>
+          </b>
+        </Button>
       </div>
     </div>
   );

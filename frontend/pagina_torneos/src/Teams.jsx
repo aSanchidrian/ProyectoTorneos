@@ -188,7 +188,7 @@ function Teams(props) {
             className="close"
             onClick={handleCloseModal}
           >
-            <span aria-hidden="true">&times;</span>
+            <span aria-hidden="true">✕</span>
           </button>
         </Modal.Header>
         <Modal.Body>
