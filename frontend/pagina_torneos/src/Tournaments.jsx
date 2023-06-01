@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Button, Modal, Form, Dropdown } from "react-bootstrap";
 import { Row, Col } from "react-bootstrap";
+import Carousel from "react-bootstrap/Carousel";
 
 function Tournaments(props) {
   const [tournaments, setTournaments] = useState([]);
@@ -18,12 +19,15 @@ function Tournaments(props) {
   const [matches, setMatches] = useState({});
   const [showMatchesModal, setShowMatchesModal] = useState(false);
 
-
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
   const handleShowMatchesModal = () => setShowMatchesModal(true);
-  const handleCloseMatchesModal = () => setShowMatchesModal(false);
-  
+  const handleCloseMatchesModal = () => {
+    setCurrentGroup(0);
+    setShowMatchesModal(false);
+  };
+  const [currentGroup, setCurrentGroup] = useState(0);
+
   // State for form input values
   const [formValues, setFormValues] = useState({
     name: "",
@@ -39,7 +43,7 @@ function Tournaments(props) {
   });
 
   useEffect(() => {
-    console.log(matches)
+    console.log(matches);
     axios
       .get("http://localhost:3001/team/myTeams", {
         headers: {
@@ -204,19 +208,16 @@ function Tournaments(props) {
       );
 
       if (response.status === 201) {
-        const mensaje = response.data.message
-        const jsonTexto = mensaje.replace('Equipos: ', '');
-        const generatedMatches = JSON.parse(jsonTexto);
-        setMatches(generatedMatches);
-        
+        setMatches(response.data);
       }
     } catch (error) {
       console.error(error);
     }
   };
+
   useEffect(() => {
     console.log(matches);
-}, [matches]);
+  }, [matches]);
 
   return (
     <>
@@ -475,54 +476,110 @@ function Tournaments(props) {
               </Row>
               <br></br>
               <div className="d-flex justify-content-center">
-              <Dropdown onSelect={handleSelect}>
-                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                  {equipoSeleccionado
-                    ? equipoSeleccionado.name
-                    : "Selecciona un equipo"}
-                </Dropdown.Toggle>
+                <Dropdown onSelect={handleSelect}>
+                  <Dropdown.Toggle variant="success" id="dropdown-basic">
+                    {equipoSeleccionado
+                      ? equipoSeleccionado.name
+                      : "Selecciona un equipo"}
+                  </Dropdown.Toggle>
 
-                <Dropdown.Menu>
-                  {equipos.map((equipo) => (
-                    <Dropdown.Item eventKey={equipo.id}>
-                      {equipo.name}
-                    </Dropdown.Item>
-                  ))}
-                </Dropdown.Menu>
-              </Dropdown>
-              <Button
-                className="mb-3 ml-3"
-                variant="primary"
-                onClick={handleSubscribeTeam}
-              >
-                Inscribir a el equipo
-              </Button>
+                  <Dropdown.Menu>
+                    {equipos.map((equipo) => (
+                      <Dropdown.Item eventKey={equipo.id}>
+                        {equipo.name}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+                <Button
+                  className="mb-3 ml-3"
+                  variant="primary"
+                  onClick={handleSubscribeTeam}
+                >
+                  Inscribir a el equipo
+                </Button>
               </div>
               <br></br>
               <div className="d-flex justify-content-center">
-              <Button
-                className="mb-4"
-                variant="primary"
-                onClick={handleGenerateTournament}
-              >
-                Generar Enfrentamientos
-              </Button>
-              {Object.keys(matches).length !== 0 && (
                 <Button
-                  className="mb-4 ml-2"
+                  className="mb-4"
                   variant="primary"
-                  onClick={handleShowMatchesModal}
+                  onClick={handleGenerateTournament}
                 >
-                  Mostrar Enfrentamientos
+                  Generar Enfrentamientos
                 </Button>
-              )}
+                {Object.keys(matches).length !== 0 && (
+                  <Button
+                    className="mb-4 ml-2"
+                    variant="primary"
+                    onClick={handleShowMatchesModal}
+                  >
+                    Mostrar Enfrentamientos
+                  </Button>
+                )}
               </div>
               <Modal show={showMatchesModal} onHide={handleCloseMatchesModal}>
                 <Modal.Header closeButton>
                   <Modal.Title>Enfrentamientos</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  <pre>{JSON.stringify(matches, null, 2)}</pre>
+                  {Object.keys(matches).map((grupo, index) => {
+                    if (index === currentGroup) {
+                      return (
+                        <div key={index}>
+                          <h5>{grupo}</h5>
+                          <h6>Equipos:</h6>
+                          <ul>
+                            {matches[grupo].teams.map((team, i) => (
+                              <li key={i}>{team}</li>
+                            ))}
+                          </ul>
+                          <h6>Partidos:</h6>
+                          {Object.keys(matches[grupo].matches).map(
+                            (jornada) => (
+                              <div key={jornada}>
+                                <h5>{jornada}</h5>
+                                <ul>
+                                  {matches[grupo].matches[jornada].map(
+                                    (match, i) => (
+                                      <li style={{ color: "black" }} key={i}>
+                                        {match[0]} vs {match[1]}
+                                      </li>
+                                    )
+                                  )}
+                                </ul>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      );
+                    } else {
+                      return null;
+                    }
+                  })}
+                  <div className="d-flex justify-content-between">
+                    <Button
+                      onClick={() =>
+                        setCurrentGroup(
+                          (currentGroup - 1 + Object.keys(matches).length) %
+                            Object.keys(matches).length
+                        )
+                      }
+                      disabled={Object.keys(matches).length === 1}
+                    >
+                      Anterior
+                    </Button>
+                    <Button
+                      onClick={() =>
+                        setCurrentGroup(
+                          (currentGroup + 1) % Object.keys(matches).length
+                        )
+                      }
+                      disabled={Object.keys(matches).length === 1}
+                    >
+                      Siguiente
+                    </Button>
+                  </div>
                 </Modal.Body>
                 <Modal.Footer>
                   <Button variant="secondary" onClick={handleCloseMatchesModal}>
@@ -530,34 +587,6 @@ function Tournaments(props) {
                   </Button>
                 </Modal.Footer>
               </Modal>
-
-              {/* <Modal show={showMatchesModal} onHide={() => setShowMatchesModal(false)}>
-                <Modal.Header closeButton>
-                  <Modal.Title>Enfrentamientos</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  {Object.keys(matches).map((grupo) => (
-                    <div key={grupo}>
-                      <h5>{grupo}</h5>
-                      {Object.keys(matches[grupo].matches).map((jornada) => (
-                        <div key={jornada}>
-                          <h6>{jornada}</h6>
-                          {matches[grupo].matches[jornada].map((partido, i) => (
-                            <p key={i}>{`${partido[0]} vs ${partido[1]}`}</p>
-                          ))}
-                        </div>
-                      ))}
-                    </div>
-                  ))}
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button variant="secondary" onClick={() => setShowMatchesModal(false)}>
-                    Cerrar
-                  </Button>
-                </Modal.Footer> 
-              </Modal>*/}
-
-
 
               <div className="d-flex justify-content-around flex-wrap mr-5 ml-5 mb-5 mt-5">
                 <div
@@ -592,8 +621,7 @@ function Tournaments(props) {
           </div>
         )}
         <div>
-        
-        {/* {matches && Object.entries(matches).map(([grupo, datosGrupo]) => {
+          {/* {matches && Object.entries(matches).map(([grupo, datosGrupo]) => {
           return (
             <div key={grupo}>
               <h2>{grupo}</h2>
@@ -621,9 +649,7 @@ function Tournaments(props) {
             </div>
           );
         })} */}
-
-
-    </div>
+        </div>
       </div>
     </>
   );

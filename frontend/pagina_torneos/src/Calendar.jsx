@@ -59,7 +59,8 @@ const MyCalendar = (props) => {
           end: new Date(e.date_end),
           title: e.name,
           type: 'tournament',
-          color: '#ff6c00'  // color para los torneos
+          color: '#5bd8c3',
+          textColor: 'black'  // color para los torneos
         }));
 
         setEvents([...activities, ...tournaments]);
