@@ -3,21 +3,11 @@ const { matchedData } = require("express-validator");
 const router = express.Router();
 const mysql = require("mysql");
 const conection = require("../connection");
-const { User, Tournament, Team, TournamentTeams, TeamMember, Logs } = require("../models/models");
+const { User, Tournament, Team, TournamentTeams, TeamMember, Activity, TournamentGroupActivities, Logs } = require("../models/models");
 const { Op } = require("sequelize");
 
 require("dotenv").config();
 db = conection;
-
-async function f_getPlayersInTournament(tournamentId) {
-    // const playersInTournament = await TournamentPlayers.findAll({
-    //     where: {
-    //         id: tournamentId,
-    //     },
-    // });
-
-    return 0
-}
 
 async function countTeamsInTournament(tournamentId) {
     const teamsInTournament = await TournamentTeams.findAll({
@@ -27,35 +17,6 @@ async function countTeamsInTournament(tournamentId) {
     })
 
     return teamsInTournament
-}
-
-function generateTeamsPerGroup(teamsCount) {
-    let numGroups = 2
-    let minTeamsInGroup = Math.floor(teamsCount / numGroups)
-    let maxTeamsInGroup = 5
-
-    while ( minTeamsInGroup > maxTeamsInGroup) {
-        numGroups += 1
-        minTeamsInGroup = Math.floor(teamsCount / numGroups)
-    }
-    
-    let groups = []
-    let groupCounter = 0
-    for(let i = 0; i<numGroups; i++){
-        let teamsInGroup = minTeamsInGroup
-        groupCounter += teamsInGroup
-        groups.push(teamsInGroup)
-    }
-    
-    let restoTeams = teamsCount % numGroups
-    for(let i=0; i<groups.length; i++) {
-        if(restoTeams != 0) {
-            groups[i] += 1
-            restoTeams -= 1
-        }
-    }
-
-    return groups
 }
 
 // ROUND ROBIN SCHEDULE
@@ -91,7 +52,7 @@ function generateTeamsPerGroup(teamsCount) {
 
 function ordenamientoAleatorio(a, b) { return 0.5 - Math.random() }
 
-function generateGroups(teams) {
+async function generateGroups(teams) {
     let teamsCount = teams.length
     let groupsCount = generateTeamsPerGroup(teamsCount)
     teams.sort(ordenamientoAleatorio)
@@ -100,24 +61,59 @@ function generateGroups(teams) {
     for(let i=0; i<groupsCount.length; i++) {
         groups[`Grupo ${i+1}`] = new Object()
         groups[`Grupo ${i+1}`].teams = []
-        for(let j=0; j<groupsCount[i];j++)
-            groups[`Grupo ${i+1}`].teams.push(teams.pop())
+        for(let j=0; j<groupsCount[i];j++) {
+            let teamId = teams.pop()
+            groups[`Grupo ${i+1}`].teams.push(teamId)
+            const tournamentTeam = await TournamentTeams.findOne({ where: { teamId: teamId.id } })
+            tournamentTeam.group = i+1
+            tournamentTeam.position = j+1
+            await tournamentTeam.save({ fields: ['group', 'position'] });
+        }
     }
     
     return groups
 }
 
-function generateMatchesImpar(group, numTeams, numJornadas) {
+async function findInfoFromTeam(teamId) {
+    const team = await Team.findOne({ where: { id: teamId } })
+    return team
+}
+
+async function createGroupActivity(equipo1, equipo2, tournament, jornada) {
+    const activity = await Activity.create({
+        name: equipo1.name + " vs " + equipo2.name,
+        description: `Partido perteneciente a la jornada ${jornada} de torneo ${tournament.name}`,
+        sport: tournament.sport,
+        privacity: 1,
+        max_plazas: tournament.max_players_team
+    });
+
+    const [activityTournament, created2]  = await TournamentGroupActivities.findOrCreate({
+        where: {
+            jornada: jornada, activityId: activity.id, tournamentId: tournament.id
+        },
+        defaults: {
+            activityId: activity.id,
+            tournamentId: tournament.id,
+            jornada: jornada
+        }
+    });
+}
+
+async function generateMatchesImpar(group, numTeams, numJornadas, tournament) {
     let schedule = new Object()
     
     for (let i=0; i<numJornadas; i++) {
         let matches = []
+        let jornada = i+1
         
         for(let j=0; j<(numTeams/2)-1; j++) {
             let match = [group[j], group[numTeams - 1 - j]]
             matches.push(match)
+            await createGroupActivity(match[0], match[1], tournament, jornada)
         }
-        schedule[`Jornada ${i+1}`]=(matches)
+
+        schedule[`Jornada ${jornada}`]=(matches)
         const firstTeam = group.shift()
         group.push(firstTeam)
     }
@@ -125,24 +121,25 @@ function generateMatchesImpar(group, numTeams, numJornadas) {
     return schedule
 }
 
-function generateMatchesPar(group, numTeams, numJornadas) {
+async function generateMatchesPar(group, numTeams, numJornadas, tournament) {
     let schedule = new Object()
     
     for (let i=0; i<(numJornadas-1); i++) {
         let matches = []
+        let jornada = i+1
         for(let j=0; j<(numTeams/2); j++) {
             let match = [group[j], group[numTeams - 1 - j]]
-            
+
             if (i == numJornadas-2 && j==0) {
                 let temp = match[1]
                 match[1] = match[0]
                 match[0] = temp
             }
-                
             matches.push(match)
+            await createGroupActivity(match[0], match[1], tournament, jornada)
         }
         
-        schedule[`Jornada ${i+1}`]=(matches)
+        schedule[`Jornada ${jornada}`]=(matches)
         const secondTeam = group.splice(1, 1)[0]
         group.push(secondTeam)
     }
@@ -150,36 +147,39 @@ function generateMatchesPar(group, numTeams, numJornadas) {
     return schedule
 }
 
-function generateMatchesInGroup(group) {
+async function generateMatchesInGroup(group, tournament) {
     let numTeams = group.length
     let numJornadas = numTeams
     let numMatchesPerJornada = Math.ceil(numTeams / 2)
 
     let schedule = numTeams % 2 == 0 
-        ? generateMatchesPar(group, numTeams, numJornadas)
-        : generateMatchesImpar(group, numTeams, numJornadas)
+        ? await generateMatchesPar(group, numTeams, numJornadas, tournament)
+        : await generateMatchesImpar(group, numTeams, numJornadas, tournament)
     
     return schedule
 }
 
 async function generateTournamentSchedule(tournamentId, tournamentTeams) {
-    let groups = generateGroups(tournamentTeams)
+    let groups = await generateGroups(tournamentTeams)
     let numGroups = Object.keys(groups).length
+    let tournament = await Tournament.findOne({where: { id: tournamentId }})
     
     for(let i=0; i<numGroups; i++) {
         groups[`Grupo ${i+1}`].matches = {}
-        groups[`Grupo ${i+1}`].matches = generateMatchesInGroup(groups[`Grupo ${i+1}`].teams)
+        groups[`Grupo ${i+1}`].matches = await generateMatchesInGroup(groups[`Grupo ${i+1}`].teams, tournament)
     }
     
     return groups;
 }
 
-// var equipos = ['Real Madrid', 'Barça', 'Atlético de Madrid', 'Sevilla', 'Betis', 'Cádiz', 'Valencia', 'Villareal', 'Osasuna', 'Real Sociedad', 'Celta', 'Athletic Bilbao', 'RCD Espanyol', ]
+const tournamentSchedule = async (req, res) => {
+    try {
+        const { tournamentId } = req.params;
 
-// generateTournament(1, equipos)
-
-async function fixTeams() {
-
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Error " + err });
+    }
 }
 
 const getTeamsInTournament = async (req, res) => {
@@ -206,11 +206,6 @@ const getTeamsInTournament = async (req, res) => {
     }
 };
 
-
-const getPlayersInTournament = async (req, res) => {
-    res.send(f_getPlayersInTournament(req.body.tournamentId))
-};
-
 const generateTournament = async (req, res) => {
     try {
         const { tournamentId } = req.body;
@@ -227,7 +222,6 @@ const generateTournament = async (req, res) => {
             },
             include: {
               model: Team,
-              attributes: ['id', 'name'],
               through: {
                 attributes: [], 
                 model: TournamentTeams
@@ -237,7 +231,7 @@ const generateTournament = async (req, res) => {
 
         const teamsArray = []
         for(let team of teams[0].teams)
-            teamsArray.push(team.name)
+            teamsArray.push(team)
 
         if (teamsArray.length < tournament.min_teams)
              return res.status(403).json({ message: "No se ha cumplido el mínimo de equipos necesarios." })
@@ -399,6 +393,6 @@ module.exports = {
     subscribeTeamToTournament,
     getMyTournaments, 
     generateTournament, 
-    getPlayersInTournament, 
+    tournamentSchedule,
     getTeamsInTournament 
 };

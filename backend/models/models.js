@@ -170,7 +170,18 @@ TournamentTeams.sync()
 
 const TournamentGroupActivities = sequelize.define('tournament_groups_activities', {
     date: DataTypes.DATE,
-    jornada: DataTypes.INTEGER,
+    jornada: {
+        type: DataTypes.INTEGER,
+        primaryKey: true
+    },
+    activityId: {
+        type: DataTypes.INTEGER,
+        primaryKey: true
+    },
+    tournamentId: {
+        type: DataTypes.INTEGER,
+        primaryKey: true
+    }
 })
 
 Activity.belongsToMany(Tournament, { through: TournamentGroupActivities });
