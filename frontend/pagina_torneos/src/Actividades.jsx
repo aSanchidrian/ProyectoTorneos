@@ -164,6 +164,9 @@ function Actividades(props) {
               Filtro
             </Dropdown.Toggle>
             <Dropdown.Menu>
+              <Dropdown.Item onClick={() => handleFilterChange("")}>
+                Todas las actividades
+              </Dropdown.Item>
               <Dropdown.Item onClick={() => handleFilterChange("finished")}>
                 Actividades Finalizadas
               </Dropdown.Item>
@@ -201,8 +204,11 @@ function Actividades(props) {
       <hr className="hr2"></hr>
 
       <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title className="mr-4">Crear una actividad</Modal.Title>
+          <button type="button" className="close" onClick={handleCloseModal}>
+            <span aria-hidden="true">✕</span>
+          </button>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleRegister}>
@@ -295,22 +301,24 @@ function Actividades(props) {
                     {actividad.result ? actividad.result : "Aun no concluido"}
                   </Col>
                 </Row>
-                <Button
-                  style={{
-                    textAlign: "center",
-                    width: "15%",
-                    height: "30%",
-                    marginLeft: "auto",
-                    marginRight: "0",
-                    marginBottom: "2%",
-                    marginTop: "1%",
-                  }}
-                  className="ml-auto"
-                  variant="primary"
-                  onClick={() => handleResultModalShow(actividad.id)} // Pasa actividad.id directamente
-                >
-                  Añadir Resultado
-                </Button>
+                {actividad.result === "" && ( // Solo mostrar el botón si el resultado de la actividad es ""
+                  <Button
+                    style={{
+                      textAlign: "center",
+                      width: "15%",
+                      height: "30%",
+                      marginLeft: "auto",
+                      marginRight: "0",
+                      marginBottom: "2%",
+                      marginTop: "1%",
+                    }}
+                    className="ml-auto"
+                    variant="primary"
+                    onClick={() => handleResultModalShow(actividad.id)} // Pasa actividad.id directamente
+                  >
+                    Añadir Resultado
+                  </Button>
+                )}
                 <br></br>
               </div>
             </div>
@@ -320,8 +328,15 @@ function Actividades(props) {
         <p style={{ color: "black" }}>No hay actividades disponibles...</p>
       )}
       <Modal show={showResultModal} onHide={handleResultModalClose}>
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title>Añadir Resultado</Modal.Title>
+          <button
+            type="button"
+            className="close"
+            onClick={handleResultModalClose}
+          >
+            <span aria-hidden="true">✕</span>
+          </button>
         </Modal.Header>
         <Modal.Body>
           <Form>

@@ -367,8 +367,3 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Ikx1Y
 {
     "message": "Hola mundo, actualizado"
 }
-
-####recibe tus mensajes#####
-GET http://localhost:3001/chat/getMessagesById HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Ikx1Y3NzIiwiaWF0IjoxNjg1MTM2MDEzLCJleHAiOjE3MjExMzI0MTN9.ZXAh54unIujFZo6-HOkb7gmd_6Fgb5GbSqBer2a23hQ
-   

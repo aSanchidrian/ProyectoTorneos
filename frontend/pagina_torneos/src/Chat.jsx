@@ -1,24 +1,46 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Button from "react-bootstrap/Button";
 import "./Chat.css";
 
 const Chat = (props) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const currentUser = "Lucs2s"; // Reemplazar con el usuario actual
+  const [userMessagesIds, setUserMessagesIds] = useState([]);
+  const currentUser = localStorage.getItem("user");
+  const endOfMessagesRef = React.useRef(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios.get("http://localhost:3001/chat/messages", {
+  const fetchData = async () => {
+    const result = await axios.get("http://localhost:3001/chat/messages", {
+      headers: {
+        Authorization: `Bearer ${props.sessionToken}`,
+      },
+    });
+
+    setMessages(result.data);
+  };
+
+  const fetchUserMessages = async () => {
+    const result = await axios.get(
+      "http://localhost:3001/chat/getMessagesById",
+      {
         headers: {
           Authorization: `Bearer ${props.sessionToken}`,
         },
-      });
+      }
+    );
 
-      setMessages(result.data);
-    };
+    const messageIds = result.data.map((message) => message.id);
+    setUserMessagesIds(messageIds);
+  };
 
-    fetchData();
+  const scrollToBottom = () => {
+    endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    fetchData().then(scrollToBottom);
+    fetchUserMessages().then(scrollToBottom);
   }, []);
 
   const postMessage = async () => {
@@ -35,15 +57,28 @@ const Chat = (props) => {
     );
 
     setNewMessage("");
+    fetchData();
+    fetchUserMessages();
+    scrollToBottom();
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      postMessage();
+    }
   };
 
   return (
-    <div className="chat-container">
+    <div className="chat-container p-3">
+      <div className="chat-header">
+        <h2>Chat U-Sports</h2>
+      </div>
+      <hr className="hr2"></hr>
       <div className="chat-messages">
         {messages.map((message) => (
           <div
             className={`chat-message ${
-              message.user.nickname === currentUser ? "left" : "right"
+              userMessagesIds.includes(message.id) ? "right" : "left"
             }`}
             key={message.id}
           >
@@ -53,19 +88,30 @@ const Chat = (props) => {
               alt={message.user.nickname}
             />
             <div className="message-content">
+              <h5 style={{ color: "black" }} className="font-weight-bold ">
+                @{message.user.nickname}
+              </h5>
               <p>{message.message}</p>
-              <small>{new Date(message.createdAt).toLocaleString()}</small>
+              <small className="date-right">
+                {new Date(message.createdAt).toLocaleString()}
+              </small>
             </div>
           </div>
         ))}
+        <div ref={endOfMessagesRef} />
       </div>
       <div className="chat-input">
         <input
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
+          onKeyPress={handleKeyPress} // Agregamos este evento
         />
-        <button onClick={postMessage}>Enviar</button>
+        <Button style={{ borderRadius: "100px" }} onClick={postMessage}>
+          <b>
+            <h2>➤</h2>
+          </b>
+        </Button>
       </div>
     </div>
   );

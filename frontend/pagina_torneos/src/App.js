@@ -257,8 +257,11 @@ function App() {
           </div>
           <br></br>
           <Modal show={show} onHide={handleClose} animation={true}>
-            <Modal.Header closeButton>
+            <Modal.Header>
               <Modal.Title>Inicia sesion</Modal.Title>
+              <button type="button" className="close" onClick={handleClose}>
+                <span aria-hidden="true">✕</span>
+              </button>
             </Modal.Header>
             <Modal.Body>
               {/* cuerpo del modal, aqui despliega el login y register */}

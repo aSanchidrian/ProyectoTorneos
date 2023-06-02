@@ -45,7 +45,7 @@ function Profile(props) {
       setSport(response.data.sport);
       setUser(response.data.email);
       setImage(response.data.profilePic); // Nueva línea para la imagen
-      getUserPublications(response.data.nickname);
+      getUserPublications(response.data.sport);
     } catch (err) {
       console.error(err);
     }
@@ -159,7 +159,7 @@ function Profile(props) {
               <Modal.Header>
                 <Modal.Title>Editar Perfil</Modal.Title>
                 <button type="button" className="close" onClick={handleModal}>
-                  <span aria-hidden="true">&times;</span>
+                  <span aria-hidden="true">✕</span>
                 </button>
               </Modal.Header>
               <Modal.Body>
@@ -253,7 +253,7 @@ function Profile(props) {
               borderRadius: "30px",
             }}
           >
-            <h2 style={{ paddingTop: "2%" }}>Mis publicaciones</h2>
+            <h2 style={{ paddingTop: "2%" }}>Mis notificaciones</h2>
             <hr className="hr2"></hr>
             <br></br>
             <div className="d-flex flex-column align-items-center">

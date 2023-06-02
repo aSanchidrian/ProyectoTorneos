@@ -15,9 +15,17 @@ function Tournaments(props) {
   const [equipoSeleccionado, setEquipoSeleccionado] = useState(null);
   const [refreshTeams, setRefreshTeams] = useState(false);
   const [equipos, setEquipos] = useState([]);
+  const [matches, setMatches] = useState({});
+  const [showMatchesModal, setShowMatchesModal] = useState(false);
 
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
+  const handleShowMatchesModal = () => setShowMatchesModal(true);
+  const handleCloseMatchesModal = () => {
+    setCurrentGroup(0);
+    setShowMatchesModal(false);
+  };
+  const [currentGroup, setCurrentGroup] = useState(0);
 
   // State for form input values
   const [formValues, setFormValues] = useState({
@@ -34,6 +42,7 @@ function Tournaments(props) {
   });
 
   useEffect(() => {
+    console.log(matches);
     axios
       .get("http://localhost:3001/team/myTeams", {
         headers: {
@@ -70,6 +79,7 @@ function Tournaments(props) {
         setRefreshTeams(!refreshTeams);
       }
     } catch (error) {
+      alert("Número maximo de equipos en el torneo sobrepasado.");
       console.error(error);
     }
   };
@@ -182,6 +192,34 @@ function Tournaments(props) {
     }
   };
 
+  const handleGenerateTournament = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/tournament/generateTournament",
+        {
+          tournamentId: selectedTournament.id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${props.sessionToken}`,
+            api_key: "Api-publica-123",
+          },
+        }
+      );
+
+      if (response.status === 201) {
+        setMatches(response.data);
+      }
+    } catch (error) {
+      alert("No se ha cumplido el mínimo de equipos necesarios.");
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    console.log(matches);
+  }, [matches]);
+
   return (
     <>
       <div>
@@ -196,7 +234,7 @@ function Tournaments(props) {
               <option value="">Todos los deportes</option>
               <option value="Futbol">Fútbol</option>
               <option value="Tenis">Tenis</option>
-              <option value="Baloncesto">Basketball</option>
+              <option value="Baloncesto">Baloncesto</option>
             </Form.Control>
 
             <Button
@@ -217,8 +255,11 @@ function Tournaments(props) {
         <hr className="hr2"></hr>
 
         <Modal show={showModal} onHide={handleCloseModal}>
-          <Modal.Header closeButton>
+          <Modal.Header>
             <Modal.Title>Crear nuevo torneo</Modal.Title>
+            <button type="button" className="close" onClick={handleCloseModal}>
+              <span aria-hidden="true">✕</span>
+            </button>
           </Modal.Header>
           <Modal.Body>
             <Form onSubmit={handleCreateTournament}>
@@ -433,34 +474,139 @@ function Tournaments(props) {
                   {selectedTournament.max_players_team}
                 </Col>
               </Row>
-              <Row>
-                <Col className="text-right font-weight-bold">Tipo:</Col>
-                <Col className="text-left">{selectedTournament.type}</Col>
-              </Row>
               <br></br>
-              <Button
-                className="mb-4"
-                variant="primary"
-                onClick={handleSubscribeTeam}
+              <div className="d-flex justify-content-center">
+                <Dropdown onSelect={handleSelect}>
+                  <Dropdown.Toggle variant="light" style={{border: "1px solid #0066ef"}} id="dropdown-basic">
+                    {equipoSeleccionado
+                      ? equipoSeleccionado.name
+                      : "Selecciona un equipo"}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    {equipos.map((equipo) => (
+                      <Dropdown.Item eventKey={equipo.id}>
+                        {equipo.name}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+                <Button
+                  className="mb-3 ml-3"
+                  style={{ borderRadius: "50px" }}
+                  variant="primary"
+                  onClick={handleSubscribeTeam}
+                >
+                  ✚
+                </Button>
+              </div>
+              <Modal
+                show={showMatchesModal}
+                size="lg"
+                onHide={handleCloseMatchesModal}
               >
-                Inscribir a el equipo
-              </Button>
-              <Dropdown onSelect={handleSelect}>
-                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                  {equipoSeleccionado
-                    ? equipoSeleccionado.name
-                    : "Selecciona un equipo"}
-                </Dropdown.Toggle>
+                <Modal.Header>
+                  <Modal.Title>Enfrentamientos</Modal.Title>
+                  <button
+                    type="button"
+                    className="close"
+                    onClick={handleCloseMatchesModal}
+                  >
+                    <span aria-hidden="true">✕</span>
+                  </button>
+                </Modal.Header>
+                <Modal.Body>
+                  {Object.keys(matches).map((group, index) => {
+                    if (index === currentGroup) {
+                      return (
+                        <div key={index}>
+                          <div className="d-flex justify-content-between">
+                            <Button
+                              variant="secondary"
+                              onClick={() =>
+                                setCurrentGroup(
+                                  (currentGroup -
+                                    1 +
+                                    Object.keys(matches).length) %
+                                    Object.keys(matches).length
+                                )
+                              }
+                              disabled={Object.keys(matches).length === 1}
+                            >
+                              ◀
+                            </Button>
+                            <h5>
+                              <b>{group}</b>
+                            </h5>
+                            <Button
+                              variant="secondary"
+                              onClick={() =>
+                                setCurrentGroup(
+                                  (currentGroup + 1) %
+                                    Object.keys(matches).length
+                                )
+                              }
+                              disabled={Object.keys(matches).length === 1}
+                            >
+                              ▶
+                            </Button>
+                          </div>
+                          <div className="card mt-3 text-center">
+                            <div className="card-header font-weight-bold h2">
+                              Equipos
+                            </div>
+                            <ul className="list-group list-group-flush">
+                              {matches[group].teams.map((team, i) => (
+                                <li key={i} className="list-group-item">
+                                  {team}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                          <div className="card mt-3 text-center">
+                            <div className="card-header font-weight-bold h2">
+                              Partidos
+                            </div>
+                            {Object.keys(matches[group].matches).map(
+                              (jornada) => (
+                                <div key={jornada} className="card-body">
+                                  <div className="media">
+                                    <h5 className="mr-3 mt-custom">
+                                      {jornada}
+                                    </h5>
+                                    <div className="media-body">
+                                      <ul className="list-group list-group-flush">
+                                        {matches[group].matches[jornada].map(
+                                          (match, i) => (
+                                            <li
+                                              key={i}
+                                              className="list-group-item"
+                                            >
+                                              {match[0]} vs {match[1]}
+                                            </li>
+                                          )
+                                        )}
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              )
+                            )}
+                          </div>
+                        </div>
+                      );
+                    } else {
+                      return null;
+                    }
+                  })}
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={handleCloseMatchesModal}>
+                    Close
+                  </Button>
+                </Modal.Footer>
+              </Modal>
 
-                <Dropdown.Menu>
-                  {equipos.map((equipo) => (
-                    <Dropdown.Item eventKey={equipo.id}>
-                      {equipo.name}
-                    </Dropdown.Item>
-                  ))}
-                </Dropdown.Menu>
-              </Dropdown>
-              <div className="d-flex justify-content-around flex-wrap mr-5 ml-5 mb-5 mt-5">
+              <div className="d-flex justify-content-around flex-wrap mr-5 ml-5 mb-5 mt-4">
                 <div
                   style={{
                     height: "100%",
@@ -488,6 +634,24 @@ function Tournaments(props) {
                     ))}
                   </div>
                 </div>
+              </div>
+              <div className="d-flex justify-content-center">
+                <Button
+                  className="mb-4"
+                  variant="primary"
+                  onClick={handleGenerateTournament}
+                >
+                  Generar Enfrentamientos
+                </Button>
+                {Object.keys(matches).length !== 0 && (
+                  <Button
+                    className="mb-4 ml-2 btn-secondary"
+                    variant="primary"
+                    onClick={handleShowMatchesModal}
+                  >
+                    Mostrar Enfrentamientos
+                  </Button>
+                )}
               </div>
             </div>
           </div>

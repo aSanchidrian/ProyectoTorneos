@@ -45,9 +45,7 @@ function Home(props) {
         setShowContent(<Anuncios sessionToken={props.token}></Anuncios>);
         break;
       case "btn-2":
-        setShowContent(
-          <Teams sessionToken={props.token} userId={props}></Teams>
-        );
+        setShowContent(<Teams sessionToken={props.token} userId={props}></Teams>);
         break;
       case "btn-3":
         setShowContent(<Tournaments sessionToken={props.token}></Tournaments>);
@@ -59,17 +57,10 @@ function Home(props) {
         setShowContent(<Results sessionToken={props.token}></Results>);
         break;
       case "Profile":
-        setShowContent(
-          <Profile
-            setUserImage={setUserImage}
-            sessionToken={props.token}
-          ></Profile>
-        );
+        setShowContent(<Profile setUserImage={setUserImage} sessionToken={props.token}></Profile>);
         break;
       case "Logs":
-        setShowContent(
-          <Notificaciones sessionToken={props.token}></Notificaciones>
-        );
+        setShowContent(<Notificaciones sessionToken={props.token}></Notificaciones>);
         break;
       case "Chat":
         setShowContent(<Chat sessionToken={props.token}></Chat>);

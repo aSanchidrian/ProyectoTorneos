@@ -59,7 +59,8 @@ const MyCalendar = (props) => {
           end: new Date(e.date_end),
           title: e.name,
           type: 'tournament',
-          color: '#ff834d '  // color para los torneos
+          color: '#5bd8c3',
+          textColor: 'black'  // color para los torneos
         }));
 
         setEvents([...activities, ...tournaments]);
@@ -77,7 +78,7 @@ const MyCalendar = (props) => {
         backgroundColor: backgroundColor,
         borderRadius: '5px',
         opacity: 1,
-        color: 'black',
+        color: 'white',
         border: '0px',
         display: 'block',
         fontWeight: 'bold'
@@ -95,7 +96,7 @@ const MyCalendar = (props) => {
         defaultView="month"
         events={events}
         messages={messages}
-        eventPropGetter={eventStyleGetter} // añade esta línea
+        eventPropGetter={eventStyleGetter}
       />
     </div>
   );

@@ -171,9 +171,6 @@ async function generateTournamentSchedule(tournamentId, tournamentTeams) {
         groups[`Grupo ${i+1}`].matches = generateMatchesInGroup(groups[`Grupo ${i+1}`].teams)
     }
     
-    groups = JSON.stringify(groups)
-    console.log(groups)
-
     return groups;
 }
 
@@ -246,7 +243,7 @@ const generateTournament = async (req, res) => {
              return res.status(403).json({ message: "No se ha cumplido el mínimo de equipos necesarios." })
 
         const schedule = await generateTournamentSchedule(tournamentId, teamsArray)
-        res.status(201).json({ message: "Equipos: "+JSON.stringify(schedule) })
+        res.status(201).json(schedule)
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: "Error " + err });

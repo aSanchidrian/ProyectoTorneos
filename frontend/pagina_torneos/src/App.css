@@ -130,6 +130,10 @@ hr {
 
 }
 
+.mt-custom {
+  margin-top: 2rem !important;
+}
+
 @media (min-width: 300px) and (max-width: 599px) {
   .rounded-blue-button {
     font-size: 0.55rem;
